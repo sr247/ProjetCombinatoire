@@ -8,7 +8,7 @@ class ProductRule(ConstructorRule):
         self._parameters = (fst,snd)
 
     def _calc_valuation(self):
-        _parameters[0].valuation()+_parameters[1].valuation()
+        self._parameters[0].valuation()+self._parameters[1].valuation()
 
 
 if __name__ == '__main__':
