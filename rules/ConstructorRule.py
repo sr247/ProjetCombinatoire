@@ -3,9 +3,9 @@ from rules import AbstractRule
 
 
 class ConstructorRule(AbstractRule):
-    def __init__(self, parameters, valuation):
+    def __init__(self, parameters):
         self._parameters = parameters
-        self._valuation = valuation
+        self._valuation = 0
 
     def valuation(self):
         pass

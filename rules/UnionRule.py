@@ -4,10 +4,11 @@ from rules import ConstructorRule
 
 class UnionRule(ConstructorRule):
     def __init__(self, fst, snd):
-        pass
+        self.fst = fst
+        self.snd = snd
 
     def _calc_valuation(self):
-        pass
+        min(fst.valuation(),snd.valuation())
 
 
 
