@@ -6,8 +6,10 @@ class ConstanteRule(AbstractRule):
         self._object = object
 
     def valuation(self):
-        pass
-
+        if isinstance(self,EpsilonRule):
+            return 0
+        else:
+            return 1
 
 if __name__ == '__main__':
     pass
