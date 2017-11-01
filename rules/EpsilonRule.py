@@ -2,7 +2,7 @@
 from rules import ConstanteRule
 
 
-class ProductRule(ConstanteRule):
+class EpsilonRule(ConstanteRule):
     def __init__(self, object):
         self._object = object
 
