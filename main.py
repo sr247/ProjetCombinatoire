@@ -1,17 +1,11 @@
 # coding: utf-8
 import math
-from rules.AbstractRule import AbstractRule
 from rules.ConstructorRule import ConstructorRule
 from rules.ProductRule import ProductRule
 from rules.UnionRule import UnionRule
 from rules.ConstanteRule import *
 
 from Tree import *
-
-
-treeGram = {"Tree" : UnionRule("Node", "Leaf"),
-     "Node" : ProductRule("Tree", "Tree", lambda a, b : Node(a, b)),
-     "Leaf" : SingletonRule(Leaf)}
 
 def init_grammar(gram) :
     # Globalement
@@ -35,11 +29,10 @@ def init_grammar(gram) :
             if (vpre != vcur or vcur == math.inf):
                 # Alors on a pas encore trouvé le point fix
                 still = True
-    
 
-init_grammar(treeGram)
-
-print (treeGram['Tree']._grammar['Node'].valuation())
+treeGram = {"Tree" : UnionRule("Node", "Leaf"),
+     "Node" : ProductRule("Tree", "Tree", lambda a, b : Node(a, b)),
+     "Leaf" : SingletonRule(Leaf)}
 
 # Exemple ici on déclare la grammaire
 fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
@@ -50,6 +43,12 @@ fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
             "AtomA": SingletonRule("A"),
             "AtomB": SingletonRule("B"),
             "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
+
+
+
+init_grammar(treeGram)
+
+print (treeGram['Tree']._grammar['Node'].valuation())
 
 init_grammar(fiboGram)
 

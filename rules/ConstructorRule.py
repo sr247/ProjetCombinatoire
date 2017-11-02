@@ -2,7 +2,6 @@
 from rules.AbstractRule import AbstractRule
 import math
 
-
 class ConstructorRule(AbstractRule):
     
     def __init__(self, parameters):
@@ -14,7 +13,6 @@ class ConstructorRule(AbstractRule):
 
     def _update_valuation(self):
         self._valuation = self._calc_valuation()
-
 
 if __name__ == '__main__':
     pass
