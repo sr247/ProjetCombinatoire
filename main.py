@@ -17,8 +17,14 @@ treeGram = {"Tree" : UnionRule("Node", "Leaf"),
      "Leaf" : SingletonRule(Leaf)}
 
 def init_grammar(gram) :
-    absRule = AbstractRule()
-    absRule._set_grammar(gram)
+    # Globalement
+    for key, rule in gram.items():
+        if gram[key]._calc_valuation() != "je sais pas quoi":
+            raise 'Grammaire Incorrecte'  # IncorrectGrammar()
+        gram[key] = gram[key]._set_grammar(gram)
+        # Génere la grammaire en question, soit la succession d'étape pour que
+        # self._grammar[key] = Bintree/Fib/Dyck  etc en fonction de la règle
+    # return gram.copy() Optionnel
 
 
 # Exemple ici on déclare la grammaire
