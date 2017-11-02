@@ -17,14 +17,8 @@ treeGram = {"Tree" : UnionRule("Node", "Leaf"),
      "Leaf" : SingletonRule(Leaf)}
 
 def init_grammar(gram) :
-    # absRule = AbstractRule(gram)   tmarti2
-    # absRule._set_grammar()         tmarti2
-
-    # Globalement
-    for key, rule in gram.items():
-        if gram[key]._calc_valuation() != "je sais pas quoi":
-            raise 'Grammaire Incorrecte'            #  IncorrectGrammar()
-        gram[key] = gram[key]._set_grammar()
+    absRule = AbstractRule(gram)
+    absRule._set_grammar()
 
 
 # Exemple ici on déclare la grammaire
@@ -43,10 +37,6 @@ fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
 
 
 
-
-
-
-
 # Puis on l'init mais c'est un effet de bord car après
 # ils appellent la grammaire:
 # fiboGram['Fib'].count(3)
@@ -56,9 +46,7 @@ fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
 
 # Donc init_grammar(fiboGram)
 #     Ne renvoit pas un nouvel objet de type AbstractRule.
-#     mais plutot fait pour chaque key de fiboGram par exemple:
-#     for key, rule in fiboGram:
-#         fiboGram[k] = fiboGram[k]._set_grammar()
+#     Utilise la methode set de l'object Abstractrules pour modifier fiboGram
 
 
 
