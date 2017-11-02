@@ -1,6 +1,4 @@
 # coding: utf-8
-from IPython.lib.editorhooks import kate
-
 from rules.AbstractRule import AbstractRule
 from rules.ConstructorRule import ConstructorRule
 from rules.ConstanteRule import ConstanteRule
@@ -18,14 +16,15 @@ treeGram = {"Tree" : UnionRule("Node", "Leaf"),
 
 def init_grammar(gram) :
     # Globalement
-    for key, rule in gram.items():
-        if gram[key]._calc_valuation() != "je sais pas quoi":
-            raise 'Grammaire Incorrecte'  # IncorrectGrammar()
-        gram[key] = gram[key]._set_grammar(gram)
-        # Génere la grammaire en question, soit la succession d'étape pour que
-        # self._grammar[key] = Bintree/Fib/Dyck  etc en fonction de la règle
-    # return gram.copy() Optionnel
+    for key in gram.keys() :
+        # if gram[key]._calc_valuation() != "je sais pas quoi":
+        # raise 'Grammaire Incorrecte'  # IncorrectGrammar()
+        gram[key]._set_grammar(gram)
+    
 
+init_grammar(treeGram)
+
+print (treeGram['Leaf']._grammar['Leaf'].valuation())
 
 # Exemple ici on déclare la grammaire
 fiboGram = {"Fib": UnionRule("Vide", "Cas1"),

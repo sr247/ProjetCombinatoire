@@ -6,11 +6,6 @@ class AbstractRule:
 
     def _set_grammar(self, gram):
         self._grammar = gram
-        # On fait le truc qu'il faut
-
-
-
-
 
 if __name__ == '__main__':
     g = AbstractRule({})
