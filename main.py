@@ -1,4 +1,5 @@
 # coding: utf-8
+import math
 from rules.AbstractRule import AbstractRule
 from rules.ConstructorRule import ConstructorRule
 from rules.ProductRule import ProductRule
@@ -15,20 +16,30 @@ treeGram = {"Tree" : UnionRule("Node", "Leaf"),
 def init_grammar(gram) :
     # Globalement
     for key in gram.keys() :
-        # if gram[key]._calc_valuation() != "je sais pas quoi":
-        # raise 'Grammaire Incorrecte'  # IncorrectGrammar()
         gram[key]._set_grammar(gram)
-    for i in range(10):
-        for key in gram.keys() :
-            gram[key].valuation()
+    
+    # Booléen qui indique si le point fix est trouvé ou non (vrai = non trouvé, false = trouvé)
+    still = True
+
+    # Tant qu'on a pas trouvé le point fix
+    while still:
+        still = False
+        # Pour toutes les règles héritant de ConstructorRule
+        for key in [ x for x in gram.keys() if isinstance(gram[x],ConstructorRule)] :
+            # On stock la valuation précédentte (Vn-1)
+            vpre = gram[key].valuation()
+            # On calcule la valuation courante (Vn)
+            gram[key]._update_valuation()
+            vcur = gram[key].valuation()
+            # Si les 2 valeurs sont différentes ou que la valuation à renvoyé l'infini
+            if (vpre != vcur or vcur == math.inf):
+                # Alors on a pas encore trouvé le point fix
+                still = True
     
 
 init_grammar(treeGram)
 
-treeGram['Node']._update_valuation()
-
-
-print (treeGram['Node'].valuation())
+print (treeGram['Tree']._grammar['Node'].valuation())
 
 # Exemple ici on déclare la grammaire
 fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
@@ -39,6 +50,11 @@ fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
             "AtomA": SingletonRule("A"),
             "AtomB": SingletonRule("B"),
             "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
+
+init_grammar(fiboGram)
+
+print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
+
 
 # pas encore fonctionnelle
 # init_grammar(fiboGram)
