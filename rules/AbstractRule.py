@@ -1,8 +1,9 @@
 # coding: utf-8
 
 class AbstractRule:
-    def __init__(self):
+    def __init__(self, gram):
         self._grammar = {}
+        self._grammar = self._set_grammar(gram)
 
     def _set_grammar(self, gram):
         # Globalement
@@ -12,7 +13,7 @@ class AbstractRule:
             gram[key] = generate(gram[key])
             # Génere la grammaire en question, soit la succession d'étape pour que
             # self._grammar[key] = Bintree/Fib/Dyck  etc en fonction de la règle
-        self._grammar = gram.copy()
+        return gram.copy()
 
 
 
