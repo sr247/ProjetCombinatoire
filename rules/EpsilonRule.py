@@ -1,5 +1,5 @@
 # coding: utf-8
-from rules import ConstanteRule
+from rules.ConstanteRule import ConstanteRule
 
 
 class EpsilonRule(ConstanteRule):

@@ -1,8 +1,8 @@
 # coding: utf-8
-from rules import AbstractRule
-
+from rules.AbstractRule import AbstractRule
 
 class ConstructorRule(AbstractRule):
+    
     def __init__(self, parameters):
         self._parameters = parameters
         self._valuation = 0

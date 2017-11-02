@@ -1,10 +1,9 @@
 # coding: utf-8
-from rules import ConstructorRule
-
+from rules.ConstructorRule import ConstructorRule
 
 class UnionRule(ConstructorRule):
     def __init__(self, fst, snd):
-        self._parameters = (fst,snd)
+        super().__init__((fst,snd))
 
     def _calc_valuation(self):
         min(self._parameters[0].valuation(),self._parameters[1].valuation())

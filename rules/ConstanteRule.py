@@ -1,5 +1,5 @@
 # coding: utf-8
-from rules import AbstractRule
+from rules.AbstractRule import AbstractRule
 
 class ConstanteRule(AbstractRule):
     def __init__(self,object):
