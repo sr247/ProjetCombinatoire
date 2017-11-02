@@ -8,10 +8,10 @@ class ConstructorRule(AbstractRule):
         self._valuation = 0
 
     def valuation(self):
-        pass
+        self._calc_valuation()
 
     def _update_valuation(self):
-        pass
+        self._valuation = self.valuation()
 
 if __name__ == '__main__':
     pass
