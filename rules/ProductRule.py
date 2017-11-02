@@ -8,7 +8,9 @@ class ProductRule(ConstructorRule):
         self._constructor = cons
 
     def _calc_valuation(self):
-        self._parameters[0].valuation()+self._parameters[1].valuation()
+        valGauche = self._grammar[self._parameters[0]].valuation()
+        valDroite = self._grammar[self._parameters[1]].valuation()
+        return valGauche+valDroite
 
 
 if __name__ == '__main__':

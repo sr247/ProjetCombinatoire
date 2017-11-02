@@ -1,9 +1,7 @@
 # coding: utf-8
 from rules.AbstractRule import AbstractRule
 from rules.ConstructorRule import ConstructorRule
-from rules.ConstanteRule import ConstanteRule
-from rules.EpsilonRule import EpsilonRule
-from rules.SingletonRule import SingletonRule
+from rules.ConstanteRule import *
 from rules.ProductRule import ProductRule
 from rules.UnionRule import UnionRule
 
