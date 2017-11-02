@@ -8,7 +8,7 @@ class ConstanteRule(AbstractRule):
     # Ici Epsilon Rules n'est pas connu...
     # Possiblement ça peut exploser
     def valuation(self):
-        print(self._object)
+        pass
 
 if __name__ == '__main__':
     pass
