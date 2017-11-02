@@ -7,8 +7,21 @@ from rules.ConstanteRule import *
 
 from Tree import *
 
+def check_grammar(gram):
+    """
+    Fonction qui vérifie que la grammaire est bien définie
+    :param gram: La grammaire à vérifier
+    :return: Exception si gram invalide
+    """
+    pass
+
 def init_grammar(gram) :
-    # Globalement
+    """
+    Fonction d'initialisation de la grammaire
+    :param gram: La grammaire à générer
+    :return: None
+    """
+    check_grammar(gram)
     for key in gram.keys() :
         gram[key]._set_grammar(gram)
     
@@ -30,11 +43,13 @@ def init_grammar(gram) :
                 # Alors on a pas encore trouvé le point fix
                 still = True
 
+
+# Exemple ici on déclare la grammaire Tree
 treeGram = {"Tree" : UnionRule("Node", "Leaf"),
      "Node" : ProductRule("Tree", "Tree", lambda a, b : Node(a, b)),
      "Leaf" : SingletonRule(Leaf)}
 
-# Exemple ici on déclare la grammaire
+# Exemple ici on déclare la grammaire Fibonacci
 fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
             "Cas1": UnionRule("CasAu", "Cas2"),
             "Cas2": UnionRule("AtomB", "CasBAu"),
@@ -45,35 +60,23 @@ fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
             "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
 
 
+if __name__ == '__main__':
+    init_grammar(treeGram)
+    print (treeGram['Tree']._grammar['Node'].valuation())
+    init_grammar(fiboGram)
+    print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
 
-init_grammar(treeGram)
+    # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:
+    # fiboGram['Fib'].count(3)
+    # sans avoir fait:
+    # fiboGram['Fib'] = init_grammar(fiboGram)
 
-print (treeGram['Tree']._grammar['Node'].valuation())
-
-init_grammar(fiboGram)
-
-print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
-
-
-# pas encore fonctionnelle
-# init_grammar(fiboGram)
-# fiboGram['Fib'].count(3)
-
-
-
-# Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:
-# fiboGram['Fib'].count(3)
-# sans avoir fait:
-# fiboGram['Fib'] = init_grammar(fiboGram)
+    # Donc init_grammar(fiboGram)
+    #     Ne renvoit pas forcément un nouvel objet de type AbstractRule.
+    #     Utilise la methode set de l'object Abstractrules pour modifier fiboGram
 
 
-# Donc init_grammar(fiboGram)
-#     Ne renvoit pas forcément un nouvel objet de type AbstractRule.
-#     Utilise la methode set de l'object Abstractrules pour modifier fiboGram
-
-
-
-# Note : La taille ou poids d'un objet est le nombre d’atomes qu'il contient. Le poids d'un élément
-# correspondant à une paire (e1; e2) est donc la somme des poids de e1 et de e2
+    # Note : La taille ou poids d'un objet est le nombre d’atomes qu'il contient. Le poids d'un élément
+    # correspondant à une paire (e1; e2) est donc la somme des poids de e1 et de e2
 
 

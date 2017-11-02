@@ -1,6 +1,5 @@
 # coding: utf-8
 from rules.ConstructorRule import ConstructorRule
-
 class UnionRule(ConstructorRule):
     def __init__(self, fst, snd):
         super().__init__((fst, snd))

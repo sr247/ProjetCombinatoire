@@ -5,6 +5,7 @@ import math
 class ConstructorRule(AbstractRule):
     
     def __init__(self, parameters):
+        super().__init__()
         self._parameters = parameters
         self._valuation = math.inf
 
