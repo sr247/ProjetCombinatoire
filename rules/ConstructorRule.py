@@ -1,17 +1,17 @@
 # coding: utf-8
-from rules import AbstractRule
-
+from rules.AbstractRule import AbstractRule
 
 class ConstructorRule(AbstractRule):
-    def __init__(self, parameters, valuation):
+    
+    def __init__(self, parameters):
         self._parameters = parameters
-        self._valuation = valuation
+        self._valuation = 0
 
     def valuation(self):
-        pass
+        self._calc_valuation()
 
     def _update_valuation(self):
-        pass
+        self._valuation = self.valuation()
 
 if __name__ == '__main__':
     pass
