@@ -6,7 +6,7 @@ class UnionRule(ConstructorRule):
         super().__init__((fst,snd))
 
     def _calc_valuation(self):
-        min(self._parameters[0].valuation(),self._parameters[1].valuation())
+        return (self._parameters[0].valuation(), self._parameters[1].valuation())
 
 
 if __name__ == '__main__':
