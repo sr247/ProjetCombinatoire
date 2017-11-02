@@ -1,9 +1,9 @@
 # coding: utf-8
 from rules.AbstractRule import AbstractRule
 from rules.ConstructorRule import ConstructorRule
-from rules.ConstanteRule import *
 from rules.ProductRule import ProductRule
 from rules.UnionRule import UnionRule
+from rules.ConstanteRule import *
 
 from Tree import *
 
@@ -18,11 +18,17 @@ def init_grammar(gram) :
         # if gram[key]._calc_valuation() != "je sais pas quoi":
         # raise 'Grammaire Incorrecte'  # IncorrectGrammar()
         gram[key]._set_grammar(gram)
+    for i in range(10):
+        for key in gram.keys() :
+            gram[key].valuation()
     
 
 init_grammar(treeGram)
 
-print (treeGram['Leaf']._grammar['Leaf'].valuation())
+treeGram['Node']._update_valuation()
+
+
+print (treeGram['Node'].valuation())
 
 # Exemple ici on déclare la grammaire
 fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
