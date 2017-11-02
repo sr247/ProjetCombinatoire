@@ -1,7 +1,7 @@
 # coding: utf-8
 
 class AbstractRule():
-    def __init__(self,gram):
+    def __init__(self, gram):
         self._grammar = gram
 
     def _set_grammar(self):
