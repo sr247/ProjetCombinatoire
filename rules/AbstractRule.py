@@ -1,15 +1,22 @@
 # coding: utf-8
 
 class AbstractRule:
-    def __init__(self, gram):
-        self._grammar = gram
+    def __init__(self):
+        self._grammar = {}
 
-    def _set_grammar(self):
+    def _set_grammar(self, gram):
         # Globalement
-        for key, rule in self._grammar.items():
-            if self._grammar[key]._calc_valuation() != "je sais pas quoi":
+        for key, rule in gram.items():
+            if gram[key]._calc_valuation() != "je sais pas quoi":
                 raise 'Grammaire Incorrecte'  # IncorrectGrammar()
-            self._grammar[key] = self._grammar[key]._set_grammar()
+            gram[key] = generate(gram[key])
+            # Génere la grammaire en question, soit la succession d'étape pour que
+            # self._grammar[key] = Bintree/Fib/Dyck  etc en fonction de la règle
+        self._grammar = gram.copy()
+
+
+
+
 
 if __name__ == '__main__':
-    pass
+    g = AbstractRule({})
