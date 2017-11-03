@@ -15,7 +15,7 @@ class ConstructorRule(AbstractRule):
     def _update_valuation(self):
         self._valuation = self._calc_valuation()
 
-if __name__ == '__main__' or '__test_classic__':
+if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests ConstructorRule:")
 
     print("Pass")

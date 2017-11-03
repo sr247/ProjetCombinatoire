@@ -1,5 +1,5 @@
 # coding: utf-8
-
+import os
 class AbstractRule(object):
     def __init__(self):
         self._grammar = {}
@@ -7,7 +7,8 @@ class AbstractRule(object):
     def _set_grammar(self, gram):
         self._grammar = gram
 
-if __name__ == '__main__' or '__test_classic__':
+
+if __name__ == '__main__':
     print("Cas de tests AbstractRule:")
 
     # Si un objet AbsRule est crée alors in contient un dictionnaire vide
