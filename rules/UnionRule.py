@@ -10,5 +10,7 @@ class UnionRule(ConstructorRule):
         return min(valGauche,valDroite)
 
 
-if __name__ == '__main__':
-    pass
+if __name__ == '__main__' or '__test_classic__':
+    print("Cas de tests UnionRule:")
+    assert (False)
+    print("Pass")

@@ -13,5 +13,7 @@ class ProductRule(ConstructorRule):
         return valGauche+valDroite
 
 
-if __name__ == '__main__':
-    pass
+if __name__ == '__main__' or '__test_classic__':
+    print("Cas de tests ProductRule:")
+
+    print("Pass")

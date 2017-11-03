@@ -7,7 +7,8 @@ class AbstractRule(object):
     def _set_grammar(self, gram):
         self._grammar = gram
 
-if __name__ == '__main__':
+if __name__ == '__main__' or '__test_classic__':
+    print("Cas de tests AbstractRule:")
 
     # Si un objet AbsRule est crée alors in contient un dictionnaire vide
     Rule = AbstractRule()
@@ -24,3 +25,5 @@ if __name__ == '__main__':
     Rule._grammar['A'] = 1
     Rule._grammar['B'] = 0
     assert (Rule._grammar == G == {'A' : 1, 'B' : 0})
+
+    print("Pass")
