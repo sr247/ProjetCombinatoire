@@ -81,8 +81,8 @@ if __name__ == '__main__':
     # for t in fiboGram['Fib'].list(4):
     #    print(t)
     
-    print(treeGram['Leaf'].unrank(1,0))
-    print(fiboGram['Vide'].unrank(0,0))
+    print(treeGram['Node'].unrank(7,73))
+    # print(fiboGram['Vide'].unrank(0,0))
 
 
     # Test count
