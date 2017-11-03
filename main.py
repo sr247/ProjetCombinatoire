@@ -62,7 +62,7 @@ if __name__ == '__main__':
     fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
                 "Cas1": UnionRule("CasAu", "Cas2"),
                 "Cas2": UnionRule("AtomB", "CasBAu"),
-                "Vide": EpsilonRule(""),
+                "Vide": EpsilonRule("\"\""),
                 "CasAu": ProductRule("AtomA", "Fib", "".join),
                 "AtomA": SingletonRule("A"),
                 "AtomB": SingletonRule("B"),
@@ -82,6 +82,7 @@ if __name__ == '__main__':
     #    print(t)
     
     print(treeGram['Leaf'].unrank(1,0))
+    print(fiboGram['Vide'].unrank(0,0))
 
 
     # Test count
