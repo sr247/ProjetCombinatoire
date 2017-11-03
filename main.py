@@ -78,10 +78,10 @@ if __name__ == '__main__':
     # for t in treeGram['Tree'].list(4):
     #    print(t)
 
-    #for t in fiboGram['Fib'].list(4):
+    # for t in fiboGram['Fib'].list(4):
     #    print(t)
     
-    print(treeGram['Leaf'].unrank(1,1))
+    print(treeGram['Leaf'].unrank(1,0))
 
 
     # Test count

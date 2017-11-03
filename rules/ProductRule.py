@@ -36,6 +36,12 @@ class ProductRule(ConstructorRule):
                             res.append(self._constructor((g,d)))
         return res
 
+    def unrank(self,n,r):
+        c = self.count(n)
+        if r >= c:
+            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,i,c))
+        
+        
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':

@@ -17,8 +17,8 @@ class ConstanteRule(AbstractRule):
         c = self.count(n)
         if r >= c:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
-        else:
-            return self._object
+
+        return self._object
 
 class EpsilonRule(ConstanteRule):
     def __init__(self, object):
