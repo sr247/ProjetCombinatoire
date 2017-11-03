@@ -16,11 +16,23 @@ class ConstanteRule(AbstractRule):
 class EpsilonRule(ConstanteRule):
     def __init__(self, object):
         super().__init__(object)
+    
+    def count(n):
+        if n==0:
+            return 1
+        else:
+            return 0
 
 
 class SingletonRule(ConstanteRule):
         def __init__(self, object):
             super().__init__(object)
+
+        def count(n):
+            if n==1:
+                return 1
+            else:
+                return 0
 
 ConstanteRule.subclass =[EpsilonRule,SingletonRule]
 

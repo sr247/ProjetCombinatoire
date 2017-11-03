@@ -72,7 +72,9 @@ if __name__ == '__main__':
     print (treeGram['Tree']._grammar['Node'].valuation())
     init_grammar(fiboGram)
     print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
-    init_grammar(test)
+    # init_grammar(test)
+
+
     # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:
     # fiboGram['Fib'].count(3)
     # sans avoir fait:
