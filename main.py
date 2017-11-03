@@ -149,17 +149,6 @@ if __name__ == '__main__':
 
     for g in tGram:
         init_grammar(g)
-
-    # init_grammar(treeGram)
-    # print (treeGram['Tree']._grammar['Node'].valuation())
-    # init_grammar(fiboGram)
-    # print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
-    
-    # for t in treeGram['Tree'].list(4):
-    #    print(t)
-
-    # for t in fiboGram['Fib'].list(4):
-    #    print(t)
     
     # for i in range(len(tGram)):
     #    print(str(i) + " : ")
@@ -172,25 +161,6 @@ if __name__ == '__main__':
     assert ([lt[i] == tGram[0]['Tree'].unrank(N,i) for i in range(len(lt))])
 
     # print(tGram[1]['Fib'].unrank(6,12))
-    # print(fiboGram['Vide'].unrank(0,0))
-
-
-    # Test count
-    #for key in fiboGram.keys():
-    #    print(key + " : ")
-    #    for i in range(11):
-    #        print("    "+str(fiboGram[key].count(i)))
-
-    # init_grammar(test)
-    # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:
-    # fiboGram['Fib'].count(3)
-    # sans avoir fait:
-    # fiboGram['Fib'] = init_grammar(fiboGram)
-
-    # Donc init_grammar(fiboGram)
-    #     Ne renvoit pas forcément un nouvel objet de type AbstractRule.
-    #     Utilise la methode set de l'object Abstractrules pour modifier fiboGram
-
 
     # Note : La taille ou poids d'un objet est le nombre d’atomes qu'il contient. Le poids d'un élément
     # correspondant à une paire (e1; e2) est donc la somme des poids de e1 et de e2

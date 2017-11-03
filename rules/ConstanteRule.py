@@ -41,7 +41,7 @@ class SingletonRule(ConstanteRule):
         def __init__(self, object):
             super().__init__(object)
 
-        def count(self,n):
+        def count(self, n):
             if n==1:
                 return 1
             else:
@@ -54,7 +54,7 @@ class SingletonRule(ConstanteRule):
                 return []
 
 
-ConstanteRule.subclass =[EpsilonRule, SingletonRule]
+ConstanteRule.subclass = [EpsilonRule, SingletonRule]
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
