@@ -55,7 +55,7 @@ def init_grammar(gram) :
 if __name__ == '__main__':
     # Exemple ici on déclare la grammaire Tree
     treeGram = {"Tree": UnionRule("Node", "Leaf"),
-                "Node": ProductRule("Tree", "Tree", lambda a, b: Node(a, b)),
+                "Node": ProductRule("Tree", "Tree", lambda obj: Node(obj[0], obj[1])),
                 "Leaf": SingletonRule(Leaf)}
 
     # Exemple ici on déclare la grammaire Fibonacci
@@ -74,9 +74,15 @@ if __name__ == '__main__':
     # print (treeGram['Tree']._grammar['Node'].valuation())
     init_grammar(fiboGram)
     # print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
+    
+    # for t in treeGram['Tree'].list(4):
+    #    print(t)
 
-    for t in treeGram['Tree'].list(4) :
-        print(t)
+    #for t in fiboGram['Fib'].list(4):
+    #    print(t)
+    
+    print(treeGram['Leaf'].unrank(1,1))
+
 
     # Test count
     #for key in fiboGram.keys():

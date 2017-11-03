@@ -19,7 +19,7 @@ class Node():
     def __repr__(self):
         if self.is_leaf():
             return "Leaf"
-        return str(self._children)
+        return "Node"+ str(self._children)
     
     def __eq__(self, other):
         """

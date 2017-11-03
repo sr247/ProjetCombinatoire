@@ -14,7 +14,7 @@ class ProductRule(ConstructorRule):
 
     def count(self,i):
         res = 0
-        for k in range(i):
+        for k in range(i+1):
             l = i-k
             if k >= self._grammar[self._parameters[0]].valuation():
                 if l >= self._grammar[self._parameters[1]].valuation():
@@ -25,15 +25,15 @@ class ProductRule(ConstructorRule):
 
     def list(self,i):
         res = []
-        for k in range(i):
+        for k in range(i+1):
             l = i-k
             if k >= self._grammar[self._parameters[0]].valuation():
                 if l >= self._grammar[self._parameters[1]].valuation():
                     lG = self._grammar[self._parameters[0]].list(k)  
                     lD = self._grammar[self._parameters[1]].list(l)  
                     for g in lG:
-                        for d in lD:                    
-                            res.append(self._constructor(g,d))
+                        for d in lD:
+                            res.append(self._constructor((g,d)))
         return res
 
 
