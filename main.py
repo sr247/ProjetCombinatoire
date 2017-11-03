@@ -81,7 +81,7 @@ if __name__ == '__main__':
     # for t in fiboGram['Fib'].list(4):
     #    print(t)
     
-    print(treeGram['Node'].unrank(7,73))
+    print(treeGram['Node'].unrank(6,12))
     # print(fiboGram['Vide'].unrank(0,0))
 
 

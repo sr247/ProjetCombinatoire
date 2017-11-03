@@ -40,7 +40,7 @@ class ProductRule(ConstructorRule):
     def unrank(self,n,r):        
         c = self.count(n)        
         if r >= c:
-            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,i,c))
+            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
         
         cAcB = []
         for k in range(n+1):
@@ -57,20 +57,25 @@ class ProductRule(ConstructorRule):
         acc = 0 
         i = -1   
         j = -1        
-        for j in range(n+1):
-            acc+= cAcB[j]
+        for k in range(n+1):
+            acc+= cAcB[k]
             if r < acc:
-                i = j
-                acc-= cAcB[j]
+                i = k
+                acc-= cAcB[k]
                 j = r - acc 
                 break
         if i == -1:
             raise Exception("Bad thing happenned")
 
-        return self._constructor((,))
-
-
-        return -1
+        lG = self._grammar[self._parameters[0]].list(i)  
+        lD = self._grammar[self._parameters[1]].list(n-i)  
+        cpt = 0
+        for g in lG:
+            for d in lD:
+                if cpt == j:
+                    return self._constructor((g,d))
+                else:
+                    cpt+=1
         
         
         
