@@ -17,7 +17,7 @@ class EpsilonRule(ConstanteRule):
     def __init__(self, object):
         super().__init__(object)
     
-    def count(n):
+    def count(self,n):
         if n==0:
             return 1
         else:
@@ -28,7 +28,7 @@ class SingletonRule(ConstanteRule):
         def __init__(self, object):
             super().__init__(object)
 
-        def count(n):
+        def count(self,n):
             if n==1:
                 return 1
             else:

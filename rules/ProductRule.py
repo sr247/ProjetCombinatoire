@@ -12,6 +12,8 @@ class ProductRule(ConstructorRule):
         valDroite = self._grammar[self._parameters[1]].valuation()
         return valGauche+valDroite
 
+    def count(self,n):
+        pass
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests ProductRule:")
