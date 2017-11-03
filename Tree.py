@@ -28,7 +28,10 @@ class Node():
         if not isinstance(other, Node):
             return False
         if self.is_leaf():
-            return other.is_leaf()
+            return other.is_leaf()    
+        if other.is_leaf():
+            return False
+
         return self.left() == other.left() and self.right() == other.right()
     
     

@@ -81,6 +81,11 @@ if __name__ == '__main__':
     # for t in fiboGram['Fib'].list(4):
     #    print(t)
     
+    N = 6
+
+    lt = treeGram['Tree'].list(N)
+    assert ([lt[i] == treeGram['Tree'].unrank(N,i) for i in range(len(lt))])
+
     print(fiboGram['Fib'].unrank(6,12))
     # print(fiboGram['Vide'].unrank(0,0))
 
