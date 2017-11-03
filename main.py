@@ -75,10 +75,14 @@ if __name__ == '__main__':
     init_grammar(fiboGram)
     # print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
 
-    for key in treeGram.keys():
-        print(key + " : ")
-        for i in range(11):
-            print("    "+str(treeGram[key].count(i)))
+
+    print(treeGram['Leaf'].list(1))
+
+    # Test count
+    #for key in fiboGram.keys():
+    #    print(key + " : ")
+    #    for i in range(11):
+    #        print("    "+str(fiboGram[key].count(i)))
 
     # init_grammar(test)
     # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:

@@ -22,6 +22,12 @@ class EpsilonRule(ConstanteRule):
             return 1
         else:
             return 0
+    
+    def list(self,n):
+        if n == 0:
+            return [self._object]
+        else:
+            return []
 
 
 class SingletonRule(ConstanteRule):
@@ -33,6 +39,13 @@ class SingletonRule(ConstanteRule):
                 return 1
             else:
                 return 0
+
+        def list(self,n):
+            if n == 1:
+                return [self._object]
+            else:
+                return []
+
 
 ConstanteRule.subclass =[EpsilonRule,SingletonRule]
 
