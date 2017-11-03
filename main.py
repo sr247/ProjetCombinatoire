@@ -50,31 +50,31 @@ def init_grammar(gram) :
         raise Exception("Grammaire Incorrecte : Valuation infini")
 
 
-# Exemple ici on déclare la grammaire Tree
-treeGram = {"Tree" : UnionRule("Node", "Leaf"),
-     "Node" : ProductRule("Tree", "Tree", lambda a, b : Node(a, b)),
-     "Leaf" : SingletonRule(Leaf)}
 
-# Exemple ici on déclare la grammaire Fibonacci
-fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
-            "Cas1": UnionRule("CasAu", "Cas2"),
-            "Cas2": UnionRule("AtomB", "CasBAu"),
-            "Vide": EpsilonRule(""),
-            "CasAu": ProductRule("AtomA", "Fib", "".join),
-            "AtomA": SingletonRule("A"),
-            "AtomB": SingletonRule("B"),
-            "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
-
-test = {"Mdr" : UnionRule("Mdr", "Mdr")}
 
 if __name__ == '__main__':
+    # Exemple ici on déclare la grammaire Tree
+    treeGram = {"Tree": UnionRule("Node", "Leaf"),
+                "Node": ProductRule("Tree", "Tree", lambda a, b: Node(a, b)),
+                "Leaf": SingletonRule(Leaf)}
+
+    # Exemple ici on déclare la grammaire Fibonacci
+    fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
+                "Cas1": UnionRule("CasAu", "Cas2"),
+                "Cas2": UnionRule("AtomB", "CasBAu"),
+                "Vide": EpsilonRule(""),
+                "CasAu": ProductRule("AtomA", "Fib", "".join),
+                "AtomA": SingletonRule("A"),
+                "AtomB": SingletonRule("B"),
+                "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
+
+    test = {"Mdr": UnionRule("Mdr", "Mdr")}
+
     init_grammar(treeGram)
     print (treeGram['Tree']._grammar['Node'].valuation())
     init_grammar(fiboGram)
     print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
     # init_grammar(test)
-
-
     # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:
     # fiboGram['Fib'].count(3)
     # sans avoir fait:
