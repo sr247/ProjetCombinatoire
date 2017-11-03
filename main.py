@@ -27,9 +27,13 @@ def init_grammar(gram) :
     
     # Booléen qui indique si le point fix est trouvé ou non (vrai = non trouvé, false = trouvé)
     still = True
+    
+    n = 100
+    cpt = 0
 
     # Tant qu'on a pas trouvé le point fix
-    while still:
+    while still and cpt < n:
+        cpt += 1
         still = False
         # Pour toutes les règles héritant de ConstructorRule
         for key in [ x for x in gram.keys() if isinstance(gram[x],ConstructorRule)] :
@@ -42,6 +46,8 @@ def init_grammar(gram) :
             if (vpre != vcur or vcur == math.inf):
                 # Alors on a pas encore trouvé le point fix
                 still = True
+    if cpt == n:
+        raise Exception("Grammaire Incorrecte : Valuation infini")
 
 
 # Exemple ici on déclare la grammaire Tree
@@ -59,13 +65,14 @@ fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
             "AtomB": SingletonRule("B"),
             "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
 
+test = {"Mdr" : UnionRule("Mdr", "Mdr")}
 
 if __name__ == '__main__':
     init_grammar(treeGram)
     print (treeGram['Tree']._grammar['Node'].valuation())
     init_grammar(fiboGram)
     print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
-
+    init_grammar(test)
     # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:
     # fiboGram['Fib'].count(3)
     # sans avoir fait:

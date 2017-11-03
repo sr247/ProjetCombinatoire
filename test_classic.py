@@ -1,7 +1,7 @@
 # coding: utf-8
 
-import rules.AbstractRule
-import rules.ConstanteRule
-import rules.ConstructorRule
-import rules.ProductRule
-import rules.UnionRule
+from rules.AbstractRule import *
+from rules.ConstanteRule import * 
+from rules.ConstructorRule import * 
+from rules.ProductRule import * 
+from rules.UnionRule import * 
