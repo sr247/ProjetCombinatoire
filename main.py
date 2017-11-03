@@ -75,8 +75,8 @@ if __name__ == '__main__':
     init_grammar(fiboGram)
     # print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
 
-
-    print(treeGram['Leaf'].list(1))
+    for t in treeGram['Tree'].list(4) :
+        print(t)
 
     # Test count
     #for key in fiboGram.keys():

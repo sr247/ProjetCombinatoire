@@ -14,6 +14,11 @@ class UnionRule(ConstructorRule):
         countD = self._grammar[self._parameters[1]].count(i)
         return countG + countD
 
+    def list(self,i):
+        listG = self._grammar[self._parameters[0]].list(i)
+        listD = self._grammar[self._parameters[1]].list(i)
+        return listG + listD
+
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests UnionRule:")
     print("Pass")
