@@ -71,11 +71,14 @@ if __name__ == '__main__':
     test = {"Mdr": UnionRule("Mdr", "Mdr")}
 
     init_grammar(treeGram)
-    print (treeGram['Tree']._grammar['Node'].valuation())
+    # print (treeGram['Tree']._grammar['Node'].valuation())
     init_grammar(fiboGram)
-    print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
+    # print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
 
-    print(treeGram['Tree'].count(4))
+    for key in treeGram.keys():
+        print(key + " : ")
+        for i in range(11):
+            print("    "+str(treeGram[key].count(i)))
 
     # init_grammar(test)
     # Puis on l'init mais c'est un effet de bord car ils appellent la grammaire:

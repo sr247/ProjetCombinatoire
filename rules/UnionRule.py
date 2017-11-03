@@ -9,9 +9,9 @@ class UnionRule(ConstructorRule):
         valDroite = self._grammar[self._parameters[1]].valuation()
         return min(valGauche,valDroite)
 
-    def count(self,n):
-        countG = self._grammar[self._parameters[0]].count(n)
-        countD = self._grammar[self._parameters[1]].count(n)
+    def count(self,i):
+        countG = self._grammar[self._parameters[0]].count(i)
+        countD = self._grammar[self._parameters[1]].count(i)
         return countG + countD
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
