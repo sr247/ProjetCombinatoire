@@ -42,40 +42,33 @@ class ProductRule(ConstructorRule):
         if r >= c:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
         
-        cAcB = []
+        acc = 0
+        i = -1   
+        j = -1   
         for k in range(n+1):
             l = n-k
             if k >= self._grammar[self._parameters[0]].valuation():
                 if l >= self._grammar[self._parameters[1]].valuation():
                     cG = self._grammar[self._parameters[0]].count(k)  
                     cD = self._grammar[self._parameters[1]].count(l)  
-                    cAcB.append(cG*cD)
-                else:
-                    cAcB.append(0)
-            else:
-                cAcB.append(0)
-        acc = 0 
-        i = -1   
-        j = -1        
-        for k in range(n+1):
-            acc+= cAcB[k]
+                    acc += cG*cD
             if r < acc:
                 i = k
-                acc-= cAcB[k]
+                acc -= cG*cD
                 j = r - acc 
                 break
+
         if i == -1:
             raise Exception("Bad thing happenned")
 
-        lG = self._grammar[self._parameters[0]].list(i)  
-        lD = self._grammar[self._parameters[1]].list(n-i)  
-        cpt = 0
-        for g in lG:
-            for d in lD:
-                if cpt == j:
-                    return self._constructor((g,d))
-                else:
-                    cpt+=1
+            
+        
+
+        k = self._grammar[self._parameters[0]].count(i)  
+        l = self._grammar[self._parameters[1]].count(n-i)
+
+        q,r = j//k, j%k    
+        return self._constructor((self._grammar[self._parameters[0]].unrank(i,r),self._grammar[self._parameters[1]].unrank(n-i,q)))
         
         
         
