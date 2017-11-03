@@ -61,14 +61,12 @@ class ProductRule(ConstructorRule):
         if i == -1:
             raise Exception("Bad thing happenned")
 
-            
-        
-
         k = self._grammar[self._parameters[0]].count(i)  
-        l = self._grammar[self._parameters[1]].count(n-i)
 
-        q,r = j//k, j%k    
-        return self._constructor((self._grammar[self._parameters[0]].unrank(i,r),self._grammar[self._parameters[1]].unrank(n-i,q)))
+        q,r = j//k, j%k
+        mG = self._grammar[self._parameters[0]].unrank(i,r)
+        mD = self._grammar[self._parameters[1]].unrank(n-i,q)  
+        return self._constructor((mG,mD))
         
         
         
@@ -78,3 +76,4 @@ if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests ProductRule:")
 
     print("Pass")
+
