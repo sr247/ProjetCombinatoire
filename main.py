@@ -46,7 +46,7 @@ def init_grammar(gram) :
             if (vpre != vcur or vcur == math.inf):
                 # Alors on a pas encore trouvé le point fix
                 still = True
-    if cpt == n:
+    if cpt == n and still:
         raise Exception("Grammaire Incorrecte : Valuation infini")
 
 
@@ -67,12 +67,92 @@ if __name__ == '__main__':
                 "AtomA": SingletonRule("A"),
                 "AtomB": SingletonRule("B"),
                 "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
+    
+    #Quesiont 2.2.2
+    abWordGram = {"ABWord": UnionRule("Vide", "StartAB"),
+                  "StartAB": UnionRule("CasA", "CasB"),
+                  "CasA": ProductRule("AtomA","ABWord", "".join),
+                  "CasB": ProductRule("AtomB","ABWord", "".join),
+                  "Vide": EpsilonRule("\"\""),
+                  "AtomA": SingletonRule("A"),
+                  "AtomB": SingletonRule("B")}
+    #Quesiont 2.2.3
+    dyckGram = {"DyckWord" : UnionRule("Vide","CasStart"),
+                "CasStart": ProductRule("AtomL","CasMid", "".join),
+                "CasMid": ProductRule("DyckWord","CasEnd", "".join),
+                "CasEnd": ProductRule("AtomR","DyckWord", "".join),
+                "Vide": EpsilonRule("\"\""),
+                "AtomL": SingletonRule("("),
+                "AtomR": SingletonRule(")")}
 
-    test = {"Mdr": UnionRule("Mdr", "Mdr")}
+    #Quesiont 2.2.4	
+    ab2MaxGram = {"AB2Max": UnionRule("Vide","Start"),
+                  "Start": UnionRule("CasA","CasB"),
+                  "CasA": ProductRule("AtomA","StartedA", "".join),
+                  "CasB": ProductRule("AtomB","StartedB", "".join),
+                  "StartedA": UnionRule("Vide","NextA"),
+                  "StartedB": UnionRule("Vide","NextB"),
+                  "NextA": UnionRule("CasB","EndA"),
+                  "NextB": UnionRule("CasA","EndB"),
+                  "FollowedByA": UnionRule("CasA","Vide"),
+                  "FollowedByB": UnionRule("CasB","Vide"),
+                  "EndA": ProductRule("AtomA","FollowedByB", "".join),
+                  "EndB": ProductRule("AtomB","FollowedByA", "".join),
+                  "Vide": EpsilonRule(""),
+                  "AtomA": SingletonRule("A"),
+                  "AtomB": SingletonRule("B")}
 
-    init_grammar(treeGram)
+    #Quesiont 2.2.5.1
+    palABGram = {"PalAB": UnionRule("Vide","StartAB"),
+                  "StartAB": UnionRule("CasA","CasB"),
+                  "CasA": ProductRule("AtomA","EndA", "".join),
+                  "CasB":	ProductRule("AtomB","EndB", "".join),
+                  "EndA":	ProductRule("PalAB","AtomA", "".join),
+                  "EndB":	ProductRule("PalAB","AtomB", "".join),
+                  "Vide":	EpsilonRule(""),
+                  "AtomA": SingletonRule("A"),
+                  "AtomB": SingletonRule("B")}
+
+    #Quesiont 2.2.5.2
+    palABCGram = {"PalABC": UnionRule("Vide","StartABC"),
+                  "StartABC": UnionRule("CasA","CasAutre"),
+                  "CasAutre": UnionRule("CasB","CasC"),
+                  "CasA": ProductRule("AtomA","EndA", "".join),
+                  "CasB": ProductRule("AtomB","EndB", "".join),
+                  "CasC": ProductRule("AtomC","EndC", "".join),
+                  "EndA": ProductRule("PalABC","AtomA", "".join),
+                  "EndB": ProductRule("PalABC","AtomB", "".join),
+                  "EndC": ProductRule("PalABC","AtomC", "".join),
+                  "Vide": EpsilonRule(""),
+                  "AtomA": SingletonRule("A"),
+                  "AtomB": SingletonRule("B"),
+                  "AtomC": SingletonRule("C")}
+
+    #Quesiont 2.2.6
+    autantABGram = {"AutantAB": UnionRule("Vide","StartAB"),
+                    "StartAB": UnionRule("StartWithA","StartWithB"),
+                    "StartWithA": ProductRule("AtomA","B", "".join),
+                    "StartWithB": ProductRule("AtomB","A", "".join),
+                    "A": UnionRule("A2","BDoubleA"),
+                    "A2": ProductRule("AtomA","AutantAB", "".join),
+                    "B": UnionRule("B2","ADoubleB"),
+                    "B2": ProductRule("AtomB","AutantAB", "".join),
+                    "BDoubleA": ProductRule("AtomB","DoubleA", "".join),
+                    "ADoubleB": ProductRule ("AtomA","DoubleB", "".join),
+                    "DoubleA": ProductRule ("A","A", "".join),
+                    "DoubleB": ProductRule ("B","B", "".join),
+                    "Vide": EpsilonRule(""),
+                    "AtomA": SingletonRule("A"),
+                    "AtomB": SingletonRule("B")}
+
+    tGram = [treeGram, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
+
+    for g in tGram:
+        init_grammar(g)
+
+    # init_grammar(treeGram)
     # print (treeGram['Tree']._grammar['Node'].valuation())
-    init_grammar(fiboGram)
+    # init_grammar(fiboGram)
     # print (fiboGram['AtomA']._grammar['CasBAu'].valuation())
     
     # for t in treeGram['Tree'].list(4):
@@ -81,12 +161,17 @@ if __name__ == '__main__':
     # for t in fiboGram['Fib'].list(4):
     #    print(t)
     
+    # for i in range(len(tGram)):
+    #    print(str(i) + " : ")
+    #    for key in tGram[i].keys():
+    #        print("    " + key+ " val : " + str(tGram[i][key].valuation()))
+
     N = 6
 
-    lt = treeGram['Tree'].list(N)
-    assert ([lt[i] == treeGram['Tree'].unrank(N,i) for i in range(len(lt))])
+    lt = tGram[0]['Tree'].list(N)
+    assert ([lt[i] == tGram[0]['Tree'].unrank(N,i) for i in range(len(lt))])
 
-    print(fiboGram['Fib'].unrank(6,12))
+    # print(tGram[1]['Fib'].unrank(6,12))
     # print(fiboGram['Vide'].unrank(0,0))
 
 
