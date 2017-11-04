@@ -10,10 +10,10 @@ class UnionRule(ConstructorRule):
         self.size = size       
     
     def __repr__(self):
-        return "UnionRule("+str(self.parameters[0])+", "+ str(self.parameters[1]) +")"
+        return "UnionRule("+str(self._parameters[0])+", "+ str(self._parameters[1]) +")"
     
     def __str__(self):
-        return "UnionRule("+str(self.parameters[0])+", "+ str(self.parameters[1]) +")"
+        return "UnionRule("+str(self._parameters[0])+", "+ str(self._parameters[1]) +")"
 
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()

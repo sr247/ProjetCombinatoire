@@ -169,7 +169,7 @@ if __name__ == '__main__':
     convGramCond(test,"Tree")
 
     for t in test.keys():
-        print(t + " : " +test[t]) 
+        print(t + " : " + str(test[t])) 
 
     tGram = [treeGram, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 

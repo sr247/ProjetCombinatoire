@@ -28,10 +28,10 @@ class EpsilonRule(ConstanteRule):
         super().__init__(object)
     
     def __repr__(self):
-        return "EpsilonRule("+str(self.object)+")"
+        return "EpsilonRule("+str(self._object)+")"
     
     def __str__(self):
-        return "EpsilonRule("+str(self.object)+")"
+        return "EpsilonRule("+str(self._object)+")"
 
     def count(self, n):
         if n==0:
@@ -51,10 +51,10 @@ class SingletonRule(ConstanteRule):
             super().__init__(object)
 
         def __repr__(self):
-            return "SingletonRule("+str(self.object)+")"
+            return "SingletonRule("+str(self._object)+")"
 
         def __str__(self):
-            return "SingletonRule("+str(self.object)+")"
+            return "SingletonRule("+str(self._object)+")"
 
         def count(self, n):
             if n==1:
@@ -73,48 +73,48 @@ ConstanteRule.subclass = [EpsilonRule, SingletonRule]
 
 class Epsilon():
     def __init__(self,object):
-        self.object = object
+        self._object = object
     
     def __repr__(self):
-        return "Epsilon("+str(self.object)+")"
+        return "Epsilon("+str(self._object)+")"
     
     def __str__(self):
-        return "Epsilon("+str(self.object)+")"
+        return "Epsilon("+str(self._object)+")"
 
     def conv(self,gram, key = None):
         key = key or "Eps-"+str(len(gram))
-        gram[key] = EpsilonRule(self.object)
+        gram[key] = EpsilonRule(self._object)
         return key
 
 class Singleton():
     def __init__(self,object):
-        self.object = object
+        self._object = object
 
     def __repr__(self):
-        return "Singleton("+str(self.object)+")"
+        return "Singleton("+str(self._object)+")"
 
     def __str__(self):
-        return "Singleton("+str(self.object)+")"
+        return "Singleton("+str(self._object)+")"
 
     def conv(self,gram, key = None):
         key = key or "Sing-"+str(len(gram))
-        gram[key] = SingletonRule(self.object)
+        gram[key] = SingletonRule(self._object)
         return key
 
 class NonTerm():
     def __init__(self,str):
-        self.str = str
+        self._str = str
 
     def __repr__(self):
-        return self.str
+        return self._str
 
     def __str__(self):
-        return self.str
+        return self._str
 
     def conv(self, gram):
-        if gram[self.str] is None:
-            raise Exception("NonTerm "+self.str + " n'est pas dans la grammaire")
-        return self.str
+        if gram[self._str] is None:
+            raise Exception("NonTerm "+self._str + " n'est pas dans la grammaire")
+        return self._str
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
