@@ -165,13 +165,25 @@ if __name__ == '__main__':
                     "AtomA": SingletonRule("A"),
                     "AtomB": SingletonRule("B")}
 
-    test = {"Tree" : Union(Singleton(Leaf), Prod(NonTerm("Tree"), NonTerm("Tree"), "".join))}
-    convGramCond(test,"Tree")
 
+    size = lambda tree : tree.size()
+    isFst = lambda tree : not tree.is_leaf()
+    pack = lambda obj: Node(obj[0], obj[1])
+    unpack = lambda tree : (tree.left(),tree.right())
+
+    test = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
+    
+    print("Avant:")
+    for t in test.keys():
+        print(t + " : " + str(test[t])) 
+    convGramCond(test,"Tree")
+    print("Après")
     for t in test.keys():
         print(t + " : " + str(test[t])) 
 
-    tGram = [treeGram, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
+    print("")
+
+    tGram = [test, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 
     for g in tGram:
         init_grammar(g)

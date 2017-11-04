@@ -96,8 +96,8 @@ class ProductRule(ConstructorRule):
         
 
 class Prod():
-    def __init__(self,fst,snd,cons):
-        self.prod = (fst,snd,cons)
+    def __init__(self,fst,snd,cons,unpack = None,size=None):
+        self.prod = (fst,snd,cons,unpack,size)
     
     def __repr__(self):
         return "Prod("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
@@ -106,11 +106,11 @@ class Prod():
         return "Prod("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
 
     def conv(self,gram, key = None):
-        fst,snd,cons = self.prod
+        fst,snd,cons,unpack,size = self.prod
         k1 = fst.conv(gram)
         k2 = snd.conv(gram)
         key = key or "Prod-"+str(len(gram))
-        gram[key] = ProductRule(k1,k2,cons)
+        gram[key] = ProductRule(k1,k2,cons,unpack,size)
         return key
 
 

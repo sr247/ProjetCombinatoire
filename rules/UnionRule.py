@@ -55,8 +55,8 @@ class UnionRule(ConstructorRule):
 
 
 class Union():
-    def __init__(self,fst,snd):
-        self.union = (fst,snd)
+    def __init__(self,fst,snd,isFst = None,size = None):
+        self.union = (fst,snd,isFst,size)
     
     def __repr__(self):
         return "Union("+str(self.union[0])+", "+ str(self.union[1]) +")"
@@ -65,11 +65,11 @@ class Union():
         return "Union("+str(self.union[0])+", "+ str(self.union[1]) +")"
 
     def conv(self,gram, key = None):
-        fst,snd = self.union
+        fst,snd,isFst,size = self.union
         k1 = fst.conv(gram)
         k2 = snd.conv(gram)
         key = key or "Union-"+str(len(gram))
-        gram[key] = UnionRule(k1,k2)
+        gram[key] = UnionRule(k1,k2,isFst,size)
         return key
 
 
