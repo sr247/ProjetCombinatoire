@@ -20,6 +20,9 @@ class ConstanteRule(AbstractRule):
 
         return self._object
 
+    def rank(self, obj):
+        return 0
+
 class EpsilonRule(ConstanteRule):
     def __init__(self, object):
         super().__init__(object)

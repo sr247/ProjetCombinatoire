@@ -8,6 +8,7 @@ class AbstractRule(object):
         self._grammar = gram
 
 
+
 if __name__ == '__main__':
     print("Cas de tests AbstractRule:")
 

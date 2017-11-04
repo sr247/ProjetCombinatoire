@@ -20,7 +20,7 @@ class Main(unittest.TestCase):
         fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
                     "Cas1": UnionRule("CasAu", "Cas2"),
                     "Cas2": UnionRule("AtomB", "CasBAu"),
-                    "Vide": EpsilonRule("\"\""),
+                    "Vide": EpsilonRule(""),
                     "CasAu": ProductRule("AtomA", "Fib", "".join),
                     "AtomA": SingletonRule("A"),
                     "AtomB": SingletonRule("B"),
@@ -31,7 +31,7 @@ class Main(unittest.TestCase):
                       "StartAB": UnionRule("CasA", "CasB"),
                       "CasA": ProductRule("AtomA", "ABWord", "".join),
                       "CasB": ProductRule("AtomB", "ABWord", "".join),
-                      "Vide": EpsilonRule("\"\""),
+                      "Vide": EpsilonRule(""),
                       "AtomA": SingletonRule("A"),
                       "AtomB": SingletonRule("B")}
         # Quesiont 2.2.3
@@ -39,7 +39,7 @@ class Main(unittest.TestCase):
                     "CasStart": ProductRule("AtomL", "CasMid", "".join),
                     "CasMid": ProductRule("DyckWord", "CasEnd", "".join),
                     "CasEnd": ProductRule("AtomR", "DyckWord", "".join),
-                    "Vide": EpsilonRule("\"\""),
+                    "Vide": EpsilonRule(""),
                     "AtomL": SingletonRule("("),
                     "AtomR": SingletonRule(")")}
 

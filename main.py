@@ -4,7 +4,6 @@ from rules.ConstructorRule import ConstructorRule
 from rules.ProductRule import ProductRule
 from rules.UnionRule import UnionRule
 from rules.ConstanteRule import *
-
 from Tree import *
 
 # {"Tree" : Union (Singleton Leaf, Prod(NonTerm "Tree", NonTerm "Tree", "".join)}
@@ -184,7 +183,21 @@ if __name__ == '__main__':
 
     for g in tGram:
         init_grammar(g)
-    
+
+    l = tGram[7]["AutantAB"].list(6)
+    print(l)
+    e = False
+    for i in range(len(l)):
+        for j in range(len(l)):
+            if i!=j:
+                e |= l[i] == l[j]
+            if e:
+                print("Deux mots sont identitque", i, j)
+                break
+        if e:
+            print("Deux mots sont identitque", i, j)
+            break
+
     # for i in range(len(tGram)):
     #    print(str(i) + " : ")
     #    for key in tGram[i].keys():
@@ -197,11 +210,11 @@ if __name__ == '__main__':
 
     #c = tGram[ID][gram].count(N)
     #print("count : " + str(c))
-    
+
     #lt = tGram[ID][gram].list(N)
     #for el in lt:
     #    print(el)
-    
+
     #if c != 0:
     #    assert ([lt[i] == tGram[ID][gram].unrank(N,i) for i in range(len(lt))])
 

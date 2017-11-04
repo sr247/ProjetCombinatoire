@@ -71,4 +71,3 @@ class Node():
         return self._size
     
 Leaf = Node()
-

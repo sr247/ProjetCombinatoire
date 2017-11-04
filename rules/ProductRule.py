@@ -3,10 +3,10 @@ from rules.ConstructorRule import ConstructorRule
 
 
 class ProductRule(ConstructorRule):
+
     def __init__(self, fst, snd, cons):
         super().__init__((fst,snd))
         self._constructor = cons
-
 
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()
@@ -34,7 +34,7 @@ class ProductRule(ConstructorRule):
                     lD = self._grammar[self._parameters[1]].list(l)  
                     for g in lG:
                         for d in lD:
-                            res.append(self._constructor((g,d)))
+                            res.append(self._constructor((g, d)))
         return res
 
     def unrank(self,n,r):        
@@ -69,7 +69,11 @@ class ProductRule(ConstructorRule):
         mD = self._grammar[self._parameters[1]].unrank(n-i,q)  
 
         return self._constructor((mG,mD))
-        
+
+
+    def rank(self, obj):
+        pass
+
         
         
 

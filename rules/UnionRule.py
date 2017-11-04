@@ -1,13 +1,32 @@
 # coding: utf-8
 from rules.ConstructorRule import ConstructorRule
+
 class UnionRule(ConstructorRule):
     def __init__(self, fst, snd):
         super().__init__((fst, snd))
 
+        # A cet instant la grammaire est - elle set ?..
+        gauche = self._grammar[fst]
+        droite = self._grammar[snd]
+
+        # Si la regle n'est pas moi meme alors
+        if gauche is not self:
+            if issubclass(type(gauche), SingletonRule):
+                pass
+            if issubclass(type(gauche), Epsilon):
+                pass
+            
+            if issubclass(type(gauche), ProductRole):
+                pass
+
+
+
+
+
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()
         valDroite = self._grammar[self._parameters[1]].valuation()
-        return min(valGauche,valDroite)
+        return min(valGauche, valDroite)
 
     def count(self,i):
         countG = self._grammar[self._parameters[0]].count(i)
@@ -31,6 +50,11 @@ class UnionRule(ConstructorRule):
         else:
             return self._grammar[self._parameters[1]].unrank(n, r-countG)
 
+    def rank(self, obj):
+        if isinstance(obj, self._grammar[self._parameters[0]]):
+            pass
+        elif isinstance(obj, self._grammar[self._parameters[0]]):
+            pass
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests UnionRule:")
