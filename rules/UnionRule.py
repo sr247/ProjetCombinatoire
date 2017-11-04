@@ -9,6 +9,12 @@ class UnionRule(ConstructorRule):
         self.isFst = isFst
         self.size = size       
     
+    def __repr__(self):
+        return "UnionRule("+str(self.parameters[0])+", "+ str(self.parameters[1]) +")"
+    
+    def __str__(self):
+        return "UnionRule("+str(self.parameters[0])+", "+ str(self.parameters[1]) +")"
+
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()
         valDroite = self._grammar[self._parameters[1]].valuation()
@@ -46,6 +52,25 @@ class UnionRule(ConstructorRule):
             return self._grammar[self._parameters[0]].rank(obj)
         else: 
             return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)  
+
+
+class Union():
+    def __init__(self,fst,snd):
+        self.union = (fst,snd)
+    
+    def __repr__(self):
+        return "Union("+str(self.union[0])+", "+ str(self.union[1]) +")"
+    
+    def __str__(self):
+        return "Union("+str(self.union[0])+", "+ str(self.union[1]) +")"
+
+    def conv(self,gram, key = None):
+        fst,snd = self.union
+        k1 = fst.conv(gram)
+        k2 = snd.conv(gram)
+        key = key or "Union-"+str(len(gram))
+        gram[key] = UnionRule(k1,k2)
+        return key
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':

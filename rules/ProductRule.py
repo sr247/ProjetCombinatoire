@@ -10,6 +10,12 @@ class ProductRule(ConstructorRule):
         self.unpack = unpack
         self.size = size
 
+    def __repr__(self):
+        return "ProductRule("+str(self.parameters[0])+", "+ str(self.parameters[0]) +")"
+
+    def __str__(self):
+        return "ProductRule("+str(self.parameters[0])+", "+ str(self.parameters[0]) +")"
+
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()
         valDroite = self._grammar[self._parameters[1]].valuation()
@@ -93,25 +99,18 @@ class Prod():
     def __init__(self,fst,snd,cons):
         self.prod = (fst,snd,cons)
     
-    def conv(self,gram):
+    def __repr__(self):
+        return "Prod("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+    
+    def __str__(self):
+        return "Prod("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+
+    def conv(self,gram, key = None):
         fst,snd,cons = self.prod
-        k1 = fst.convert(gram)
-        k2 = snd.convert(gram)
-        key = "Prod-"+str(len(gram))
-        gram[key] = ProductRule(k1,k2)
-        return key
-      
-
-class Union():
-    def __init__(self,fst,snd):
-        self.union = (fst,snd)
-
-    def conv(self,gram):
-        fst,snd = self.union
-        k1 = fst.convert(gram)
-        k2 = snd.convert(gram)
-        key = "Union-"+str(len(gram))
-        gram[key] = UnionRule(k1,k2)
+        k1 = fst.conv(gram)
+        k2 = snd.conv(gram)
+        key = key or "Prod-"+str(len(gram))
+        gram[key] = ProductRule(k1,k2,cons)
         return key
 
 

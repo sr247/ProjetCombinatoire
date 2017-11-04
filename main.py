@@ -1,16 +1,16 @@
 # coding: utf-8
 import math
-from rules.ConstructorRule import ConstructorRule
-from rules.ProductRule import ProductRule
-from rules.UnionRule import UnionRule
-from rules.ConstanteRule import *
-from Tree import *
 import time
 
-# {"Tree" : Union (Singleton Leaf, Prod(NonTerm "Tree", NonTerm "Tree", "".join)}
+from rules.ConstructorRule import *
+from rules.ProductRule import *
+from rules.UnionRule import *
+from rules.ConstanteRule import *
+from Tree import *
+
 
 def convGramCond(gram,key):
-   pass 
+    gram[key].conv(gram,key)
 
 
 def init_grammar(gram) :
@@ -164,6 +164,12 @@ if __name__ == '__main__':
                     "Vide": EpsilonRule(""),
                     "AtomA": SingletonRule("A"),
                     "AtomB": SingletonRule("B")}
+
+    test = {"Tree" : Union(Singleton(Leaf), Prod(NonTerm("Tree"), NonTerm("Tree"), "".join))}
+    convGramCond(test,"Tree")
+
+    for t in test.keys():
+        print(t + " : " +test[t]) 
 
     tGram = [treeGram, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 

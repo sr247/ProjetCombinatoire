@@ -27,6 +27,12 @@ class EpsilonRule(ConstanteRule):
     def __init__(self, object):
         super().__init__(object)
     
+    def __repr__(self):
+        return "EpsilonRule("+str(self.object)+")"
+    
+    def __str__(self):
+        return "EpsilonRule("+str(self.object)+")"
+
     def count(self, n):
         if n==0:
             return 1
@@ -43,6 +49,12 @@ class EpsilonRule(ConstanteRule):
 class SingletonRule(ConstanteRule):
         def __init__(self, object):
             super().__init__(object)
+
+        def __repr__(self):
+            return "SingletonRule("+str(self.object)+")"
+
+        def __str__(self):
+            return "SingletonRule("+str(self.object)+")"
 
         def count(self, n):
             if n==1:
@@ -63,25 +75,43 @@ class Epsilon():
     def __init__(self,object):
         self.object = object
     
-    def conv(self,gram):
-        key = "Eps-"+str(len(gram))
+    def __repr__(self):
+        return "Epsilon("+str(self.object)+")"
+    
+    def __str__(self):
+        return "Epsilon("+str(self.object)+")"
+
+    def conv(self,gram, key = None):
+        key = key or "Eps-"+str(len(gram))
         gram[key] = EpsilonRule(self.object)
         return key
 
 class Singleton():
     def __init__(self,object):
         self.object = object
-    def conv(self,gram):
-        key = "Sing-"+str(len(gram))
+
+    def __repr__(self):
+        return "Singleton("+str(self.object)+")"
+
+    def __str__(self):
+        return "Singleton("+str(self.object)+")"
+
+    def conv(self,gram, key = None):
+        key = key or "Sing-"+str(len(gram))
         gram[key] = SingletonRule(self.object)
         return key
 
-
-
-class NonTerme():
+class NonTerm():
     def __init__(self,str):
         self.str = str
-    def conv(self,gram):
+
+    def __repr__(self):
+        return self.str
+
+    def __str__(self):
+        return self.str
+
+    def conv(self, gram):
         if gram[self.str] is None:
             raise Exception("NonTerm "+self.str + " n'est pas dans la grammaire")
         return self.str
