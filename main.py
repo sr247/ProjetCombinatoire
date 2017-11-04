@@ -54,15 +54,11 @@ def init_grammar(gram) :
         gram[key]._set_grammar(gram)
     
     # Booléen qui indique si le point fix est trouvé ou non (vrai = non trouvé, false = trouvé)
-    still = True
-    
-    n = 100
-    cpt = 0
+    not_found = True
 
     # Tant qu'on a pas trouvé le point fix
-    while still and cpt < n:
-        cpt += 1
-        still = False
+    while not_found:
+        not_found = False
         # Pour toutes les règles héritant de ConstructorRule
         for key in [ x for x in gram.keys() if isinstance(gram[x],ConstructorRule)] :
             # On stock la valuation précédentte (Vn-1)
@@ -71,19 +67,22 @@ def init_grammar(gram) :
             gram[key]._update_valuation()
             vcur = gram[key].valuation()
             # Si les 2 valeurs sont différentes ou que la valuation à renvoyé l'infini
-            if (vpre != vcur or vcur == math.inf):
+            if (vpre != vcur):
                 # Alors on a pas encore trouvé le point fix
-                still = True
-    if cpt == n and still:
-        raise Exception("Grammaire Incorrecte : Valuation infini")
+                not_found = True
 
-
+    for key in gram.keys() :
+        if gram[key].valuation() == math.inf:
+            raise Exception("Grammaire Incorrecte : Valuation infini")
 
 
 if __name__ == '__main__':
+
+    
+
     # Exemple ici on déclare la grammaire Tree
-    treeGram = {"Tree": UnionRule("Node", "Leaf"),
-                "Node": ProductRule("Tree", "Tree", lambda obj: Node(obj[0], obj[1])),
+    treeGram = {"Tree": UnionRule("Node", "Leaf", lambda t : t.is_leaf(), lambda s : s.size()),
+                "Node": ProductRule("Tree", "Tree", lambda obj: Node(obj[0], obj[1]),lambda t : (t.left(),t.right()), lambda s : s.size()),
                 "Leaf": SingletonRule(Leaf)}
 
     # Exemple ici on déclare la grammaire Fibonacci
@@ -104,6 +103,7 @@ if __name__ == '__main__':
                   "Vide": EpsilonRule(""),
                   "AtomA": SingletonRule("A"),
                   "AtomB": SingletonRule("B")}
+
     #Quesiont 2.2.3
     dyckGram = {"DyckWord" : UnionRule("Vide","CasStart"),
                 "CasStart": ProductRule("AtomL","CasMid", "".join),
@@ -184,20 +184,6 @@ if __name__ == '__main__':
     for g in tGram:
         init_grammar(g)
 
-    l = tGram[7]["AutantAB"].list(6)
-    print(l)
-    e = False
-    for i in range(len(l)):
-        for j in range(len(l)):
-            if i!=j:
-                e |= l[i] == l[j]
-            if e:
-                print("Deux mots sont identitque", i, j)
-                break
-        if e:
-            print("Deux mots sont identitque", i, j)
-            break
-
     # for i in range(len(tGram)):
     #    print(str(i) + " : ")
     #    for key in tGram[i].keys():
@@ -206,7 +192,9 @@ if __name__ == '__main__':
     gram = "AutantAB"
     N = 8
     ID = 7
-
+    
+    print(tGram[0]['Tree'].rank(Node(Node(Leaf, Node(Leaf, Leaf)), Leaf)))
+    
 
     #c = tGram[ID][gram].count(N)
     #print("count : " + str(c))

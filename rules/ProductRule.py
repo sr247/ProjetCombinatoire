@@ -4,9 +4,11 @@ from rules.ConstructorRule import ConstructorRule
 
 class ProductRule(ConstructorRule):
 
-    def __init__(self, fst, snd, cons):
+    def __init__(self, fst, snd, cons, unpack = None, size = None):
         super().__init__((fst,snd))
         self._constructor = cons
+        self.unpack = unpack
+        self.size = size
 
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()
@@ -72,8 +74,16 @@ class ProductRule(ConstructorRule):
 
 
     def rank(self, obj):
-        pass
-
+        if self.unpack is None or self.size is None :
+            raise Exception("Rank n'est pas autorisé sur cette grammaire")
+        g,d = self.unpack(obj)
+        
+        n = self.size(obj)
+        n_left = self.size(g)
+        rg = self._grammar[self._parameters[0]].rank(g)
+        rd = self._grammar[self._parameters[1]].rank(d)
+        count = sum(self._grammar[self._parameters[0]].count(i) * self._grammar[self._parameters[1]].count(n - i) for i in range(n_left))
+        return count + rg * self._grammar[self._parameters[1]].count(n - n_left) + rd
         
         
 
