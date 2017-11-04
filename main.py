@@ -8,6 +8,11 @@ from rules.UnionRule import *
 from rules.ConstanteRule import *
 from Tree import *
 
+class Bound():
+    def __init__(self,C,min,max):
+        self._list = []
+        for i in range(min,max+1):
+            self._list += C.list(i)
 
 def convGramCond(gram,key):
     gram[key].conv(gram,key)
@@ -188,18 +193,9 @@ if __name__ == '__main__':
     for g in tGram:
         init_grammar(g)
 
-    # for i in range(len(tGram)):
-    #    print(str(i) + " : ")
-    #    for key in tGram[i].keys():
-    #        print("    " + key+ " val : " + str(tGram[i][key].valuation()))
-
-    print("Test Tree : " + str(tGram[0]['Tree'].rank(Node(Node(Leaf, Leaf), Node(Leaf, Leaf)))))
-    print("Test Fib : " + str(tGram[1]['Fib'].rank("BAABAA"))  )
-    print("Test ABWord : " + str(tGram[2]['ABWord'].rank("BBBBAAAA")))
-    print("Test Dyck : " + str(tGram[3]['DyckWord'].rank("((()))")))
-    print("Test AB2Max : " + str(tGram[4]['AB2Max'].rank("ABABAB")))
-    print("Test PalAB : " + str(tGram[5]['PalAB'].rank("BAAAB")))
-    print("Test PalABC : " + str(tGram[6]['PalABC'].rank("BBCAACBB")))
+    b = Bound(test['Tree'],0,4)
+    for el in b._list:
+        print(el)
 
     #start = time.time()
     #print(tGram[0]['Tree'].count(13))
