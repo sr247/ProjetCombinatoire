@@ -117,7 +117,10 @@ class Main(unittest.TestCase):
         """
         for G in self.grammar_list:
             for sym, r in G.items():
+                self.assertTrue(isinstance(sym, str))
                 if isinstance(r, UnionRule or ProductRule):
+                    self.assertTrue(isinstance(r._parameters[0], str))
+                    self.assertTrue(isinstance(r._parameters[1], str))
                     self.assertTrue(sym != r._parameters[0] and sym != r._parameters[1])
                 if isinstance(r, ConstanteRule) or issubclass(type(r), ConstanteRule):
                     self.assertTrue(not issubclass(type(r._object), AbstractRule))
