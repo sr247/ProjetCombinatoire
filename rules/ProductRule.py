@@ -1,6 +1,6 @@
 # coding: utf-8
 from rules.ConstructorRule import ConstructorRule
-
+from functools import lru_cache
 
 class ProductRule(ConstructorRule):
 
@@ -15,6 +15,7 @@ class ProductRule(ConstructorRule):
         valDroite = self._grammar[self._parameters[1]].valuation()
         return valGauche+valDroite
 
+    @lru_cache(maxsize=32)
     def count(self,i):
         res = 0
         for k in range(i+1):
@@ -26,6 +27,7 @@ class ProductRule(ConstructorRule):
                     res += cG*cD
         return res
 
+    @lru_cache(maxsize=32)
     def list(self,i):
         res = []
         for k in range(i+1):
@@ -39,6 +41,7 @@ class ProductRule(ConstructorRule):
                             res.append(self._constructor((g, d)))
         return res
 
+    @lru_cache(maxsize=32)
     def unrank(self,n,r):        
         c = self.count(n)        
         if r >= c:

@@ -5,6 +5,7 @@ from rules.ProductRule import ProductRule
 from rules.UnionRule import UnionRule
 from rules.ConstanteRule import *
 from Tree import *
+import time
 
 # {"Tree" : Union (Singleton Leaf, Prod(NonTerm "Tree", NonTerm "Tree", "".join)}
 
@@ -207,10 +208,6 @@ if __name__ == '__main__':
     #    for key in tGram[i].keys():
     #        print("    " + key+ " val : " + str(tGram[i][key].valuation()))
 
-    gram = "AutantAB"
-    N = 8
-    ID = 7
-    
     print("Test Tree : " + str(tGram[0]['Tree'].rank(Node(Node(Leaf, Leaf), Node(Leaf, Leaf)))))
     print("Test Fib : " + str(tGram[1]['Fib'].rank("BAABAA"))  )
     print("Test ABWord : " + str(tGram[2]['ABWord'].rank("BBBBAAAA")))
@@ -219,19 +216,8 @@ if __name__ == '__main__':
     print("Test PalAB : " + str(tGram[5]['PalAB'].rank("BAAAB")))
     print("Test PalABC : " + str(tGram[6]['PalABC'].rank("BBCAACBB")))
 
-    #c = tGram[ID][gram].count(N)
-    #print("count : " + str(c))
-
-    #lt = tGram[ID][gram].list(N)
-    #for el in lt:
-    #    print(el)
-
-    #if c != 0:
-    #    assert ([lt[i] == tGram[ID][gram].unrank(N,i) for i in range(len(lt))])
-
-    # print(tGram[1]['Fib'].unrank(6,12))
-
-    # Note : La taille ou poids d'un objet est le nombre d’atomes qu'il contient. Le poids d'un élément
-    # correspondant à une paire (e1; e2) est donc la somme des poids de e1 et de e2
-
+    start = time.time()
+    tGram[0]['Tree'].list(13)
+    end = time.time()
+    print(end-start)
 
