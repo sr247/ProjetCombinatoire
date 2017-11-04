@@ -59,6 +59,32 @@ class SingletonRule(ConstanteRule):
 
 ConstanteRule.subclass = [EpsilonRule, SingletonRule]
 
+class Epsilon():
+    def __init__(self,object):
+        self.object = object
+    
+    def conv(self,gram):
+        key = "Eps-"+str(len(gram))
+        gram[key] = EpsilonRule(self.object)
+        return key
+
+class Singleton():
+    def __init__(self,object):
+        self.object = object
+    def conv(self,gram):
+        key = "Sing-"+str(len(gram))
+        gram[key] = SingletonRule(self.object)
+        return key
+
+
+
+class NonTerme():
+    def __init__(self,str):
+        self.str = str
+    def conv(self,gram):
+        if gram[self.str] is None:
+            raise Exception("NonTerm "+self.str + " n'est pas dans la grammaire")
+        return self.str
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':

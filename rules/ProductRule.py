@@ -88,7 +88,31 @@ class ProductRule(ConstructorRule):
         count = sum(self._grammar[self._parameters[0]].count(i) * self._grammar[self._parameters[1]].count(n - i) for i in range(n_left))
         return count + rg * self._grammar[self._parameters[1]].count(n - n_left) + rd
         
-        
+
+class Prod():
+    def __init__(self,fst,snd,cons):
+        self.prod = (fst,snd,cons)
+    
+    def conv(self,gram):
+        fst,snd,cons = self.prod
+        k1 = fst.convert(gram)
+        k2 = snd.convert(gram)
+        key = "Prod-"+str(len(gram))
+        gram[key] = ProductRule(k1,k2)
+        return key
+      
+
+class Union():
+    def __init__(self,fst,snd):
+        self.union = (fst,snd)
+
+    def conv(self,gram):
+        fst,snd = self.union
+        k1 = fst.convert(gram)
+        k2 = snd.convert(gram)
+        key = "Union-"+str(len(gram))
+        gram[key] = UnionRule(k1,k2)
+        return key
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':

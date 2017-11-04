@@ -9,68 +9,9 @@ import time
 
 # {"Tree" : Union (Singleton Leaf, Prod(NonTerm "Tree", NonTerm "Tree", "".join)}
 
-
-class Epsilon():
-    def __init__(self,object):
-        self.object = object
-    
-    def conv(self,gram):
-        key = "Eps-"+str(len(gram))
-        gram[key] = EpsilonRule(self.object)
-        return key
-
-class Singleton():
-    def __init__(self,object):
-        self.object = object
-    def conv(self,gram):
-        key = "Sing-"+str(len(gram))
-        gram[key] = SingletonRule(self.object)
-        return key
-
-class NonTerme():
-    def __init__(self,str):
-        self.str = str
-    def conv(self,gram):
-        if gram[self.str] is None:
-            raise Exception("NonTerm "+self.str + " n'est pas dans la grammaire")
-        return self.str
-
-class Union():
-    def __init__(self,fst,snd):
-        self.union = (fst,snd)
-
-    def conv(self,gram):
-        fst,snd = self.union
-        k1 = fst.convert(gram)
-        k2 = snd.convert(gram)
-        key = "Union-"+str(len(gram))
-        gram[key] = UnionRule(k1,k2)
-        return key
-
-class Prod():
-    def __init__(self,fst,snd,cons):
-        self.prod = (fst,snd,cons)
-    
-    def conv(self,gram):
-        fst,snd,cons = self.prod
-        k1 = fst.convert(gram)
-        k2 = snd.convert(gram)
-        key = "Prod-"+str(len(gram))
-        gram[key] = ProductRule(k1,k2)
-        return key
-
 def convGramCond(gram,key):
-    pass   
+   pass 
 
-
-
-def check_grammar(gram):
-    """
-    Fonction qui vérifie que la grammaire est bien définie
-    :param gram: La grammaire à vérifier
-    :return: Exception si gram invalide
-    """
-    pass
 
 def init_grammar(gram) :
     """
@@ -78,7 +19,6 @@ def init_grammar(gram) :
     :param gram: La grammaire à générer
     :return: None
     """
-    check_grammar(gram)
     for key in gram.keys() :
         gram[key]._set_grammar(gram)
     
@@ -225,7 +165,6 @@ if __name__ == '__main__':
                     "AtomA": SingletonRule("A"),
                     "AtomB": SingletonRule("B")}
 
-
     tGram = [treeGram, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 
     for g in tGram:
@@ -244,8 +183,8 @@ if __name__ == '__main__':
     print("Test PalAB : " + str(tGram[5]['PalAB'].rank("BAAAB")))
     print("Test PalABC : " + str(tGram[6]['PalABC'].rank("BBCAACBB")))
 
-    start = time.time()
-    print(tGram[0]['Tree'].count(13))
-    end = time.time()
-    print(end-start)
+    #start = time.time()
+    #print(tGram[0]['Tree'].count(13))
+    #end = time.time()
+    #print(end-start)
 
