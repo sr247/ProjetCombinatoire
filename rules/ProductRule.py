@@ -91,8 +91,13 @@ class ProductRule(ConstructorRule):
         n_left = self.size(g)
         rg = self._grammar[self._parameters[0]].rank(g)
         rd = self._grammar[self._parameters[1]].rank(d)
-        count = sum(self._grammar[self._parameters[0]].count(i) * self._grammar[self._parameters[1]].count(n - i) for i in range(n_left))
-        return count + rg * self._grammar[self._parameters[1]].count(n - n_left) + rd
+        acc = 0        
+        for k in range(n_left):
+            l = n - k
+            cG = self._grammar[self._parameters[0]].count(k)
+            cD = self._grammar[self._parameters[1]].count(l)
+            acc += cG*cD
+        return acc + rg * self._grammar[self._parameters[1]].count(n - n_left) + rd
         
 
 class Prod():
