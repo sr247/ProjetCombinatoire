@@ -4,9 +4,9 @@ from Tree import Node
 
 
 class UnionRule(ConstructorRule):
-    def __init__(self, fst, snd, leftOrRight = None, size = None):
+    def __init__(self, fst, snd, isFst = None, size = None):
         super().__init__((fst, snd))
-        self.leftOrRight = leftOrRight
+        self.isFst = isFst
         self.size = size       
 
     def _calc_valuation(self):
@@ -37,12 +37,12 @@ class UnionRule(ConstructorRule):
             return self._grammar[self._parameters[1]].unrank(n, r-countG)
 
     def rank(self, obj):
-        if self.leftOrRight is None or self.size is None :
+        if self.isFst is None or self.size is None :
             raise Exception("Rank n'est pas autorisé sur cette grammaire")
-        if  self.leftOrRight(obj):  
-            return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)
-        else:
-            return self._grammar[self._parameters[0]].rank(obj)   
+        if self.isFst(obj):
+            return self._grammar[self._parameters[0]].rank(obj)
+        else: 
+            return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)  
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':

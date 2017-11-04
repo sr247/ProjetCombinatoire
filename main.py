@@ -77,12 +77,15 @@ def init_grammar(gram) :
 
 
 if __name__ == '__main__':
-
     
+    size = lambda tree : tree.size()
+    is_leaf = lambda tree : not tree.is_leaf()
+    pack = lambda obj: Node(obj[0], obj[1])
+    unpack = lambda tree : (tree.left(),tree.right())
 
     # Exemple ici on déclare la grammaire Tree
-    treeGram = {"Tree": UnionRule("Node", "Leaf", lambda t : t.is_leaf(), lambda s : s.size()),
-                "Node": ProductRule("Tree", "Tree", lambda obj: Node(obj[0], obj[1]),lambda t : (t.left(),t.right()), lambda s : s.size()),
+    treeGram = {"Tree": UnionRule("Node", "Leaf", is_leaf, size),
+                "Node": ProductRule("Tree", "Tree", pack, unpack, size),
                 "Leaf": SingletonRule(Leaf)}
 
     # Exemple ici on déclare la grammaire Fibonacci
@@ -193,7 +196,7 @@ if __name__ == '__main__':
     N = 8
     ID = 7
     
-    print(tGram[0]['Tree'].rank(Node(Node(Leaf, Node(Leaf, Leaf)), Leaf)))
+    print(tGram[0]['Tree'].rank(Leaf))
     
 
     #c = tGram[ID][gram].count(N)
