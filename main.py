@@ -79,12 +79,12 @@ def init_grammar(gram) :
 if __name__ == '__main__':
     
     size = lambda tree : tree.size()
-    is_leaf = lambda tree : not tree.is_leaf()
+    isFst = lambda tree : not tree.is_leaf()
     pack = lambda obj: Node(obj[0], obj[1])
     unpack = lambda tree : (tree.left(),tree.right())
 
     # Exemple ici on déclare la grammaire Tree
-    treeGram = {"Tree": UnionRule("Node", "Leaf", is_leaf, size),
+    treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
                 "Node": ProductRule("Tree", "Tree", pack, unpack, size),
                 "Leaf": SingletonRule(Leaf)}
 
@@ -98,11 +98,17 @@ if __name__ == '__main__':
                 "AtomB": SingletonRule("B"),
                 "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
     
+    
+    size = lambda s : len(s)
+    isEmpty = lambda s : s==""
+    isFst = lambda s : s[:1] == 'A'
+    unpack = lambda s : (s[:1],s[1:])
+    join = "".join
     #Quesiont 2.2.2
-    abWordGram = {"ABWord": UnionRule("Vide", "StartAB"),
-                  "StartAB": UnionRule("CasA", "CasB"),
-                  "CasA": ProductRule("AtomA","ABWord", "".join),
-                  "CasB": ProductRule("AtomB","ABWord", "".join),
+    abWordGram = {"ABWord": UnionRule("Vide", "StartAB", isEmpty, size),
+                  "StartAB": UnionRule("CasA", "CasB", isFst, size),
+                  "CasA": ProductRule("AtomA","ABWord", join, unpack, size),
+                  "CasB": ProductRule("AtomB","ABWord", join, unpack, size),
                   "Vide": EpsilonRule(""),
                   "AtomA": SingletonRule("A"),
                   "AtomB": SingletonRule("B")}
@@ -196,8 +202,10 @@ if __name__ == '__main__':
     N = 8
     ID = 7
     
-    print(tGram[0]['Tree'].rank(Leaf))
-    
+    print(tGram[0]['Tree'].rank(Node(Node(Leaf, Leaf), Node(Leaf, Leaf))))
+
+    print(tGram[2]['ABWord'].rank("BBBBAAAA"))    
+
 
     #c = tGram[ID][gram].count(N)
     #print("count : " + str(c))
