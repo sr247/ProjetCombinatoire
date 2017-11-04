@@ -7,6 +7,35 @@ from rules.ConstanteRule import *
 
 from Tree import *
 
+# {"Tree" : Union (Singleton Leaf, Prod(NonTerm "Tree", NonTerm "Tree", "".join)}
+
+class Epsilon():
+    def __init__(self,obj):
+        self.obj = obj
+    def get(self):
+        return self.obj
+class Singleton():
+    def __init__(self,ojt):
+        self.obj = obj
+    def get(self):
+        return self.obj
+class NonTerme():
+    def __init__(self,str):
+        self.str = str
+    def get(self):
+        return self.str
+class Union():
+    def __init__(self,fst,snd):
+        self.union = (fst,snd)
+    def get(self):
+        return self.union
+class Prod():
+    def __init__(self,fst,snd,cons):
+        self.prod = (fst,snd,cons)
+    def get(self):
+        return self.prod
+
+
 def check_grammar(gram):
     """
     Fonction qui vérifie que la grammaire est bien définie
@@ -150,6 +179,7 @@ if __name__ == '__main__':
                     "AtomA": SingletonRule("A"),
                     "AtomB": SingletonRule("B")}
 
+
     tGram = [treeGram, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 
     for g in tGram:
@@ -164,15 +194,16 @@ if __name__ == '__main__':
     N = 8
     ID = 7
 
-    c = tGram[ID][gram].count(N)
-    print("count : " + str(c))
+
+    #c = tGram[ID][gram].count(N)
+    #print("count : " + str(c))
     
-    lt = tGram[ID][gram].list(N)
-    for el in lt:
-        print(el)
+    #lt = tGram[ID][gram].list(N)
+    #for el in lt:
+    #    print(el)
     
-    if c != 0:
-        assert ([lt[i] == tGram[ID][gram].unrank(N,i) for i in range(len(lt))])
+    #if c != 0:
+    #    assert ([lt[i] == tGram[ID][gram].unrank(N,i) for i in range(len(lt))])
 
     # print(tGram[1]['Fib'].unrank(6,12))
 
