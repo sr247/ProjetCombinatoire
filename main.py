@@ -78,111 +78,120 @@ def init_grammar(gram) :
 
 if __name__ == '__main__':
     
+    # Exemple ici on déclare la grammaire Tree
     size = lambda tree : tree.size()
     isFst = lambda tree : not tree.is_leaf()
     pack = lambda obj: Node(obj[0], obj[1])
     unpack = lambda tree : (tree.left(),tree.right())
 
-    # Exemple ici on déclare la grammaire Tree
     treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
                 "Node": ProductRule("Tree", "Tree", pack, unpack, size),
                 "Leaf": SingletonRule(Leaf)}
 
-    # Exemple ici on déclare la grammaire Fibonacci
-    fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
-                "Cas1": UnionRule("CasAu", "Cas2"),
-                "Cas2": UnionRule("AtomB", "CasBAu"),
-                "Vide": EpsilonRule(""),
-                "CasAu": ProductRule("AtomA", "Fib", "".join),
-                "AtomA": SingletonRule("A"),
-                "AtomB": SingletonRule("B"),
-                "CasBAu": ProductRule("AtomB", "CasAu", "".join)}
-    
-    
+
+    # ces fonctions sont utilisés dans la plus part des cas sur les grammaires fonctionannt avec des objets de type string
     size = lambda s : len(s)
     isEmpty = lambda s : s==""
-    isFst = lambda s : s[:1] == 'A'
     unpack = lambda s : (s[:1],s[1:])
+    unpack2 = lambda s : (s[:len(s)-1],s[len(s)-1])
+    isFstA = lambda s : s[:1] == 'A'
+    isFstB = lambda s : s[:1] == 'B'
+    single = lambda s : len(s) == 1
     join = "".join
+
+    # Exemple ici on déclare la grammaire Fibonacci
+    isFstB1 = lambda s : len(s) == 1 and s[:1] == 'B'
+    fiboGram = {"Fib": UnionRule("Vide", "Cas1", isEmpty, size),
+                "Cas1": UnionRule("CasAu", "Cas2", isFstA, size),
+                "Cas2": UnionRule("AtomB", "CasBAu",isFstB1, size),
+                "CasAu": ProductRule("AtomA", "Fib", join, unpack, size),
+                "CasBAu": ProductRule("AtomB", "CasAu", join, unpack, size),
+                "Vide": EpsilonRule(""),
+                "AtomA": SingletonRule("A"),
+                "AtomB": SingletonRule("B")}
+    
+    
     #Quesiont 2.2.2
     abWordGram = {"ABWord": UnionRule("Vide", "StartAB", isEmpty, size),
-                  "StartAB": UnionRule("CasA", "CasB", isFst, size),
+                  "StartAB": UnionRule("CasA", "CasB", isFstA, size),
                   "CasA": ProductRule("AtomA","ABWord", join, unpack, size),
                   "CasB": ProductRule("AtomB","ABWord", join, unpack, size),
                   "Vide": EpsilonRule(""),
                   "AtomA": SingletonRule("A"),
                   "AtomB": SingletonRule("B")}
 
+    
     #Quesiont 2.2.3
-    dyckGram = {"DyckWord" : UnionRule("Vide","CasStart"),
-                "CasStart": ProductRule("AtomL","CasMid", "".join),
-                "CasMid": ProductRule("DyckWord","CasEnd", "".join),
-                "CasEnd": ProductRule("AtomR","DyckWord", "".join),
+    dyckGram = {"DyckWord" : UnionRule("Vide","CasStart",isEmpty,size),
+                "CasStart": ProductRule("AtomL","CasMid", join, unpack, size),
+                "CasMid": ProductRule("DyckWord","CasEnd", join, unpack2, size),
+                "CasEnd": ProductRule("AtomR","DyckWord", join, unpack, size),
                 "Vide": EpsilonRule(""),
                 "AtomL": SingletonRule("("),
                 "AtomR": SingletonRule(")")}
 
     #Quesiont 2.2.4	
-    ab2MaxGram = {"AB2Max": UnionRule("Vide","Start"),
-                  "Start": UnionRule("CasA","CasB"),
-                  "CasA": ProductRule("AtomA","StartedA", "".join),
-                  "CasB": ProductRule("AtomB","StartedB", "".join),
-                  "StartedA": UnionRule("Vide","NextA"),
-                  "StartedB": UnionRule("Vide","NextB"),
-                  "NextA": UnionRule("CasB","EndA"),
-                  "NextB": UnionRule("CasA","EndB"),
-                  "FollowedByA": UnionRule("CasA","Vide"),
-                  "FollowedByB": UnionRule("CasB","Vide"),
-                  "EndA": ProductRule("AtomA","FollowedByB", "".join),
-                  "EndB": ProductRule("AtomB","FollowedByA", "".join),
+    ab2MaxGram = {"AB2Max": UnionRule("Vide","Start",isEmpty,size),
+                  "Start": UnionRule("CasA","CasB",isFstA,size),
+                  "CasA": ProductRule("AtomA","StartedA", join, unpack, size),
+                  "CasB": ProductRule("AtomB","StartedB", join, unpack, size),
+                  "StartedA": UnionRule("Vide","NextA",isEmpty,size),
+                  "StartedB": UnionRule("Vide","NextB",isEmpty,size),
+                  "NextA": UnionRule("CasB","EndA", isFstB, size),
+                  "NextB": UnionRule("CasA","EndB", isFstA, size),
+                  "FollowedByA": UnionRule("CasA","Vide", isFstA, size),
+                  "FollowedByB": UnionRule("CasB","Vide", isFstB, size),
+                  "EndA": ProductRule("AtomA","FollowedByB", join, unpack, size),
+                  "EndB": ProductRule("AtomB","FollowedByA", join, unpack, size),
                   "Vide": EpsilonRule(""),
                   "AtomA": SingletonRule("A"),
                   "AtomB": SingletonRule("B")}
 
     #Quesiont 2.2.5.1
-    palABGram = {"PalAB": UnionRule("Vide","StartAB"),
-                 "StartAB": UnionRule("Single","Sym"),
-                 "Single": UnionRule("AtomA","AtomB"),
-                 "Sym": UnionRule("SymA","SymB"),
-                 "SymA": ProductRule("AtomA","SymA2", "".join),
-                 "SymB": ProductRule("AtomB","SymB2", "".join),
-                 "SymA2": ProductRule("PalAB","AtomA", "".join),
-                 "SymB2": ProductRule("PalAB","AtomB", "".join),
+    palABGram = {"PalAB": UnionRule("Vide","StartAB", isEmpty, size),
+                 "StartAB": UnionRule("Single","Sym", single, size),
+                 "Single": UnionRule("AtomA","AtomB", isFstA, size),
+                 "Sym": UnionRule("SymA","SymB", isFstA, size),
+                 "SymA": ProductRule("AtomA","SymA2", join, unpack, size),
+                 "SymB": ProductRule("AtomB","SymB2", join, unpack, size),
+                 "SymA2": ProductRule("PalAB","AtomA", join, unpack2, size),
+                 "SymB2": ProductRule("PalAB","AtomB", join, unpack2, size),
                  "Vide": EpsilonRule(""),
                  "AtomA": SingletonRule("A"),
                  "AtomB": SingletonRule("B")}
     
     #Quesiont 2.2.5.1
-    palABCGram = {"PalABC": UnionRule("Vide","StartABC"),
-                 "StartABC": UnionRule("Single","Sym"),
-                 "Single": UnionRule("AtomA","Single2"),
-                 "Single2": UnionRule("AtomB","AtomC"),
-                 "Sym": UnionRule("SymA","Sym2"),
-                 "Sym2": UnionRule("SymB","SymC"),
-                 "SymA": ProductRule("AtomA","SymA2", "".join),
-                 "SymB": ProductRule("AtomB","SymB2", "".join),
-                 "SymC": ProductRule("AtomC","SymC2", "".join),
-                 "SymA2": ProductRule("PalABC","AtomA", "".join),
-                 "SymB2": ProductRule("PalABC","AtomB", "".join),
-                 "SymC2": ProductRule("PalABC","AtomC", "".join),
+    palABCGram = {"PalABC": UnionRule("Vide","StartABC", isEmpty, size),
+                 "StartABC": UnionRule("Single","Sym", single, size),
+                 "Single": UnionRule("AtomA","Single2", isFstA, size),
+                 "Single2": UnionRule("AtomB","AtomC", isFstB, size),
+                 "Sym": UnionRule("SymA","Sym2", isFstA, size),
+                 "Sym2": UnionRule("SymB","SymC", isFstB, size),
+                 "SymA": ProductRule("AtomA","SymA2", join, unpack, size),
+                 "SymB": ProductRule("AtomB","SymB2", join, unpack, size),
+                 "SymC": ProductRule("AtomC","SymC2", join, unpack, size),
+                 "SymA2": ProductRule("PalABC","AtomA", join, unpack2, size),
+                 "SymB2": ProductRule("PalABC","AtomB", join, unpack2, size),
+                 "SymC2": ProductRule("PalABC","AtomC", join, unpack2, size),
                  "Vide": EpsilonRule(""),
                  "AtomA": SingletonRule("A"),
                  "AtomB": SingletonRule("B"),
                  "AtomC": SingletonRule("C")}
 
     #Quesiont 2.2.6
+    # Grammaire ambigue : rank impossible
     autantABGram = {"AutantAB": UnionRule("Vide","StartAB"),
                     "StartAB": UnionRule("StartWithA","StartWithB"),
-                    "StartWithA": ProductRule("AtomA","B", "".join),
-                    "StartWithB": ProductRule("AtomB","A", "".join),
+                    "StartWithA": ProductRule("AtomA","B", join),
+                    "StartWithB": ProductRule("AtomB","A", join),
                     "A": UnionRule("A2","BDoubleA"),
-                    "A2": ProductRule("AtomA","AutantAB", "".join),
+                    "A2": ProductRule("AtomA","AutantAB", join),
                     "B": UnionRule("B2","ADoubleB"),
-                    "B2": ProductRule("AtomB","AutantAB", "".join),
-                    "BDoubleA": ProductRule("AtomB","DoubleA", "".join),
-                    "ADoubleB": ProductRule ("AtomA","DoubleB", "".join),
-                    "DoubleA": ProductRule ("A","A", "".join),
-                    "DoubleB": ProductRule ("B","B", "".join),
+                    "B2": ProductRule("AtomB","AutantAB", join),
+                    "BDoubleA": ProductRule("AtomB","DoubleA", join),
+                    "ADoubleB": ProductRule ("AtomA","DoubleB", join),
+                    "DoubleA": ProductRule ("A","A", join),
+                    "DoubleB": ProductRule ("B","B", join),
                     "Vide": EpsilonRule(""),
                     "AtomA": SingletonRule("A"),
                     "AtomB": SingletonRule("B")}
@@ -202,10 +211,13 @@ if __name__ == '__main__':
     N = 8
     ID = 7
     
-    print(tGram[0]['Tree'].rank(Node(Node(Leaf, Leaf), Node(Leaf, Leaf))))
-
-    print(tGram[2]['ABWord'].rank("BBBBAAAA"))    
-
+    print("Test Tree : " + str(tGram[0]['Tree'].rank(Node(Node(Leaf, Leaf), Node(Leaf, Leaf)))))
+    print("Test Fib : " + str(tGram[1]['Fib'].rank("BAABAA"))  )
+    print("Test ABWord : " + str(tGram[2]['ABWord'].rank("BBBBAAAA")))
+    print("Test Dyck : " + str(tGram[3]['DyckWord'].rank("((()))")))
+    print("Test AB2Max : " + str(tGram[4]['AB2Max'].rank("ABABAB")))
+    print("Test PalAB : " + str(tGram[5]['PalAB'].rank("BAAAB")))
+    print("Test PalABC : " + str(tGram[6]['PalABC'].rank("BBCAACBB")))
 
     #c = tGram[ID][gram].count(N)
     #print("count : " + str(c))
