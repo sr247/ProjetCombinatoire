@@ -62,7 +62,7 @@ if __name__ == '__main__':
     fiboGram = {"Fib": UnionRule("Vide", "Cas1"),
                 "Cas1": UnionRule("CasAu", "Cas2"),
                 "Cas2": UnionRule("AtomB", "CasBAu"),
-                "Vide": EpsilonRule("\"\""),
+                "Vide": EpsilonRule(""),
                 "CasAu": ProductRule("AtomA", "Fib", "".join),
                 "AtomA": SingletonRule("A"),
                 "AtomB": SingletonRule("B"),
@@ -73,7 +73,7 @@ if __name__ == '__main__':
                   "StartAB": UnionRule("CasA", "CasB"),
                   "CasA": ProductRule("AtomA","ABWord", "".join),
                   "CasB": ProductRule("AtomB","ABWord", "".join),
-                  "Vide": EpsilonRule("\"\""),
+                  "Vide": EpsilonRule(""),
                   "AtomA": SingletonRule("A"),
                   "AtomB": SingletonRule("B")}
     #Quesiont 2.2.3
@@ -81,7 +81,7 @@ if __name__ == '__main__':
                 "CasStart": ProductRule("AtomL","CasMid", "".join),
                 "CasMid": ProductRule("DyckWord","CasEnd", "".join),
                 "CasEnd": ProductRule("AtomR","DyckWord", "".join),
-                "Vide": EpsilonRule("\"\""),
+                "Vide": EpsilonRule(""),
                 "AtomL": SingletonRule("("),
                 "AtomR": SingletonRule(")")}
 
@@ -104,29 +104,34 @@ if __name__ == '__main__':
 
     #Quesiont 2.2.5.1
     palABGram = {"PalAB": UnionRule("Vide","StartAB"),
-                  "StartAB": UnionRule("CasA","CasB"),
-                  "CasA": ProductRule("AtomA","EndA", "".join),
-                  "CasB":	ProductRule("AtomB","EndB", "".join),
-                  "EndA":	ProductRule("PalAB","AtomA", "".join),
-                  "EndB":	ProductRule("PalAB","AtomB", "".join),
-                  "Vide":	EpsilonRule(""),
-                  "AtomA": SingletonRule("A"),
-                  "AtomB": SingletonRule("B")}
-
-    #Quesiont 2.2.5.2
+                 "StartAB": UnionRule("Single","Sym"),
+                 "Single": UnionRule("AtomA","AtomB"),
+                 "Sym": UnionRule("SymA","SymB"),
+                 "SymA": ProductRule("AtomA","SymA2", "".join),
+                 "SymB": ProductRule("AtomB","SymB2", "".join),
+                 "SymA2": ProductRule("PalAB","AtomA", "".join),
+                 "SymB2": ProductRule("PalAB","AtomB", "".join),
+                 "Vide": EpsilonRule(""),
+                 "AtomA": SingletonRule("A"),
+                 "AtomB": SingletonRule("B")}
+    
+    #Quesiont 2.2.5.1
     palABCGram = {"PalABC": UnionRule("Vide","StartABC"),
-                  "StartABC": UnionRule("CasA","CasAutre"),
-                  "CasAutre": UnionRule("CasB","CasC"),
-                  "CasA": ProductRule("AtomA","EndA", "".join),
-                  "CasB": ProductRule("AtomB","EndB", "".join),
-                  "CasC": ProductRule("AtomC","EndC", "".join),
-                  "EndA": ProductRule("PalABC","AtomA", "".join),
-                  "EndB": ProductRule("PalABC","AtomB", "".join),
-                  "EndC": ProductRule("PalABC","AtomC", "".join),
-                  "Vide": EpsilonRule(""),
-                  "AtomA": SingletonRule("A"),
-                  "AtomB": SingletonRule("B"),
-                  "AtomC": SingletonRule("C")}
+                 "StartABC": UnionRule("Single","Sym"),
+                 "Single": UnionRule("AtomA","Single2"),
+                 "Single2": UnionRule("AtomB","AtomC"),
+                 "Sym": UnionRule("SymA","Sym2"),
+                 "Sym2": UnionRule("SymB","SymC"),
+                 "SymA": ProductRule("AtomA","SymA2", "".join),
+                 "SymB": ProductRule("AtomB","SymB2", "".join),
+                 "SymC": ProductRule("AtomC","SymC2", "".join),
+                 "SymA2": ProductRule("PalABC","AtomA", "".join),
+                 "SymB2": ProductRule("PalABC","AtomB", "".join),
+                 "SymC2": ProductRule("PalABC","AtomC", "".join),
+                 "Vide": EpsilonRule(""),
+                 "AtomA": SingletonRule("A"),
+                 "AtomB": SingletonRule("B"),
+                 "AtomC": SingletonRule("C")}
 
     #Quesiont 2.2.6
     autantABGram = {"AutantAB": UnionRule("Vide","StartAB"),
@@ -155,10 +160,19 @@ if __name__ == '__main__':
     #    for key in tGram[i].keys():
     #        print("    " + key+ " val : " + str(tGram[i][key].valuation()))
 
-    N = 6
+    gram = "AutantAB"
+    N = 8
+    ID = 7
 
-    lt = tGram[0]['Tree'].list(N)
-    assert ([lt[i] == tGram[0]['Tree'].unrank(N,i) for i in range(len(lt))])
+    c = tGram[ID][gram].count(N)
+    print("count : " + str(c))
+    
+    lt = tGram[ID][gram].list(N)
+    for el in lt:
+        print(el)
+    
+    if c != 0:
+        assert ([lt[i] == tGram[ID][gram].unrank(N,i) for i in range(len(lt))])
 
     # print(tGram[1]['Fib'].unrank(6,12))
 
