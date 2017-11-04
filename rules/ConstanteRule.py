@@ -60,6 +60,7 @@ class SingletonRule(ConstanteRule):
 ConstanteRule.subclass = [EpsilonRule, SingletonRule]
 
 
+
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests ConstanteRule:")
     a = object()

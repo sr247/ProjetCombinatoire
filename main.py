@@ -9,31 +9,59 @@ import time
 
 # {"Tree" : Union (Singleton Leaf, Prod(NonTerm "Tree", NonTerm "Tree", "".join)}
 
+
 class Epsilon():
-    def __init__(self,obj):
-        self.obj = obj
-    def get(self):
-        return self.obj
+    def __init__(self,object):
+        self.object = object
+    
+    def conv(self,gram):
+        key = "Eps-"+str(len(gram))
+        gram[key] = EpsilonRule(self.object)
+        return key
+
 class Singleton():
-    def __init__(self,ojt):
-        self.obj = obj
-    def get(self):
-        return self.obj
+    def __init__(self,object):
+        self.object = object
+    def conv(self,gram):
+        key = "Sing-"+str(len(gram))
+        gram[key] = SingletonRule(self.object)
+        return key
+
 class NonTerme():
     def __init__(self,str):
         self.str = str
-    def get(self):
+    def conv(self,gram):
+        if gram[self.str] is None:
+            raise Exception("NonTerm "+self.str + " n'est pas dans la grammaire")
         return self.str
+
 class Union():
     def __init__(self,fst,snd):
         self.union = (fst,snd)
-    def get(self):
-        return self.union
+
+    def conv(self,gram):
+        fst,snd = self.union
+        k1 = fst.convert(gram)
+        k2 = snd.convert(gram)
+        key = "Union-"+str(len(gram))
+        gram[key] = UnionRule(k1,k2)
+        return key
+
 class Prod():
     def __init__(self,fst,snd,cons):
         self.prod = (fst,snd,cons)
-    def get(self):
-        return self.prod
+    
+    def conv(self,gram):
+        fst,snd,cons = self.prod
+        k1 = fst.convert(gram)
+        k2 = snd.convert(gram)
+        key = "Prod-"+str(len(gram))
+        gram[key] = ProductRule(k1,k2)
+        return key
+
+def convGramCond(gram,key):
+    pass   
+
 
 
 def check_grammar(gram):
@@ -217,7 +245,7 @@ if __name__ == '__main__':
     print("Test PalABC : " + str(tGram[6]['PalABC'].rank("BBCAACBB")))
 
     start = time.time()
-    tGram[0]['Tree'].list(13)
+    print(tGram[0]['Tree'].count(13))
     end = time.time()
     print(end-start)
 
