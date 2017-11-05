@@ -6,7 +6,9 @@ from functools import lru_cache
 class UnionRule(ConstructorRule):
     def __init__(self, fst, snd, isFst = None, size = None):
         super().__init__((fst, snd))
+        # Renvoie vrai si l'objet appartient au membre de gauche de l'union, faux sinon        
         self.isFst = isFst
+        # Renvoie la taille de l'objet
         self.size = size       
     
     def __repr__(self):
@@ -45,10 +47,16 @@ class UnionRule(ConstructorRule):
             return self._grammar[self._parameters[1]].unrank(n, r - countG)
     
     def rank(self, obj):
+        # On ne peut pas faire rank sur AutantAB avec notre grammaire actuelle
+        # On a donc décidé de mettre ces fonctions en options
+        # Si elles ne sont pas fourni, alors on ne peut pas faire de rank sur la grammaire correspondant
         if self.isFst is None or self.size is None :
             raise Exception("Rank n'est pas autorisé sur cette grammaire")
+
+        # Si l'objet appartient au membre de gauche (Exemple Node pour la règle "Tree":UnionRule("Node","Leaf") alors on retourne le rank de l'objet dans le membre gauche
         if self.isFst(obj):
             return self._grammar[self._parameters[0]].rank(obj)
+        # Sinon, le rang de l'oject à droite, est son rang a droite plus le nombre d'objet avant lui (à gauche donc)
         else: 
             return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)  
 
@@ -67,7 +75,8 @@ class Union():
         fst,snd,isFst,size = self.union
         k1 = fst.conv(gram)
         k2 = snd.conv(gram)
-        key = key or "Union-"+str(len(gram))
+        if key is None:
+            key = "Union-"+str(len(gram))
         gram[key] = UnionRule(k1,k2,isFst,size)
         return key
 

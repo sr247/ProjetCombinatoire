@@ -5,8 +5,7 @@ class ConstanteRule(AbstractRule):
     def __init__(self, object):
         super().__init__()
         self._object = object
-    # Ici Epsilon Rules n'est pas connu...
-    # Possiblement ça peut exploser
+    
     def valuation(self):
         if(isinstance(self, self.subclass[0])):
             return 0
@@ -82,7 +81,8 @@ class Epsilon():
         return "Epsilon("+str(self._object)+")"
 
     def conv(self,gram, key = None):
-        key = key or "Eps-"+str(len(gram))
+        if key is None:
+            key = "Eps-"+str(len(gram))
         gram[key] = EpsilonRule(self._object)
         return key
 
@@ -97,7 +97,8 @@ class Singleton():
         return "Singleton("+str(self._object)+")"
 
     def conv(self,gram, key = None):
-        key = key or "Sing-"+str(len(gram))
+        if key is None:
+            key = "Sing-"+str(len(gram))
         gram[key] = SingletonRule(self._object)
         return key
 

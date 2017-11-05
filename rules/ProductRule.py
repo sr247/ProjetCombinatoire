@@ -6,8 +6,12 @@ class ProductRule(ConstructorRule):
 
     def __init__(self, fst, snd, cons, unpack = None, size = None):
         super().__init__((fst,snd))
+        # COnstructeur de l'objet
         self._constructor = cons
+        # Sépare l'objet den 2 sous-objets
+        # Ex : Node(Leaf,Leaf) renvoie Leaf,Leaf
         self.unpack = unpack
+        # Renvoie la taille de l'objet
         self.size = size
 
     def __repr__(self):
@@ -53,55 +57,67 @@ class ProductRule(ConstructorRule):
         if r >= c:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
         
-        acc = 0
         for k in range(n+1):
             l = n-k
             if k >= self._grammar[self._parameters[0]].valuation():
                 if l >= self._grammar[self._parameters[1]].valuation():
                     cG = self._grammar[self._parameters[0]].count(k)  
-                    cD = self._grammar[self._parameters[1]].count(l)  
-                    preacc = acc                    
-                    acc += cG*cD
-            if r < acc:
+                    cD = self._grammar[self._parameters[1]].count(l)             
+                    c -= cG*cD
+            if r >= c:
                 break
         
         i = k
-        j = r - preacc
+        j = r - c
 
-        k = self._grammar[self._parameters[0]].count(i)  
-        l = self._grammar[self._parameters[1]].count(n - i)  
+        # cf. Prog unrank sur bintree avec catalan
+        k = self._grammar[self._parameters[1]].count(n - i)
         q,r = j//k, j%k
-        
-        # ça ne fonctionne pas seulement pour les abre j'ai l'impression
-        # J'ai trouvé un moyen de fix ça mais je ne comprend pas pourquoi ça fonctionne
-        # Et c'est déifférent du sujet
-        # q,r = j//l, j%l
-        # mG avec unrank(i,q)
-        # mD avec unrank(n-i,r)
-        # A revoir lundi pour trouver une solution
 
-        mG = self._grammar[self._parameters[0]].unrank(i,r)
-        mD = self._grammar[self._parameters[1]].unrank(n-i,q)  
+        mG = self._grammar[self._parameters[0]].unrank(i,q)
+        mD = self._grammar[self._parameters[1]].unrank(n-i,r)  
 
         return self._constructor((mG,mD))
 
 
     def rank(self, obj):
+        # On ne peut pas faire rank sur AutantAB avec notre grammaire actuelle
+        # On a donc décidé de mettre ces fonctions en options
+        # Si elles ne sont pas fourni, alors on ne peut pas faire de rank sur la grammaire correspondant    
         if self.unpack is None or self.size is None :
             raise Exception("Rank n'est pas autorisé sur cette grammaire")
+
         g,d = self.unpack(obj)
         
         n = self.size(obj)
         nG = self.size(g)
         rG = self._grammar[self._parameters[0]].rank(g)
         rD = self._grammar[self._parameters[1]].rank(d)
-        acc = 0        
+        acc = 0
+        
+        # Par exemple pour Tree
+        # On compte le nombre d'objet dont la taille a gauche est inférieur a notre objet
+        # Et la taille de droite supérieur (ordre lex donc, les arbres qui précèdent)
+        # Avec l'exemple du sujet de unrank :
+        # Node(Node(Node(Leaf, Node(Leaf, Leaf)), Leaf), Node(Node(Leaf, Leaf), Leaf)) 
+        # n = 7, nG = 4, rG = 3, rD = 1
+        # Tree(0)*Tree(7) 0 * 132
+        # Tree(1)*Tree(6) 1 * 42
+        # Tree(2)*Tree(5) 1 * 14
+        # Tree(3)*Tree(4) 2 * 5
+        # acc = 66
+        # On se décale ensuite de l'offset formé du rang de l'arbre de gauche multiplié par le nombre d'arbre de droite, puis on ajoute le rang de l'arbre de droite
+        # acc = 66 + rG * count(3) == 66 + (3*2)
+        # acc = 72
+        # acc + rD => rank = 73
+    
         for k in range(nG):
             l = n - k
             cG = self._grammar[self._parameters[0]].count(k)
             cD = self._grammar[self._parameters[1]].count(l)
             acc += cG*cD
-        return acc + rG * self._grammar[self._parameters[1]].count(n - nG) + rD
+        acc += rG * self._grammar[self._parameters[1]].count(n - nG) 
+        return acc + rD
         
 
 class Prod():
@@ -118,7 +134,8 @@ class Prod():
         fst,snd,cons,unpack,size = self.prod
         k1 = fst.conv(gram)
         k2 = snd.conv(gram)
-        key = key or "Prod-"+str(len(gram))
+        if key is None:
+            key = "Prod-"+str(len(gram))
         gram[key] = ProductRule(k1,k2,cons,unpack,size)
         return key
 

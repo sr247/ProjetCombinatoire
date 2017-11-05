@@ -187,20 +187,10 @@ if __name__ == '__main__':
 
     for g in tGram:
         init_grammar(g)
-
-    N = 15
-
-    lt = tGram[2]["ABWord"].list(N)
-    lt2= []
-    for i in range(tGram[2]["ABWord"].count(N)):
-        lt2 += [tGram[2]["ABWord"].unrank(N,i)]
-
-    for i in range(len(lt)):
-        if lt[i] != lt2[i]:
-            print(lt2[i])
-            print(lt[i])
-            print("")
-
+    
+    print(tGram[0]['Tree'].rank(Node(Node(Node(Leaf, Node(Leaf, Leaf)), Leaf), Node(Node(Leaf, Leaf), Leaf))))
+    
+    
     #b = Bound(test['Tree'],0,4)
     #for el in b._list:
     #    print(el)
