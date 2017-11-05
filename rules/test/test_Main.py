@@ -166,10 +166,8 @@ class Main(unittest.TestCase):
     def test_Correct_Unrank(self):
         j = 0
         for k in range(len(self.grammar_list)):
-            for n in range(7,8):
-                #  Ici pour la classe Node on a un soucis : pour n = 6
-                #  la liste des unrank de tout les élements n'est pas
-                #  la meme que la liste génére par la méthode list ( l'élément de rang 20
+            for n in range(0,10):
+
                 l1 = self.grammar_list[k][self.name[j]].list(n)
                 l2 = [self.grammar_list[k][self.name[j]].unrank(n, v) for v in range(len(l1))]
 

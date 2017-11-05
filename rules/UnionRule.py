@@ -39,11 +39,10 @@ class UnionRule(ConstructorRule):
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
 
         countG = self._grammar[self._parameters[0]].count(n)
-        countD = self._grammar[self._parameters[1]].count(n)
         if r < countG:
             return self._grammar[self._parameters[0]].unrank(n, r)
         else:
-            return self._grammar[self._parameters[1]].unrank(n, r-countG)
+            return self._grammar[self._parameters[1]].unrank(n, r - countG)
     
     def rank(self, obj):
         if self.isFst is None or self.size is None :

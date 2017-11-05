@@ -54,30 +54,28 @@ class ProductRule(ConstructorRule):
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
         
         acc = 0
-        i = -1   
-        j = -1   
         for k in range(n+1):
             l = n-k
             if k >= self._grammar[self._parameters[0]].valuation():
                 if l >= self._grammar[self._parameters[1]].valuation():
                     cG = self._grammar[self._parameters[0]].count(k)  
                     cD = self._grammar[self._parameters[1]].count(l)  
+                    preacc = acc                    
                     acc += cG*cD
             if r < acc:
-                i = k
-                acc -= cG*cD
-                j = r - acc 
                 break
-
-        if i == -1:
-            raise Exception("Bad thing happenned")
-
-        k = self._grammar[self._parameters[0]].count(i)  
+        
+        i = k
+        j = r - preacc
+        
+        # Ici le sujet est à l'envers, on a (Aq,Br) et non l'inverse
+        k = self._grammar[self._parameters[1]].count(n - i)  
 
         q,r = j//k, j%k
-
-        mG = self._grammar[self._parameters[0]].unrank(i,r)
-        mD = self._grammar[self._parameters[1]].unrank(n-i,q)  
+        
+        # Et donc ici, on a le unrank de q pour le membre gauche, et r sur le membre droit (comme en tp)
+        mG = self._grammar[self._parameters[0]].unrank(i,q)
+        mD = self._grammar[self._parameters[1]].unrank(n-i,r)  
 
         return self._constructor((mG,mD))
 
