@@ -1,6 +1,7 @@
 # coding: utf-8
 import math
 import time
+from profile import Profile
 
 from rules.ConstructorRule import *
 from rules.ProductRule import *
@@ -18,7 +19,7 @@ def convGramCond(gram,key):
     gram[key].conv(gram,key)
 
 
-def init_grammar(gram) :
+def init_grammar(gram):
     """
     Fonction d'initialisation de la grammaire
     :param gram: La grammaire à générer
@@ -193,7 +194,7 @@ if __name__ == '__main__':
     for g in tGram:
         init_grammar(g)
 
-    b = Bound(test['Tree'],0,4)
+    b = Bound(test['Tree'],0, 4)
     for el in b._list:
         print(el)
 
@@ -201,4 +202,9 @@ if __name__ == '__main__':
     #print(tGram[0]['Tree'].count(13))
     #end = time.time()
     #print(end-start)
+
+    # Affiche les valeurs des valuations de tGram[i]
+    # for key in tGram[1].keys():
+    #     print(key, ":", tGram[1][key].valuation())
+
 
