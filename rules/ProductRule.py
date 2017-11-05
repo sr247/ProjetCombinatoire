@@ -67,15 +67,21 @@ class ProductRule(ConstructorRule):
         
         i = k
         j = r - preacc
-        
-        # Ici le sujet est à l'envers, on a (Aq,Br) et non l'inverse
-        k = self._grammar[self._parameters[1]].count(n - i)  
 
+        k = self._grammar[self._parameters[0]].count(i)  
+        l = self._grammar[self._parameters[1]].count(n - i)  
         q,r = j//k, j%k
         
-        # Et donc ici, on a le unrank de q pour le membre gauche, et r sur le membre droit (comme en tp)
-        mG = self._grammar[self._parameters[0]].unrank(i,q)
-        mD = self._grammar[self._parameters[1]].unrank(n-i,r)  
+        # ça ne fonctionne pas seulement pour les abre j'ai l'impression
+        # J'ai trouvé un moyen de fix ça mais je ne comprend pas pourquoi ça fonctionne
+        # Et c'est déifférent du sujet
+        # q,r = j//l, j%l
+        # mG avec unrank(i,q)
+        # mD avec unrank(n-i,r)
+        # A revoir lundi pour trouver une solution
+
+        mG = self._grammar[self._parameters[0]].unrank(i,r)
+        mD = self._grammar[self._parameters[1]].unrank(n-i,q)  
 
         return self._constructor((mG,mD))
 
@@ -86,16 +92,16 @@ class ProductRule(ConstructorRule):
         g,d = self.unpack(obj)
         
         n = self.size(obj)
-        n_left = self.size(g)
-        rg = self._grammar[self._parameters[0]].rank(g)
-        rd = self._grammar[self._parameters[1]].rank(d)
+        nG = self.size(g)
+        rG = self._grammar[self._parameters[0]].rank(g)
+        rD = self._grammar[self._parameters[1]].rank(d)
         acc = 0        
-        for k in range(n_left):
+        for k in range(nG):
             l = n - k
             cG = self._grammar[self._parameters[0]].count(k)
             cD = self._grammar[self._parameters[1]].count(l)
             acc += cG*cD
-        return acc + rg * self._grammar[self._parameters[1]].count(n - n_left) + rd
+        return acc + rG * self._grammar[self._parameters[1]].count(n - nG) + rD
         
 
 class Prod():

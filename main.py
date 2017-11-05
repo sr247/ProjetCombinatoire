@@ -188,12 +188,12 @@ if __name__ == '__main__':
     for g in tGram:
         init_grammar(g)
 
-    N = 12
+    N = 15
 
-    lt = tGram[0]["Tree"].list(N)
+    lt = tGram[2]["ABWord"].list(N)
     lt2= []
-    for i in range(tGram[0]["Tree"].count(N)):
-        lt2 += [tGram[0]["Tree"].unrank(N,i)]
+    for i in range(tGram[2]["ABWord"].count(N)):
+        lt2 += [tGram[2]["ABWord"].unrank(N,i)]
 
     for i in range(len(lt)):
         if lt[i] != lt2[i]:
