@@ -12,9 +12,12 @@ from Tree import *
 class Bound():
     def __init__(self,C,min,max):
         self._list = []
+        self._count = []
         for i in range(min,max+1):
             self._list += C.list(i)
-
+            self._count.append(C.count(i))
+            
+            
 def convGramCond(gram,key):
     gram[key].conv(gram,key)
 
