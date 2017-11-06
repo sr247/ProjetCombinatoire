@@ -6,6 +6,9 @@ class ConstanteRule(AbstractRule):
         super().__init__()
         self._object = object
     
+    def check(self,key):
+      return True
+    
     def valuation(self):
         if(isinstance(self, self.subclass[0])):
             return 0
@@ -101,21 +104,6 @@ class Singleton():
             key = "Sing-"+str(len(gram))
         gram[key] = SingletonRule(self._object)
         return key
-
-class NonTerm():
-    def __init__(self,str):
-        self._str = str
-
-    def __repr__(self):
-        return self._str
-
-    def __str__(self):
-        return self._str
-
-    def conv(self, gram):
-        if gram[self._str] is None:
-            raise Exception("NonTerm "+self._str + " n'est pas dans la grammaire")
-        return self._str
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':

@@ -4,6 +4,10 @@ from Tree import Node
 from functools import lru_cache
 
 class UnionRule(ConstructorRule):
+   
+        # On ne peut pas faire rank sur AutantAB avec notre grammaire actuelle
+        # On a donc décidé de mettre ces fonctions en options
+        # Si elles ne sont pas fourni, alors on ne peut pas faire de rank sur la grammaire correspondant    
     def __init__(self, fst, snd, isFst = None, size = None):
         super().__init__((fst, snd))
         # Renvoie vrai si l'objet appartient au membre de gauche de l'union, faux sinon        

@@ -1,12 +1,18 @@
 # coding: utf-8
 from rules.ConstructorRule import ConstructorRule
 from functools import lru_cache
+from rules.ConstanteRule import Epsilon
+from rules.UnionRule import UnionRule
+
 
 class ProductRule(ConstructorRule):
 
+        # On ne peut pas faire rank sur AutantAB avec notre grammaire actuelle
+        # On a donc décidé de mettre ces fonctions en options
+        # Si elles ne sont pas fourni, alors on ne peut pas faire de rank sur la grammaire correspondant
     def __init__(self, fst, snd, cons, unpack = None, size = None):
         super().__init__((fst,snd))
-        # COnstructeur de l'objet
+        # Constructeur de l'objet
         self._constructor = cons
         # Sépare l'objet den 2 sous-objets
         # Ex : Node(Leaf,Leaf) renvoie Leaf,Leaf
@@ -15,10 +21,10 @@ class ProductRule(ConstructorRule):
         self.size = size
 
     def __repr__(self):
-        return "ProductRule("+str(self._parameters[0])+", "+ str(self._parameters[0]) +")"
+        return "ProductRule("+str(self._parameters[0])+", "+ str(self._parameters[1]) +")"
 
     def __str__(self):
-        return "ProductRule("+str(self._parameters[0])+", "+ str(self._parameters[0]) +")"
+        return "ProductRule("+str(self._parameters[0])+", "+ str(self._parameters[1]) +")"
 
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()
@@ -57,18 +63,22 @@ class ProductRule(ConstructorRule):
         if r >= c:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
         
+        acc = 0
+        cG =  0
+        cD = 0
         for k in range(n+1):
             l = n-k
             if k >= self._grammar[self._parameters[0]].valuation():
                 if l >= self._grammar[self._parameters[1]].valuation():
                     cG = self._grammar[self._parameters[0]].count(k)  
                     cD = self._grammar[self._parameters[1]].count(l)             
-                    c -= cG*cD
-            if r >= c:
+                    acc += cG*cD
+            if r < acc:
+                acc -= cG*cD
                 break
         
         i = k
-        j = r - c
+        j = r - acc
 
         # cf. Prog unrank sur bintree avec catalan
         k = self._grammar[self._parameters[1]].count(n - i)
@@ -118,7 +128,22 @@ class ProductRule(ConstructorRule):
             acc += cG*cD
         acc += rG * self._grammar[self._parameters[1]].count(n - nG) 
         return acc + rD
-        
+
+
+class NonTerm():
+    def __init__(self,str):
+        self._str = str
+
+    def __repr__(self):
+        return self._str
+
+    def __str__(self):
+        return self._str
+
+    def conv(self, gram):
+        if gram[self._str] is None:
+            raise Exception("NonTerm "+self._str + " n'est pas dans la grammaire")
+        return self._str    
 
 class Prod():
     def __init__(self,fst,snd,cons,unpack = None,size=None):
@@ -139,7 +164,28 @@ class Prod():
         gram[key] = ProductRule(k1,k2,cons,unpack,size)
         return key
 
+class Sequence():
+    def __init__(self,nonterm,vide,cons,unpack = None, isFst = None, size=None):
+        self.prod = (nonterm,vide,cons,unpack, isFst ,size)
+    
+    def __repr__(self):
+        return "Sequence("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+    
+    def __str__(self):
+        return "Sequence("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
 
+    def conv(self,gram, key = None):
+        nonterm,vide,cons,unpack,isFst,size = self.prod
+        k2 = Epsilon(vide).conv(gram)
+        if key is None:
+            key = "Seq-"+str(len(gram))
+        kp = Prod(NonTerm(key), NonTerm(nonterm), cons, unpack, size)
+        kp = kp.conv(gram)
+            
+        gram[key] = UnionRule(k2, kp, isFst, size)
+        return key
+        
+        
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests ProductRule:")
 

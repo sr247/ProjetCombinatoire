@@ -28,6 +28,10 @@ def init_grammar(gram):
     for key in gram.keys() :
         gram[key]._set_grammar(gram)
     
+    for key in gram.keys() :
+        if not gram[key].check(key):
+          raise Exception("Grammaire Incorrecte : Nonterm %s inconnue ou Recursion infini sur le non-terminal "%key +key)
+    
     # Booléen qui indique si le point fix est trouvé ou non (vrai = non trouvé, false = trouvé)
     not_found = True
 
@@ -63,12 +67,29 @@ if __name__ == '__main__':
                 "Node": ProductRule("Tree", "Tree", pack, unpack, size),
                 "Leaf": SingletonRule(Leaf)}
 
+    treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
+    convGramCond(treeGramCond,"Tree")
 
-    # ces fonctions sont utilisés dans la plus part des cas sur les grammaires fonctionannt avec des objets de type string
+    unpack = lambda s : (s[:1],s[1:])
+    isFstA = lambda s : s[:1] == 'A'
     size = lambda s : len(s)
     isEmpty = lambda s : s==""
-    unpack = lambda s : (s[:1],s[1:])
-    unpack2 = lambda s : (s[:len(s)-1],s[len(s)-1])
+    
+    
+    
+    #Sequence
+    testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),
+         "AtomA": SingletonRule("a")}
+         
+    convGramCond(testSequence,"SeqA")
+         
+
+
+    # ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
+    size = lambda s : len(s)
+    isEmpty = lambda s : s==""
+    unpack = lambda s : (s[:1],s[1:]) #Premier caractère et le reste
+    unpack2 = lambda s : (s[:len(s)-1],s[len(s)-1]) #Tout sauf le dernier caractère et le dernier caractère
     isFstA = lambda s : s[:1] == 'A'
     isFstB = lambda s : s[:1] == 'B'
     single = lambda s : len(s) == 1
@@ -155,42 +176,50 @@ if __name__ == '__main__':
 
     #Quesiont 2.2.6
     # Grammaire ambigue : rank impossible
-    autantABGram = {"AutantAB": UnionRule("Vide","StartAB"),
-                    "StartAB": UnionRule("StartWithA","StartWithB"),
-                    "StartWithA": ProductRule("AtomA","B", join),
-                    "StartWithB": ProductRule("AtomB","A", join),
-                    "A": UnionRule("A2","BDoubleA"),
-                    "A2": ProductRule("AtomA","AutantAB", join),
-                    "B": UnionRule("B2","ADoubleB"),
-                    "B2": ProductRule("AtomB","AutantAB", join),
-                    "BDoubleA": ProductRule("AtomB","DoubleA", join),
-                    "ADoubleB": ProductRule ("AtomA","DoubleB", join),
-                    "DoubleA": ProductRule ("A","A", join),
-                    "DoubleB": ProductRule ("B","B", join),
-                    "Vide": EpsilonRule(""),
-                    "AtomA": SingletonRule("A"),
-                    "AtomB": SingletonRule("B")}
-
-    size = lambda tree : tree.size()
-    isFst = lambda tree : not tree.is_leaf()
-    pack = lambda obj: Node(obj[0], obj[1])
-    unpack = lambda tree : (tree.left(),tree.right())
-
-    test = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
+    autantABGram = {"AutantAB": UnionRule("Vide", "StartAB"),
+                        "StartAB": UnionRule("StartWithA", "StartWithB"),
+                        "StartWithA": ProductRule("AtomA", "B", join),
+                        "StartWithB": ProductRule("AtomB", "A", join),
+                        "A": UnionRule("A2", "BDoubleA"),
+                        "A2": ProductRule("AtomA", "AutantAB", join),
+                        "B": UnionRule("B2", "ADoubleB"),
+                        "B2": ProductRule("AtomB", "AutantAB", join),
+                        "BDoubleA": ProductRule("AtomB", "DoubleA", join),
+                        "ADoubleB": ProductRule("AtomA", "DoubleB", join),
+                        "DoubleA": ProductRule("A", "A", join),
+                        "DoubleB": ProductRule("B", "B", join),
+                        "Vide": EpsilonRule(""),
+                        "AtomA": SingletonRule("A"),
+                        "AtomB": SingletonRule("B")}
     
-    
-    convGramCond(test,"Tree")
+    name = ["SeqA","Tree","Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
     print("")
 
-    tGram = [test, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
+    tGram = [testSequence,treeGram,treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 
+    print(tGram[0])
+    
+    
     for g in tGram:
         init_grammar(g)
     
-    print(tGram[0]['Tree'].rank(Node(Node(Node(Leaf, Node(Leaf, Leaf)), Leaf), Node(Node(Leaf, Leaf), Leaf))))
+    print(tGram[0]['SeqA'].list(6))
+    
+    print(tGram[0]['SeqA'].unrank(20,0))
     
     
+    for i in range(len(tGram)):
+        g = tGram[i][name[i]]
+        for n in range(0,12):
+  
+            l1 = g.list(n)
+            l2 = [g.unrank(n, v) for v in range(len(l1))]
+
+            for i in range(len(l1)):
+                assert(l1[i] == l2[i])
+        print("Pass")
+        
     #b = Bound(test['Tree'],0,4)
     #for el in b._list:
     #    print(el)
