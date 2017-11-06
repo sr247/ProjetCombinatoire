@@ -73,12 +73,17 @@ if __name__ == '__main__':
     treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
     convGramCond(treeGramCond,"Tree")
 
+     
+
     unpack = lambda s : (s[:1],s[1:])
     isFstA = lambda s : s[:1] == 'A'
     size = lambda s : len(s)
     isEmpty = lambda s : s==""
     
-    
+    treeGramCond2 = {"Flower" : Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst,size)}
+    convGramCond(treeGramCond2,"Flower")
+
+    print(treeGramCond2)
     
     #Sequence
     testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),

@@ -157,6 +157,11 @@ class Prod():
 
     def conv(self,gram, key = None):
         fst,snd,cons,unpack,size = self.prod
+        for k in gram.keys():
+                    if isinstance(gram[k],UnionRule):
+                        if gram[k]._parameters[0] == fst and gram[k]._parameters[1] == snd and gram[k]._constructor == cons:
+                            if gram[k].unpack == unpack and gram[k].size == size :
+                                return k
         k1 = fst.conv(gram)
         k2 = snd.conv(gram)
         if key is None:

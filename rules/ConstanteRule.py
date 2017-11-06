@@ -84,6 +84,10 @@ class Epsilon():
         return "Epsilon("+str(self._object)+")"
 
     def conv(self,gram, key = None):
+        for k in gram.keys():
+            if isinstance(gram[k],EpsilonRule):
+                if gram[k]._object == self._object:
+                    return k
         if key is None:
             key = "Eps-"+str(len(gram))
         gram[key] = EpsilonRule(self._object)
@@ -99,7 +103,12 @@ class Singleton():
     def __str__(self):
         return "Singleton("+str(self._object)+")"
 
-    def conv(self,gram, key = None):
+    def conv(self,gram, key = None):      
+        for k in gram.keys():
+            if isinstance(gram[k],SingletonRule):
+                if gram[k]._object == self._object:
+                    return k
+  
         if key is None:
             key = "Sing-"+str(len(gram))
         gram[key] = SingletonRule(self._object)
