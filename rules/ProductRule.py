@@ -164,8 +164,7 @@ class Prod():
         for k in gram.keys():
             if isinstance(gram[k],ProductRule):
                 if gram[k]._parameters[0] == k1 and gram[k]._parameters[1] == k2 and gram[k]._constructor == cons:
-                    if gram[k].unpack == unpack and gram[k].size == size :
-                        return k
+                    return k
         if key is None:
             key = "Prod-"+str(len(gram))
         gram[key] = ProductRule(k1,k2,cons,unpack,size)

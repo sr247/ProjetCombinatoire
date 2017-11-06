@@ -84,8 +84,7 @@ class Union():
         for k in gram.keys():
             if isinstance(gram[k],UnionRule):
                 if gram[k]._parameters[0] == k1 and gram[k]._parameters[1] == k2:
-                    if gram[k].isFst == isFst and gram[k].size == size:
-                        return k
+                    return k
         if key is None:
             key = "Union-"+str(len(gram))
         gram[key] = UnionRule(k1,k2,isFst,size)
