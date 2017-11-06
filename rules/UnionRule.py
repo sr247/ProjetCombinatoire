@@ -77,14 +77,15 @@ class Union():
 
     def conv(self,gram, key = None):
         fst,snd,isFst,size = self.union
-        for k in gram.keys():
-            if isinstance(gram[k],UnionRule):
-                if gram[k]._parameters[0] == fst and gram[k]._parameters[1] == snd:
-                    if gram[k].isFst == isFst and gram[k].size == size:
-                        return k
-
+        
         k1 = fst.conv(gram)
         k2 = snd.conv(gram)
+        # On vérifie que cette règle n'est pas déjà dans la grammaire
+        for k in gram.keys():
+            if isinstance(gram[k],UnionRule):
+                if gram[k]._parameters[0] == k1 and gram[k]._parameters[1] == k2:
+                    if gram[k].isFst == isFst and gram[k].size == size:
+                        return k
         if key is None:
             key = "Union-"+str(len(gram))
         gram[key] = UnionRule(k1,k2,isFst,size)

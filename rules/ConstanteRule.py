@@ -84,6 +84,7 @@ class Epsilon():
         return "Epsilon("+str(self._object)+")"
 
     def conv(self,gram, key = None):
+        # On vérifie que cette règle n'est pas déjà dans la grammaire
         for k in gram.keys():
             if isinstance(gram[k],EpsilonRule):
                 if gram[k]._object == self._object:
@@ -103,7 +104,8 @@ class Singleton():
     def __str__(self):
         return "Singleton("+str(self._object)+")"
 
-    def conv(self,gram, key = None):      
+    def conv(self,gram, key = None): 
+        # On vérifie que cette règle n'est pas déjà dans la grammaire     
         for k in gram.keys():
             if isinstance(gram[k],SingletonRule):
                 if gram[k]._object == self._object:
