@@ -1,7 +1,7 @@
 # coding: utf-8
 from functools import lru_cache
 
-from ConstanteRule import Epsilon
+from ConstanteRule import Epsilon,NonTerm
 from ConstructorRule import ConstructorRule
 from UnionRule import UnionRule
 
@@ -129,22 +129,6 @@ class ProductRule(ConstructorRule):
             acc += cG*cD
         acc += rG * self._grammar[self._parameters[1]].count(n - nG) 
         return acc + rD
-
-
-class NonTerm():
-    def __init__(self,str):
-        self._str = str
-
-    def __repr__(self):
-        return self._str
-
-    def __str__(self):
-        return self._str
-
-    def conv(self, gram):
-        if gram[self._str] is None:
-            raise Exception("NonTerm "+self._str + " n'est pas dans la grammaire")
-        return self._str    
 
 class Prod():
     def __init__(self,fst,snd,cons,unpack = None,size=None):

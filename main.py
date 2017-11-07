@@ -64,17 +64,13 @@ if __name__ == '__main__':
     pack = lambda obj: Node(obj[0], obj[1])
     unpack = lambda tree : (tree.left(),tree.right())
 
-    # Ces fonctions sont utilisées sur la plus part des grammaires fonctionnant avec des objets de type string
-    isFstA = lambda s : s[:1] == 'A'
-    isFstB = lambda s : s[:1] == 'B'
-    size = lambda s : len(s)
-    isEmpty = lambda s : s==""
-
     # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
     size = lambda s : len(s)
     isEmpty = lambda s : s==""
     unpack = lambda s : (s[:1],s[1:]) #Premier caractère et le reste
     unpack2 = lambda s : (s[:len(s)-1],s[len(s)-1]) #Tout sauf le dernier caractère et le dernier caractère
+    isFstA = lambda s : s[:1] == 'A'
+    isFstB = lambda s : s[:1] == 'B'
     single = lambda s : len(s) == 1
     join = "".join
 
@@ -92,7 +88,6 @@ if __name__ == '__main__':
     # Exemple de grammaire condensée avec propagation des clefs sur des valeurs de règles identiques
     treeGramCond2 = {"Flower" : Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst,size)}
     convGramCond(treeGramCond2,"Flower")
-    print(treeGramCond2)
     
     #Sequence Simple
     testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),
@@ -200,17 +195,10 @@ if __name__ == '__main__':
     name = ["SeqA","Tree","Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
     tGram = [testSequence,treeGram,treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
-
-    print(tGram[0])
     
     
     for g in tGram:
-        init_grammar(g)
-    
-    print(tGram[0]['SeqA'].list(6))
-    
-    print(tGram[0]['SeqA'].unrank(20,0))
-    
+        init_grammar(g)    
     
     for i in range(len(tGram)):
         g = tGram[i][name[i]]

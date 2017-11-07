@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0,'..')
+
 import unittest
 
 from ConstanteRule import *
@@ -20,17 +23,13 @@ class Main(unittest.TestCase):
         pack = lambda obj: Node(obj[0], obj[1])
         unpack = lambda tree: (tree.left(), tree.right())
 
-        # Ces fonctions sont utilisées sur la plus part des grammaires fonctionnant avec des objets de type string
-        isFstA = lambda s: s[:1] == 'A'
-        isFstB = lambda s: s[:1] == 'B'
-        size = lambda s: len(s)
-        isEmpty = lambda s: s == ""
-
         # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
         size = lambda s: len(s)
         isEmpty = lambda s: s == ""
         unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
-        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractère
+        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractèreisFstA = lambda s: s[:1] == 'A'
+        isFstA = lambda s: s[:1] == '1'        
+        isFstB = lambda s: s[:1] == 'B'
         single = lambda s: len(s) == 1
         join = "".join
 
@@ -48,7 +47,6 @@ class Main(unittest.TestCase):
         treeGramCond2 = {
             "Flower": Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst, size)}
         convGramCond(treeGramCond2, "Flower")
-        print(treeGramCond2)
 
         # Sequence Simple
         testSequence = {"SeqA": Sequence("AtomA", "", "".join, unpack, isEmpty, size), "AtomA": SingletonRule("a")}
@@ -159,7 +157,8 @@ class Main(unittest.TestCase):
             main.init_grammar(g)
 
     def setUp(self):
-        print("Test", self.
+        pass        
+        #print("Test", self.
 
     def test_Correct_Grammar(self):
         """
