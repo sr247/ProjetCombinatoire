@@ -14,13 +14,16 @@ class ConstanteRule(AbstractRule):
             return 0
         else:
             return 1
+
     def random(self, n):
+        if self.count(n) == 0:
+            raise Exception("Erreur sur random(%d,%s)" %(n,self))
         return self.unrank(n, 0)
 
     def unrank(self, n, r):
         c = self.count(n)
-        if r >= c:
-            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
+        if r >= c or r < 0:
+            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d) et supérieur ou égale à zero"%(r,n,c))
 
         return self._object
 

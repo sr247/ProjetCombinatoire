@@ -200,13 +200,14 @@ if __name__ == '__main__':
     for g in tGram:
         init_grammar(g)    
     
+
     for i in range(len(tGram)):
         g = tGram[i][name[i]]
         for n in range(0,12):
-  
+    
             l1 = g.list(n)
             l2 = [g.unrank(n, v) for v in range(len(l1))]
-
+    
             for i in range(len(l1)):
                 assert(l1[i] == l2[i])
         print("Pass")

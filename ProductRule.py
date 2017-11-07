@@ -62,8 +62,8 @@ class ProductRule(ConstructorRule):
     @lru_cache(maxsize=32)
     def unrank(self,n,r):        
         c = self.count(n)        
-        if r >= c:
-            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
+        if r >= c or r < 0:
+            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d) et supérieur ou égale à zero"%(r,n,c))
         
         acc = 0
         cG =  0
@@ -132,7 +132,9 @@ class ProductRule(ConstructorRule):
         return acc + rD
 
     def random(self, n):
-        return self.unrank(n, randint(self.count(n)))
+        if self.count(n) == 0:
+            raise Exception("Erreur sur random(%d,%s)" %(n,self))
+        return self.unrank(n, randint(0,self.count(n)-1))
 
 class Prod():
     def __init__(self,fst,snd,cons,unpack = None,size=None):

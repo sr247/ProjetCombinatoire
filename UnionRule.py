@@ -43,8 +43,8 @@ class UnionRule(ConstructorRule):
     @lru_cache(maxsize=32)
     def unrank(self, n, r):
         c = self.count(n)
-        if r >= c:
-            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d)"%(r,n,c))
+        if r >= c or r < 0:
+            raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d) et supérieur ou égale à zero"%(r,n,c))
 
         countG = self._grammar[self._parameters[0]].count(n)
         if r < countG:
@@ -67,7 +67,9 @@ class UnionRule(ConstructorRule):
             return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)  
 
     def random(self, n):
-        return self.unrank(n, randint(self.count(n)))
+        if self.count(n) == 0:
+            raise Exception("Erreur sur random(%d,%s)" %(n,self))
+        return self.unrank(n, randint(0,self.count(n)-1))
 
 class Union():
     def __init__(self,fst,snd,isFst = None,size = None):
