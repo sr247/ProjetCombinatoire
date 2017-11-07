@@ -16,7 +16,7 @@ class Main(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-
+        print("Initialisation des grammaires\n")
         # Fonctions principalement utilisées pour les Trees
         size = lambda tree: tree.size()
         isFst = lambda tree: not tree.is_leaf()
@@ -157,8 +157,12 @@ class Main(unittest.TestCase):
             main.init_grammar(g)
 
     def setUp(self):
-        pass        
-        #print("Test", self.
+        print(self.id())
+
+    def tearDown(self):
+        print("Pass")
+
+
 
     def test_Correct_Grammar(self):
         """
@@ -181,7 +185,7 @@ class Main(unittest.TestCase):
     def test_Correct_Count(self):
         j=0
         for i in range(len(self.grammar_list)):
-            for k in range(10):
+            for k in range(11):
                 a = self.grammar_list[i][self.name[j]].count(k)
                 b = len(self.grammar_list[i][self.name[j]].list(k))
                 self.assertEqual(a, b)
@@ -191,7 +195,7 @@ class Main(unittest.TestCase):
     def test_Correct_Unrank(self):
         j = 0
         for k in range(len(self.grammar_list)):
-            for n in range(0,10):
+            for n in range(0,11):
 
                 l1 = self.grammar_list[k][self.name[j]].list(n)
                 l2 = [self.grammar_list[k][self.name[j]].unrank(n, v) for v in range(len(l1))]

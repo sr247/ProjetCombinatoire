@@ -1,5 +1,6 @@
 # coding: utf-8
 from functools import lru_cache
+from random import randint
 
 from ConstructorRule import ConstructorRule
 
@@ -65,6 +66,8 @@ class UnionRule(ConstructorRule):
         else: 
             return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)  
 
+    def random(self, n):
+        return self.unrank(n, randint(self.count(n)))
 
 class Union():
     def __init__(self,fst,snd,isFst = None,size = None):

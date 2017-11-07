@@ -14,6 +14,8 @@ class ConstanteRule(AbstractRule):
             return 0
         else:
             return 1
+    def random(self, n):
+        return self.unrank(n, 0)
 
     def unrank(self, n, r):
         c = self.count(n)

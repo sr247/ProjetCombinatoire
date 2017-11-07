@@ -1,5 +1,6 @@
 # coding: utf-8
 from functools import lru_cache
+from random import randint
 
 from ConstanteRule import Epsilon,NonTerm
 from ConstructorRule import ConstructorRule
@@ -129,6 +130,9 @@ class ProductRule(ConstructorRule):
             acc += cG*cD
         acc += rG * self._grammar[self._parameters[1]].count(n - nG) 
         return acc + rD
+
+    def random(self, n):
+        return self.unrank(n, randint(self.count(n)))
 
 class Prod():
     def __init__(self,fst,snd,cons,unpack = None,size=None):
