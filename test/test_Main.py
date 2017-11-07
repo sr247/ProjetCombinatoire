@@ -28,7 +28,7 @@ class Main(unittest.TestCase):
         isEmpty = lambda s: s == ""
         unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
         unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractèreisFstA = lambda s: s[:1] == 'A'
-        isFstA = lambda s: s[:1] == '1'        
+        isFstA = lambda s: s[:1] == 'A'        
         isFstB = lambda s: s[:1] == 'B'
         single = lambda s: len(s) == 1
         join = "".join
