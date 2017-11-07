@@ -1,7 +1,8 @@
 # coding: utf-8
-from rules.ConstructorRule import ConstructorRule
-from Tree import Node
 from functools import lru_cache
+
+from ConstructorRule import ConstructorRule
+
 
 class UnionRule(ConstructorRule):
    

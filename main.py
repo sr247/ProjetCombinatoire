@@ -1,13 +1,11 @@
 # coding: utf-8
-import math
-import time
-from profile import Profile
 
-from rules.ConstructorRule import *
-from rules.ProductRule import *
-from rules.UnionRule import *
-from rules.ConstanteRule import *
+from ConstanteRule import *
+from ConstructorRule import *
+from ProductRule import *
 from Tree import *
+from UnionRule import *
+
 
 class Bound():
     def __init__(self,C,min,max):
@@ -42,7 +40,7 @@ def init_grammar(gram):
     while not_found:
         not_found = False
         # Pour toutes les règles héritant de ConstructorRule
-        for key in [ x for x in gram.keys() if isinstance(gram[x],ConstructorRule)] :
+        for key in [ x for x in gram.keys() if isinstance(gram[x],ConstructorRule)]:
             # On stock la valuation précédentte (Vn-1)
             vpre = gram[key].valuation()
             # On calcule la valuation courante (Vn)
@@ -60,48 +58,47 @@ def init_grammar(gram):
 
 if __name__ == '__main__':
     
-    # Exemple ici on déclare la grammaire Tree
+    # Fonctions principalement utilisées pour les Trees
     size = lambda tree : tree.size()
     isFst = lambda tree : not tree.is_leaf()
     pack = lambda obj: Node(obj[0], obj[1])
     unpack = lambda tree : (tree.left(),tree.right())
 
-    treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
-                "Node": ProductRule("Tree", "Tree", pack, unpack, size),
-                "Leaf": SingletonRule(Leaf)}
-
-    treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
-    convGramCond(treeGramCond,"Tree")
-
-     
-
-    unpack = lambda s : (s[:1],s[1:])
+    # Ces fonctions sont utilisées sur la plus part des grammaires fonctionnant avec des objets de type string
     isFstA = lambda s : s[:1] == 'A'
+    isFstB = lambda s : s[:1] == 'B'
     size = lambda s : len(s)
     isEmpty = lambda s : s==""
-    
-    treeGramCond2 = {"Flower" : Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst,size)}
-    convGramCond(treeGramCond2,"Flower")
 
-    print(treeGramCond2)
-    
-    #Sequence
-    testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),
-         "AtomA": SingletonRule("a")}
-         
-    convGramCond(testSequence,"SeqA")
-         
-
-
-    # ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
+    # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
     size = lambda s : len(s)
     isEmpty = lambda s : s==""
     unpack = lambda s : (s[:1],s[1:]) #Premier caractère et le reste
     unpack2 = lambda s : (s[:len(s)-1],s[len(s)-1]) #Tout sauf le dernier caractère et le dernier caractère
-    isFstA = lambda s : s[:1] == 'A'
-    isFstB = lambda s : s[:1] == 'B'
     single = lambda s : len(s) == 1
     join = "".join
+
+
+    # Exemple ici on déclare la grammaire Tree
+    treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
+                "Node": ProductRule("Tree", "Tree", pack, unpack, size),
+                "Leaf": SingletonRule(Leaf)}
+
+    # Exemple de grammaire condensée + conversion
+    treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
+    convGramCond(treeGramCond,"Tree")
+
+
+    # Exemple de grammaire condensée avec propagation des clefs sur des valeurs de règles identiques
+    treeGramCond2 = {"Flower" : Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst,size)}
+    convGramCond(treeGramCond2,"Flower")
+    print(treeGramCond2)
+    
+    #Sequence Simple
+    testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),
+         "AtomA": SingletonRule("a")}
+    convGramCond(testSequence,"SeqA")
+
 
     # Exemple ici on déclare la grammaire Fibonacci
     isFstB1 = lambda s : len(s) == 1 and s[:1] == 'B'
@@ -201,8 +198,6 @@ if __name__ == '__main__':
                         "AtomB": SingletonRule("B")}
     
     name = ["SeqA","Tree","Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
-
-    print("")
 
     tGram = [testSequence,treeGram,treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
 

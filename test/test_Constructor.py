@@ -1,7 +1,11 @@
-from rules.ConstructorRule import ConstructorRule
-from rules.ProductRule import ProductRule
-from rules.UnionRule import UnionRule
-import unittest, math, functools
+import math
+import unittest
+
+from ProductRule import ProductRule
+from UnionRule import UnionRule
+
+from ConstructorRule import ConstructorRule
+
 
 class ConstructorRuleTest(unittest.TestCase):
     """
@@ -24,7 +28,7 @@ class ConstructorRuleTest(unittest.TestCase):
         et que cette valeur est bien entière
         :return:
         """
-        self.assertEqual (self.rule.valuation(), math.inf)
+        self.assertEqual(self.rule.valuation(), math.inf)
         # self.assertIsInstance(self.rule._valuation, int, msg="{}".format(math.inf))
 
 

@@ -1,10 +1,13 @@
-from rules.ConstanteRule import ConstanteRule, EpsilonRule, SingletonRule
-import unittest, math
+import unittest
+
+from ConstanteRule import ConstanteRule, EpsilonRule, SingletonRule
+
 
 class ConstructorRuleTest(unittest.TestCase):
     """
     Test case utilisé pour tester les fonctions du module 'AbstractRule'
     """
+
 
     def setUp(self):
         self.rule = ConstanteRule(object())

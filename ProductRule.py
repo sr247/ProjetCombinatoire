@@ -1,8 +1,9 @@
 # coding: utf-8
-from rules.ConstructorRule import ConstructorRule
 from functools import lru_cache
-from rules.ConstanteRule import Epsilon
-from rules.UnionRule import UnionRule
+
+from ConstanteRule import Epsilon
+from ConstructorRule import ConstructorRule
+from UnionRule import UnionRule
 
 
 class ProductRule(ConstructorRule):

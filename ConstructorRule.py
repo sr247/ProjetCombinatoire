@@ -1,6 +1,8 @@
 # coding: utf-8
-from rules.AbstractRule import AbstractRule
 import math
+
+from AbstractRule import AbstractRule
+
 
 class ConstructorRule(AbstractRule):
     

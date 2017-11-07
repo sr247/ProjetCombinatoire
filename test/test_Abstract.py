@@ -1,5 +1,6 @@
-from rules.AbstractRule import AbstractRule
 import unittest
+
+from AbstractRule import AbstractRule
 
 
 class AbstractRuleTest(unittest.TestCase):

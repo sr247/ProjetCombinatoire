@@ -1,35 +1,58 @@
-import math
-from rules.ConstructorRule import ConstructorRule
-from rules.ProductRule import ProductRule
-from rules.UnionRule import UnionRule
-from rules.ConstanteRule import *
-from Tree import *
 import unittest
+
+from ConstanteRule import *
+from ProductRule import *
+from UnionRule import *
+from main import init_grammar, convGramCond
+
 import main
+from Tree import *
+
 
 class Main(unittest.TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
 
-        # Exemple ici on déclare la grammaire Tree
+        # Fonctions principalement utilisées pour les Trees
         size = lambda tree: tree.size()
         isFst = lambda tree: not tree.is_leaf()
         pack = lambda obj: Node(obj[0], obj[1])
         unpack = lambda tree: (tree.left(), tree.right())
 
+        # Ces fonctions sont utilisées sur la plus part des grammaires fonctionnant avec des objets de type string
+        isFstA = lambda s: s[:1] == 'A'
+        isFstB = lambda s: s[:1] == 'B'
+        size = lambda s: len(s)
+        isEmpty = lambda s: s == ""
+
+        # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
+        size = lambda s: len(s)
+        isEmpty = lambda s: s == ""
+        unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
+        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractère
+        single = lambda s: len(s) == 1
+        join = "".join
+
+        # Exemple ici on déclare la grammaire Tree
         treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
                     "Node": ProductRule("Tree", "Tree", pack, unpack, size),
                     "Leaf": SingletonRule(Leaf)}
 
-        # ces fonctions sont utilisés dans la plus part des cas sur les grammaires fonctionannt avec des objets de type string
-        size = lambda s: len(s)
-        isEmpty = lambda s: s == ""
-        unpack = lambda s: (s[:1], s[1:])
-        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])
-        isFstA = lambda s: s[:1] == 'A'
-        isFstB = lambda s: s[:1] == 'B'
-        single = lambda s: len(s) == 1
-        join = "".join
+        # Exemple de grammaire condensée + conversion
+        treeGramCond = {
+            "Tree": Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst, size)}
+        convGramCond(treeGramCond, "Tree")
+
+        # Exemple de grammaire condensée avec propagation des clefs sur des valeurs de règles identiques
+        treeGramCond2 = {
+            "Flower": Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst, size)}
+        convGramCond(treeGramCond2, "Flower")
+        print(treeGramCond2)
+
+        # Sequence Simple
+        testSequence = {"SeqA": Sequence("AtomA", "", "".join, unpack, isEmpty, size), "AtomA": SingletonRule("a")}
+        convGramCond(testSequence, "SeqA")
 
         # Exemple ici on déclare la grammaire Fibonacci
         isFstB1 = lambda s: len(s) == 1 and s[:1] == 'B'
@@ -126,13 +149,17 @@ class Main(unittest.TestCase):
                         "AtomA": SingletonRule("A"),
                         "AtomB": SingletonRule("B")}
 
-        self.grammar_list = [treeGram, fiboGram, abWordGram,
-                             dyckGram, ab2MaxGram, palABGram,
-                             palABCGram, autantABGram]
-        self.name = ["Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
-        for g in self.grammar_list:
+        cls.grammar_list = [testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram,
+                 palABCGram, autantABGram]
+
+        cls.name = ["SeqA", "Tree", "Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
+
+        for g in cls.grammar_list:
             main.init_grammar(g)
+
+    def setUp(self):
+        print("Test", self.
 
     def test_Correct_Grammar(self):
         """
@@ -150,7 +177,6 @@ class Main(unittest.TestCase):
                     self.assertTrue(sym != r._parameters[0] and sym != r._parameters[1])
                 if isinstance(r, ConstanteRule) or issubclass(type(r), ConstanteRule):
                     self.assertTrue(not issubclass(type(r._object), AbstractRule))
-        print("Pass")
 
 
     def test_Correct_Count(self):
@@ -159,7 +185,7 @@ class Main(unittest.TestCase):
             for k in range(10):
                 a = self.grammar_list[i][self.name[j]].count(k)
                 b = len(self.grammar_list[i][self.name[j]].list(k))
-                self.assertTrue(a == b)
+                self.assertEqual(a, b)
             j += 1
 
 
@@ -172,20 +198,26 @@ class Main(unittest.TestCase):
                 l2 = [self.grammar_list[k][self.name[j]].unrank(n, v) for v in range(len(l1))]
 
 
-                for id1 in range(len(l1)):
-                    for id2 in range(len(l2)):
-                        if l2[id1] == l1[id2] and 18<id1<23 and  18<id2<23:
-                            print("unrank(%d %d)"%(n, id1) ,"== list(%d)"%id2)
+                # for id1 in range(len(l1)):
+                #     for id2 in range(len(l2)):
+                #         if l2[id1] == l1[id2]:
+                #             print("unrank(%d %d)"%(n, id1) ,"== list(%d)"%id2)
 
                 for i in range(len(l1)):
                     unranked = self.grammar_list[k][self.name[j]].unrank(n, i)
 
-                    v = 20
                     self.assertTrue(l1[i] == unranked,
                                     msg="\n{} n={} i={}\nlist({})[{}]  {}\nunrank({},{}) {}".format(self.grammar_list[k],n,i,n,i,
-                                                                       l1[v],n,i, self.grammar_list[k][self.name[j]].unrank(n, v)))
+                                                                       l1[i],n,i, self.grammar_list[k][self.name[j]].unrank(n, i)))
             j += 1
-        print("Pass")
+
+    def test_Correct_Tree(self):
+        pass
+
+
+    def test_correct_Fib(self):
+        pass
+
 
 if __name__ == '__main__':
 
