@@ -46,7 +46,7 @@ class ProductRule(ConstructorRule):
         return res
 
     @lru_cache(maxsize=32)
-    def list(self,i):
+    def list(self, i):
         res = []
         for k in range(i+1):
             l = i-k
@@ -56,7 +56,7 @@ class ProductRule(ConstructorRule):
                     lD = self._grammar[self._parameters[1]].list(l)  
                     for g in lG:
                         for d in lD:
-                            res.append(self._constructor((g, d)))
+                            res.append(self._constructor((g, d))) # [ Node(Leaf, Leaf) ]
         return res
 
     @lru_cache(maxsize=32)
@@ -186,5 +186,8 @@ class Sequence():
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests ProductRule:")
 
+    f = randint
+    print(f)
+    print(f.__name__)
     print("Pass")
 

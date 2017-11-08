@@ -80,6 +80,8 @@ if __name__ == '__main__':
                 "Node": ProductRule("Tree", "Tree", pack, unpack, size),
                 "Leaf": SingletonRule(Leaf)}
 
+
+
     # Exemple de grammaire condensée + conversion
     treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
     convGramCond(treeGramCond,"Tree")

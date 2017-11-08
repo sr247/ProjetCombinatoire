@@ -99,5 +99,13 @@ class Union():
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
     print("Cas de tests UnionRule:")
+    cle = (0, 1)
+    a,b = cle
+
+    print(cle)
+    print(a, sep="/")
+
+
+
 
     print("Pass")
