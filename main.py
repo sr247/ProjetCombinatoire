@@ -64,15 +64,7 @@ if __name__ == '__main__':
     pack = lambda obj: Node(obj[0], obj[1])
     unpack = lambda tree : (tree.left(),tree.right())
 
-    # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
-    size = lambda s : len(s)
-    isEmpty = lambda s : s==""
-    unpack = lambda s : (s[:1],s[1:]) #Premier caractère et le reste
-    unpack2 = lambda s : (s[:len(s)-1],s[len(s)-1]) #Tout sauf le dernier caractère et le dernier caractère
-    isFstA = lambda s : s[:1] == 'A'
-    isFstB = lambda s : s[:1] == 'B'
-    single = lambda s : len(s) == 1
-    join = "".join
+
 
 
     # Exemple ici on déclare la grammaire Tree
@@ -86,6 +78,17 @@ if __name__ == '__main__':
     treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
     convGramCond(treeGramCond,"Tree")
 
+
+
+    # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
+    size = lambda s: len(s)
+    isEmpty = lambda s: s == ""
+    unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
+    unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractère
+    isFstA = lambda s: s[:1] == 'A'
+    isFstB = lambda s: s[:1] == 'B'
+    single = lambda s: len(s) == 1
+    join = "".join
 
     # Exemple de grammaire condensée avec propagation des clefs sur des valeurs de règles identiques
     treeGramCond2 = {"Flower" : Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst,size)}
@@ -196,7 +199,7 @@ if __name__ == '__main__':
     
     name = ["SeqA","Tree","Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
-    tGram = [testSequence,treeGram,treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
+    tGram = [testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
     
     
     for g in tGram:
@@ -206,14 +209,14 @@ if __name__ == '__main__':
     for i in range(len(tGram)):
         g = tGram[i][name[i]]
         for n in range(0,12):
-    
+
             l1 = g.list(n)
             l2 = [g.unrank(n, v) for v in range(len(l1))]
-    
+
             for i in range(len(l1)):
                 assert(l1[i] == l2[i])
         print("Pass")
-        
+
     #b = Bound(test['Tree'],0,4)
     #for el in b._list:
     #    print(el)

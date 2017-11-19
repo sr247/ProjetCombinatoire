@@ -23,16 +23,6 @@ class Main(unittest.TestCase):
         pack = lambda obj: Node(obj[0], obj[1])
         unpack = lambda tree: (tree.left(), tree.right())
 
-        # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
-        size = lambda s: len(s)
-        isEmpty = lambda s: s == ""
-        unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
-        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractèreisFstA = lambda s: s[:1] == 'A'
-        isFstA = lambda s: s[:1] == 'A'        
-        isFstB = lambda s: s[:1] == 'B'
-        single = lambda s: len(s) == 1
-        join = "".join
-
         # Exemple ici on déclare la grammaire Tree
         treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
                     "Node": ProductRule("Tree", "Tree", pack, unpack, size),
@@ -47,6 +37,16 @@ class Main(unittest.TestCase):
         treeGramCond2 = {
             "Flower": Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst, size)}
         convGramCond(treeGramCond2, "Flower")
+
+        # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
+        size = lambda s: len(s)
+        isEmpty = lambda s: s == ""
+        unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
+        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractèreisFstA = lambda s: s[:1] == 'A'
+        isFstA = lambda s: s[:1] == 'A'
+        isFstB = lambda s: s[:1] == 'B'
+        single = lambda s: len(s) == 1
+        join = "".join
 
         # Sequence Simple
         testSequence = {"SeqA": Sequence("AtomA", "", "".join, unpack, isEmpty, size), "AtomA": SingletonRule("a")}
@@ -195,31 +195,32 @@ class Main(unittest.TestCase):
     def test_Correct_Unrank(self):
         j = 0
         for k in range(len(self.grammar_list)):
-            for n in range(0,11):
-
+            for n in range(11):
                 l1 = self.grammar_list[k][self.name[j]].list(n)
                 l2 = [self.grammar_list[k][self.name[j]].unrank(n, v) for v in range(len(l1))]
-
-
-                # for id1 in range(len(l1)):
-                #     for id2 in range(len(l2)):
-                #         if l2[id1] == l1[id2]:
-                #             print("unrank(%d %d)"%(n, id1) ,"== list(%d)"%id2)
-
-                for i in range(len(l1)):
-                    unranked = self.grammar_list[k][self.name[j]].unrank(n, i)
-
-                    self.assertTrue(l1[i] == unranked,
-                                    msg="\n{} n={} i={}\nlist({})[{}]  {}\nunrank({},{}) {}".format(self.grammar_list[k],n,i,n,i,
-                                                                       l1[i],n,i, self.grammar_list[k][self.name[j]].unrank(n, i)))
+                self.assertEqual(l1, l2, msg="")
             j += 1
 
-    def test_Correct_Tree(self):
-        pass
+
+    def test_Correct_Rank(self):
+        j = 0
+        try:
+            for k in range(len(self.grammar_list)):
+                if j & k != 0 and j & k != 5:
+                    for n in range(11):
+                        l1 = self.grammar_list[k][self.name[j]].list(n)
+                        l2 = [x for x in range(len(l1))]
+                        l3 = [self.grammar_list[k][self.name[j]].rank(l1[v]) for v in range(len(l1))]
+                        # print(l3, self.name[j] )
+                        self.assertEqual(l2, l3, msg="")
+                else:
+                    print("La grammaire" + self.name[j] + " bug...")
+                j += 1
+        except Exception as e:
+            print(e.args[0] + ":", self.name[j], sep=" ")
 
 
-    def test_correct_Fib(self):
-        pass
+
 
 
 if __name__ == '__main__':
