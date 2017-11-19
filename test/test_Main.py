@@ -6,9 +6,7 @@ import unittest
 from ConstanteRule import *
 from ProductRule import *
 from UnionRule import *
-from main import init_grammar, convGramCond
-
-import main
+from main import init_grammar, convGramCond, Bound
 from Tree import *
 
 
@@ -154,7 +152,8 @@ class Main(unittest.TestCase):
         cls.name = ["SeqA", "Tree", "Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
         for g in cls.grammar_list:
-            main.init_grammar(g)
+            init_grammar(g)
+
 
     def setUp(self):
         print(self.id())
@@ -182,7 +181,7 @@ class Main(unittest.TestCase):
                     self.assertTrue(not issubclass(type(r._object), AbstractRule))
 
 
-    def test_Correct_Count(self):
+    def test_Count(self):
         j=0
         for i in range(len(self.grammar_list)):
             for k in range(11):
@@ -192,7 +191,7 @@ class Main(unittest.TestCase):
             j += 1
 
 
-    def test_Correct_Unrank(self):
+    def test_Unrank(self):
         j = 0
         for k in range(len(self.grammar_list)):
             for n in range(11):
@@ -202,7 +201,7 @@ class Main(unittest.TestCase):
             j += 1
 
 
-    def test_Correct_Rank(self):
+    def test_Rank(self):
         j = 0
         try:
             for k in range(len(self.grammar_list)):
@@ -217,7 +216,21 @@ class Main(unittest.TestCase):
                     print("La grammaire" + self.name[j] + " bug...")
                 j += 1
         except Exception as e:
+            print(e.args[0] + ":", self.name[j])
+
+    def test_Bound(self):
+
+        j = 0
+        try:
+            for k in range(len(self.grammar_list)):
+                bound = Bound(self.grammar_list[k][self.name[j]], 0, 11)
+                # Pas encore fini -> vérifier les borne grace a la liste Count qui contient
+                # la taille de chaque sous ensemble de la liste
+        except Exception as e:
             print(e.args[0] + ":", self.name[j], sep=" ")
+
+
+
 
 
 

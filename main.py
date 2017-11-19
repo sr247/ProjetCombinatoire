@@ -8,7 +8,7 @@ from UnionRule import *
 
 
 class Bound():
-    def __init__(self,C,min,max):
+    def __init__(self, C, min, max):
         self._list = []
         self._count = []
         for i in range(min,max+1):
@@ -65,8 +65,6 @@ if __name__ == '__main__':
     unpack = lambda tree : (tree.left(),tree.right())
 
 
-
-
     # Exemple ici on déclare la grammaire Tree
     treeGram = {"Tree": UnionRule("Node", "Leaf", isFst, size),
                 "Node": ProductRule("Tree", "Tree", pack, unpack, size),
@@ -89,10 +87,6 @@ if __name__ == '__main__':
     isFstB = lambda s: s[:1] == 'B'
     single = lambda s: len(s) == 1
     join = "".join
-
-    # Exemple de grammaire condensée avec propagation des clefs sur des valeurs de règles identiques
-    treeGramCond2 = {"Flower" : Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst,size)}
-    convGramCond(treeGramCond2,"Flower")
     
     #Sequence Simple
     testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),

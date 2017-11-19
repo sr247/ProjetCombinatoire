@@ -68,7 +68,7 @@ class UnionRule(ConstructorRule):
 
     def random(self, n):
         if self.count(n) == 0:
-            raise Exception("Erreur sur random(%d,%s)" %(n,self))
+            raise Exception("Erreur sur random(%d, %s)" %(n,self))
         return self.unrank(n, randint(0,self.count(n)-1))
 
 class Union():
@@ -88,7 +88,7 @@ class Union():
         k2 = snd.conv(gram)
         # On vérifie que cette règle n'est pas déjà dans la grammaire
         for k in gram.keys():
-            if isinstance(gram[k],UnionRule):
+            if isinstance(gram[k], UnionRule):
                 if gram[k]._parameters[0] == k1 and gram[k]._parameters[1] == k2:
                     return k
         if key is None:
