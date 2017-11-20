@@ -83,10 +83,10 @@ class Epsilon():
         self._object = object
     
     def __repr__(self):
-        return "Epsilon("+str(self._object)+")"
+        return "Epsilon(\""+str(self._object)+"\")"
     
     def __str__(self):
-        return "Epsilon("+str(self._object)+")"
+        return "Epsilon(\""+str(self._object)+"\")"
 
     def conv(self,gram, key = None):
         # On vérifie que cette règle n'est pas déjà dans la grammaire
@@ -104,10 +104,10 @@ class Singleton():
         self._object = object
 
     def __repr__(self):
-        return "Singleton("+str(self._object)+")"
+        return "Singleton(\""+str(self._object)+"\")"
 
     def __str__(self):
-        return "Singleton("+str(self._object)+")"
+        return "Singleton(\""+str(self._object)+"\")"
 
     def conv(self,gram, key = None): 
         # On vérifie que cette règle n'est pas déjà dans la grammaire     

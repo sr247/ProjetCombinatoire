@@ -205,15 +205,15 @@ class Main(unittest.TestCase):
         j = 0
         try:
             for k in range(len(self.grammar_list)):
-                if j & k != 0 and j & k != 5:
-                    for n in range(11):
-                        l1 = self.grammar_list[k][self.name[j]].list(n)
-                        l2 = [x for x in range(len(l1))]
-                        l3 = [self.grammar_list[k][self.name[j]].rank(l1[v]) for v in range(len(l1))]
-                        # print(l3, self.name[j] )
-                        self.assertEqual(l2, l3, msg="")
-                else:
-                    print("La grammaire" + self.name[j] + " bug...")
+                # if j & k != 0 and j & k != 5:
+                for n in range(11):
+                    l1 = self.grammar_list[k][self.name[j]].list(n)
+                    l2 = [x for x in range(len(l1))]
+                    l3 = [self.grammar_list[k][self.name[j]].rank(l1[v]) for v in range(len(l1))]
+                    # print(l3, self.name[j] )
+                    self.assertEqual(l2, l3, msg="")
+                # else:
+                #     print("La grammaire" + self.name[j] + " bug...")
                 j += 1
         except Exception as e:
             print(e.args[0] + ":", self.name[j])
@@ -224,7 +224,7 @@ class Main(unittest.TestCase):
         try:
             for k in range(len(self.grammar_list)):
                 bound = Bound(self.grammar_list[k][self.name[j]], 0, 11)
-                # Pas encore fini -> vérifier les borne grace a la liste Count qui contient
+                # Pas encore fini -> vérifier les bornes grace a la liste Count qui contient
                 # la taille de chaque sous ensemble de la liste
         except Exception as e:
             print(e.args[0] + ":", self.name[j], sep=" ")

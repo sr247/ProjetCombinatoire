@@ -141,10 +141,10 @@ class Prod():
         self.prod = (fst,snd,cons,unpack,size)
     
     def __repr__(self):
-        return "Prod("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+        return "Prod(\""+str(self.prod[0])+"\", \""+ str(self.prod[1]) +"\")"
     
     def __str__(self):
-        return "Prod("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+        return "Prod(\""+str(self.prod[0])+"\", \""+ str(self.prod[1]) +"\")"
 
     def conv(self,gram, key = None):
         fst,snd,cons,unpack,size = self.prod
@@ -166,10 +166,10 @@ class Sequence():
         self.prod = (nonterm,vide,cons,unpack, isFst ,size)
     
     def __repr__(self):
-        return "Sequence("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+        return "Sequence(\""+str(self.prod[0])+"\", \""+ str(self.prod[1]) +"\")"
     
     def __str__(self):
-        return "Sequence("+str(self.prod[0])+", "+ str(self.prod[1]) +")"
+        return "Sequence(\""+str(self.prod[0])+"\", \""+ str(self.prod[1]) +"\")"
 
     def conv(self,gram, key = None):
         nonterm,vide,cons,unpack,isFst,size = self.prod
@@ -184,10 +184,5 @@ class Sequence():
         
         
 if __name__ == '__test_classic__' or __name__ == '__main__':
-    print("Cas de tests ProductRule:")
-
-    f = randint
-    print(f)
-    print(f.__name__)
-    print("Pass")
+    pass
 

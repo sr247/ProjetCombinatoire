@@ -216,7 +216,7 @@ if __name__ == '__main__':
     
     for g in tGram:
         init_grammar(g)    
-    N = 18
+    N = 3
     l = dyckGram['DyckWord'].list(N)
     for i in range(dyckGram['DyckWord'].count(N)-1):
         assert(dyckGram['DyckWord'].rank(l[i]) == i)

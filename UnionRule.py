@@ -76,10 +76,10 @@ class Union():
         self.union = (fst,snd,isFst,size)
     
     def __repr__(self):
-        return "Union("+str(self.union[0])+", "+ str(self.union[1]) +")"
+        return "Union(\""+str(self.union[0])+"\", \""+ str(self.union[1]) +"\")"
     
     def __str__(self):
-        return "Union("+str(self.union[0])+", "+ str(self.union[1]) +")"
+        return "Union(\""+str(self.union[0])+"\", \""+ str(self.union[1]) +"\")"
 
     def conv(self,gram, key = None):
         fst,snd,isFst,size = self.union
@@ -98,14 +98,4 @@ class Union():
 
 
 if __name__ == '__test_classic__' or __name__ == '__main__':
-    print("Cas de tests UnionRule:")
-    cle = (0, 1)
-    a,b = cle
-
-    print(cle)
-    print(a, sep="/")
-
-
-
-
-    print("Pass")
+    pass
