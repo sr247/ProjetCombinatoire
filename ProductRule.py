@@ -23,10 +23,10 @@ class ProductRule(ConstructorRule):
         self.size = size
 
     def __repr__(self):
-        return "ProductRule("+str(self._parameters[0])+", "+ str(self._parameters[1]) +")"
+        return "ProductRule(\""+str(self._parameters[0])+"\", \""+ str(self._parameters[1]) +"\")"
 
     def __str__(self):
-        return "ProductRule("+str(self._parameters[0])+", "+ str(self._parameters[1]) +")"
+        return "ProductRule(\""+str(self._parameters[0])+"\", \""+ str(self._parameters[1]) +"\")"
 
     def _calc_valuation(self):
         valGauche = self._grammar[self._parameters[0]].valuation()

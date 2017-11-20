@@ -35,10 +35,10 @@ class EpsilonRule(ConstanteRule):
         super().__init__(object)
     
     def __repr__(self):
-        return "EpsilonRule("+str(self._object)+")"
+        return "EpsilonRule(\""+str(self._object)+"\")"
     
     def __str__(self):
-        return "EpsilonRule("+str(self._object)+")"
+        return "EpsilonRule(\""+str(self._object)+"\")"
 
     def count(self, n):
         if n==0:
@@ -58,10 +58,10 @@ class SingletonRule(ConstanteRule):
             super().__init__(object)
 
         def __repr__(self):
-            return "SingletonRule("+str(self._object)+")"
+            return "SingletonRule(\""+str(self._object)+"\")"
 
         def __str__(self):
-            return "SingletonRule("+str(self._object)+")"
+            return "SingletonRule(\""+str(self._object)+"\")"
 
         def count(self, n):
             if n==1:

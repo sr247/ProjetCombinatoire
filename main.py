@@ -89,9 +89,15 @@ if __name__ == '__main__':
     join = "".join
     
     #Sequence Simple
-    testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack, isEmpty, size),
+    testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack2, isEmpty, size),
          "AtomA": SingletonRule("a")}
     convGramCond(testSequence,"SeqA")
+    print(testSequence)
+
+#'SeqA': UnionRule("Eps-2", "Prod-3")
+#'Prod-3': ProductRule("SeqA", "AtomA")
+#'AtomA': SingletonRule("a")
+#'Eps-2': EpsilonRule("")
 
 
     # Exemple ici on déclare la grammaire Fibonacci
@@ -115,11 +121,23 @@ if __name__ == '__main__':
                   "AtomA": SingletonRule("A"),
                   "AtomB": SingletonRule("B")}
 
-    
+    def unpackDyck(s) :
+        g = 0
+        ret = ""
+        while g != -1 and s != "":
+            tmp = s[:1]
+            if tmp == "(" :
+                g += 1
+            elif tmp == ")":
+                g -= 1
+            if g != -1:
+                ret += tmp
+                s = s[1:]
+        return ret,s
     #Quesiont 2.2.3
     dyckGram = {"DyckWord" : UnionRule("Vide","CasStart",isEmpty,size),
                 "CasStart": ProductRule("AtomL","CasMid", join, unpack, size),
-                "CasMid": ProductRule("DyckWord","CasEnd", join, unpack2, size),
+                "CasMid": ProductRule("DyckWord","CasEnd", join, unpackDyck, size),
                 "CasEnd": ProductRule("AtomR","DyckWord", join, unpack, size),
                 "Vide": EpsilonRule(""),
                 "AtomL": SingletonRule("("),
@@ -198,19 +216,10 @@ if __name__ == '__main__':
     
     for g in tGram:
         init_grammar(g)    
-    
-
-    for i in range(len(tGram)):
-        g = tGram[i][name[i]]
-        for n in range(0,12):
-
-            l1 = g.list(n)
-            l2 = [g.unrank(n, v) for v in range(len(l1))]
-
-            for i in range(len(l1)):
-                assert(l1[i] == l2[i])
-        print("Pass")
-
+    N = 18
+    l = dyckGram['DyckWord'].list(N)
+    for i in range(dyckGram['DyckWord'].count(N)-1):
+        assert(dyckGram['DyckWord'].rank(l[i]) == i)
     #b = Bound(test['Tree'],0,4)
     #for el in b._list:
     #    print(el)
