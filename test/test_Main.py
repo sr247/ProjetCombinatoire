@@ -31,24 +31,27 @@ class Main(unittest.TestCase):
             "Tree": Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst, size)}
         convGramCond(treeGramCond, "Tree")
 
-        # Exemple de grammaire condensée avec propagation des clefs sur des valeurs de règles identiques
-        treeGramCond2 = {
-            "Flower": Union(Prod(Singleton("o"), NonTerm("Flower"), pack, unpack, size), Singleton("o"), isFst, size)}
-        convGramCond(treeGramCond2, "Flower")
-
         # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
         size = lambda s: len(s)
         isEmpty = lambda s: s == ""
         unpack = lambda s: (s[:1], s[1:])  # Premier caractère et le reste
-        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractèreisFstA = lambda s: s[:1] == 'A'
+        unpack2 = lambda s: (s[:len(s) - 1], s[len(s) - 1])  # Tout sauf le dernier caractère et le dernier caractère
         isFstA = lambda s: s[:1] == 'A'
         isFstB = lambda s: s[:1] == 'B'
         single = lambda s: len(s) == 1
         join = "".join
 
         # Sequence Simple
-        testSequence = {"SeqA": Sequence("AtomA", "", "".join, unpack, isEmpty, size), "AtomA": SingletonRule("a")}
+        testSequence = {"SeqA": Sequence("AtomA", "", "".join, unpack2, isEmpty, size),
+                        "AtomA": SingletonRule("a")}
         convGramCond(testSequence, "SeqA")
+        # print(testSequence)
+
+        # 'SeqA': UnionRule("Eps-2", "Prod-3")
+        # 'Prod-3': ProductRule("SeqA", "AtomA")
+        # 'AtomA': SingletonRule("a")
+        # 'Eps-2': EpsilonRule("")
+
 
         # Exemple ici on déclare la grammaire Fibonacci
         isFstB1 = lambda s: len(s) == 1 and s[:1] == 'B'
@@ -70,10 +73,24 @@ class Main(unittest.TestCase):
                       "AtomA": SingletonRule("A"),
                       "AtomB": SingletonRule("B")}
 
+        def unpackDyck(s):
+            g = 0
+            ret = ""
+            while g != -1 and s != "":
+                tmp = s[:1]
+                if tmp == "(":
+                    g += 1
+                elif tmp == ")":
+                    g -= 1
+                if g != -1:
+                    ret += tmp
+                    s = s[1:]
+            return ret, s
+
         # Quesiont 2.2.3
         dyckGram = {"DyckWord": UnionRule("Vide", "CasStart", isEmpty, size),
                     "CasStart": ProductRule("AtomL", "CasMid", join, unpack, size),
-                    "CasMid": ProductRule("DyckWord", "CasEnd", join, unpack2, size),
+                    "CasMid": ProductRule("DyckWord", "CasEnd", join, unpackDyck, size),
                     "CasEnd": ProductRule("AtomR", "DyckWord", join, unpack, size),
                     "Vide": EpsilonRule(""),
                     "AtomL": SingletonRule("("),
@@ -216,18 +233,18 @@ class Main(unittest.TestCase):
                 #     print("La grammaire" + self.name[j] + " bug...")
                 j += 1
         except Exception as e:
-            print(e.args[0] + ":", self.name[j])
+            print(e)
 
     def test_Bound(self):
 
         j = 0
-        try:
-            for k in range(len(self.grammar_list)):
-                bound = Bound(self.grammar_list[k][self.name[j]], 0, 11)
-                # Pas encore fini -> vérifier les bornes grace a la liste Count qui contient
-                # la taille de chaque sous ensemble de la liste
-        except Exception as e:
-            print(e.args[0] + ":", self.name[j], sep=" ")
+
+        for k in range(len(self.grammar_list)):
+            bound = Bound(self.grammar_list[k][self.name[j]], 0, 11)
+            # Pas encore fini -> vérifier les bornes grace a la liste Count qui contient
+            # la taille de chaque sous ensemble de la liste
+            j += 1
+
 
 
 
