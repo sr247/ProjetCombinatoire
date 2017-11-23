@@ -5,7 +5,7 @@ from random import randint
 from ConstanteRule import Epsilon, NonTerm
 from ConstructorRule import ConstructorRule
 
-from rule.UnionRule import UnionRule
+from UnionRule import UnionRule
 
 
 class ProductRule(ConstructorRule):
@@ -61,7 +61,7 @@ class ProductRule(ConstructorRule):
         return res
 
     @lru_cache(maxsize=32)
-    def unrank(self,n,r):        
+    def unrank(self, n, r):
         c = self.count(n)        
         if r >= c or r < 0:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d) et supérieur ou égale à zero"%(r,n,c))
@@ -79,13 +79,14 @@ class ProductRule(ConstructorRule):
             if r < acc:
                 acc -= cG*cD
                 break
-        
+        # Ici Python3 Maintient l'existance de la variable k
+        # qui vaut toujours i+1 apres la boucle
         i = k
         j = r - acc
 
         # cf. Prog unrank sur bintree avec catalan
         k = self._grammar[self._parameters[1]].count(n - i)
-        q,r = j//k, j%k
+        q, r = j//k, j%k
 
         mG = self._grammar[self._parameters[0]].unrank(i,q)
         mD = self._grammar[self._parameters[1]].unrank(n-i,r)  
@@ -147,7 +148,15 @@ class Prod():
     def __str__(self):
         return "Prod(\""+str(self.prod[0])+"\", \""+ str(self.prod[1]) +"\")"
 
-    def conv(self,gram, key = None):
+    def conv(self, gram, key = None):
+        """
+        La méthode conv a pour but de modifier le dictionnaire gram "in place"
+        en créant les classes appropriées héritant de la classe AbstractRules
+        et les clés associées.
+        :param gram: une dictionnaire contenant une grammaire condensée
+        :param key: La clé principale de cette grammaire
+        :return: Récursivement la clé de la règle ProductRule qui sera crée
+        """
         fst,snd,cons,unpack,size = self.prod
         
         k1 = fst.conv(gram)

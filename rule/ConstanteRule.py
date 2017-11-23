@@ -6,7 +6,7 @@ class ConstanteRule(AbstractRule):
         super().__init__()
         self._object = object
     
-    def check(self,key):
+    def check(self, key):
       return True
     
     def valuation(self):
@@ -75,11 +75,11 @@ class SingletonRule(ConstanteRule):
             else:
                 return []
 
-
+# On fait connaitre à la classe ConstanteRule ses sousclasse (python3 issues)
 ConstanteRule.subclass = [EpsilonRule, SingletonRule]
 
 class Epsilon():
-    def __init__(self,object):
+    def __init__(self, object):
         self._object = object
     
     def __repr__(self):
@@ -88,7 +88,16 @@ class Epsilon():
     def __str__(self):
         return "Epsilon(\""+str(self._object)+"\")"
 
-    def conv(self,gram, key = None):
+    def conv(self, gram, key = None):
+        """
+        La méthode conv a pour but de modifier le dictionnaire gram "in place"
+        en créant les classes appropriées héritant de la classe AbstractRules
+        et les clés associées.
+        :param gram: une dictionnaire contenant une grammaire condensée
+        :param key: La clé principale de cette grammaire
+        :return: Récursivement la clé de la règle EpsilonRule qui sera crée
+        """
+
         # On vérifie que cette règle n'est pas déjà dans la grammaire
         for k in gram.keys():
             if isinstance(gram[k],EpsilonRule):
@@ -100,7 +109,7 @@ class Epsilon():
         return key
 
 class Singleton():
-    def __init__(self,object):
+    def __init__(self, object):
         self._object = object
 
     def __repr__(self):
@@ -109,7 +118,16 @@ class Singleton():
     def __str__(self):
         return "Singleton(\""+str(self._object)+"\")"
 
-    def conv(self,gram, key = None): 
+    def conv(self, gram, key = None):
+        """
+        La méthode conv a pour but de modifier le dictionnaire gram "in place"
+        en créant les classes appropriées héritant de la classe AbstractRules
+        et les clés associées.
+        :param gram: une dictionnaire contenant une grammaire condensée
+        :param key: La clé principale de cette grammaire
+        :return: Récursivement la clé de la règle SingletonRule qui sera crée
+        """
+
         # On vérifie que cette règle n'est pas déjà dans la grammaire     
         for k in gram.keys():
             if isinstance(gram[k],SingletonRule):
@@ -122,7 +140,7 @@ class Singleton():
         return key
 
 class NonTerm():
-    def __init__(self,str):
+    def __init__(self, str):
         self._str = str
 
     def __repr__(self):
@@ -132,6 +150,11 @@ class NonTerm():
         return self._str
 
     def conv(self, gram):
+        """
+
+        :param gram: une dictionnaire contenant une grammaire condensée
+        :return:
+        """
         if gram[self._str] is None:
             raise Exception("NonTerm "+self._str + " n'est pas dans la grammaire")
         return self._str    

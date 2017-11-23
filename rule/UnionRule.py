@@ -35,7 +35,7 @@ class UnionRule(ConstructorRule):
         return countG + countD
 
     @lru_cache(maxsize=32)
-    def list(self,i):
+    def list(self, i):
         listG = self._grammar[self._parameters[0]].list(i)
         listD = self._grammar[self._parameters[1]].list(i)
         return listG + listD
@@ -82,6 +82,15 @@ class Union():
         return "Union(\""+str(self.union[0])+"\", \""+ str(self.union[1]) +"\")"
 
     def conv(self,gram, key = None):
+        """
+        La méthode conv a pour but de modifier le dictionnaire gram "in place"
+        en créant les classes appropriées héritant de la classe AbstractRules
+        et les clés associées.
+        :param gram: une dictionnaire contenant une grammaire condensée
+        :param key: La clé principale de cette grammaire
+        :return: Récursivement la clé de la règle UnionRule qui sera crée
+        """
+
         fst,snd,isFst,size = self.union
         
         k1 = fst.conv(gram)

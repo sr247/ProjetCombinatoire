@@ -221,46 +221,59 @@ if __name__ == '__main__':
                     "HEAD": ProductRule("O_HEAD", "HEAD_CONTEXT", join),
                     "HEAD_CONTEXT": ProductRule("HEAD_TAG", "C_HEAD", join),
 
-                    "HEAD_TAG": UnionRule("META", "HEAD_OTHER1", join),
-                    "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2", join),
-                    "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3", join),
-                    "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT", join),
+                    "HEAD_TAG": UnionRule("META", "HEAD_OTHER1"),
+                    "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2"),
+                    "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3"),
+                    "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT"),
 
                     "META": SingletonRule("<meta charset=\"utf-8\" />"),
 
                     "TITLE": ProductRule("O_TITLE", "TITLE_TEXT", join),
-                    "TITLE_TEXT": ProductRule("LETTERS", "C_TITLE", join),
+                    "TITLE_TEXT": ProductRule("TEXT", "C_TITLE", join),
 
-                    "LINK": SingletonRule("<link src=\"file.css\" />"),
+                    "LINK": SingletonRule(" <link src=\"file.css\" />"),
 
                     "STYLE": SingletonRule("<link src=\"file.css\" />"),
+
+                    "SCRIPT": ProductRule("O_SCRIPT", "SCRIPT_CODE", join),
+                    "SCRIPT_CODE" : ProductRule("CODE", "C_SCRIPT", join),
 
                     "BODY": ProductRule("O_BODY", "BODY_TAG", join),
                     "BODY_TAG": ProductRule("BODY_TAG1", "C_BODY", join),
 
-                    "BODY_TAG1": UnionRule("PARAGRAPHE", "HREF"),
+                    "BODY_TAG1": UnionRule("PARA", "AREF"),
 
                     "AREF": ProductRule("O_AREF", "AREF_TEXT", join),
-                    "AREF_TEXT": ProductRule("LETTERS", "C_AREF", join),
+                    "AREF_TEXT": ProductRule("TEXT", "C_AREF", join),
 
-                    "LETTERS": UnionRule("Vide", "Mots"),
-                    # "Mots": abWordGram,???
+                    "PARA": ProductRule("O_PARA", "PARA_TEXT", join),
+                    "PARA_TEXT": ProductRule("TEXT", "C_PARA", join),
 
-                    "DOCTYPE": SingletonRule("<!DOCTYPE html>"),
-                    "O_HTML": SingletonRule("<html>"),
-                    "C_HTML": SingletonRule("</html>"),
-                    "O_HEAD": SingletonRule("<head>"),
-                    "C_HEAD": SingletonRule("</head>"),
-                    "O_TITLE": SingletonRule("<title>"),
-                    "C_TITLE": SingletonRule("</title>"),
-                    "O_AREF": SingletonRule("<a href=\"link\">"),
-                    "C_AREF": SingletonRule("</a>"),
-                    "Vide": EpsilonRule(""),}
+                    "TEXT": SingletonRule(" Text "),
+                    "CODE": SingletonRule("\t\t Code\n"),
 
-    name = ["SeqA","Tree","Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
+                    "DOCTYPE": SingletonRule("<!DOCTYPE html>\n"),
+                    "O_HTML": SingletonRule("<html>\n"),
+                    "C_HTML": SingletonRule("</html>\n"),
+                    "O_HEAD": SingletonRule("\t<head>\n"),
+                    "C_HEAD": SingletonRule("\t</head>\n"),
+                    "O_TITLE": SingletonRule("\t\t<title>"),
+                    "C_TITLE": SingletonRule("</title>\n"),
+                    "O_SCRIPT": SingletonRule("\t\t<script>\n"),
+                    "C_SCRIPT": SingletonRule("\t\t</script>\n"),
 
-    tGram = [testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
-    
+                    "O_BODY": SingletonRule("\t<body>\n"),
+                    "C_BODY": SingletonRule("\t</body>\n"),
+                    "O_PARA": SingletonRule("\t\t<p>"),
+                    "C_PARA": SingletonRule("</p>\n"),
+                    "O_AREF": SingletonRule("\t\t<a href=\"link\">"),
+                    "C_AREF": SingletonRule("</a>\n"),
+                    "Vide": EpsilonRule("")}
+
+    name = ["Page", "SeqA", "Tree", "Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
+
+    tGram = [HTML, testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram,
+             palABCGram, autantABGram]
     
     for g in tGram:
         init_grammar(g)    
@@ -272,6 +285,9 @@ if __name__ == '__main__':
     #for el in b._list:
     #    print(el)
 
+    n = 13
+    for i in range(HTML["Page"].count(n)):
+        print(HTML["Page"].list(n)[i])
     #start = time.time()
     #print(tGram[0]['Tree'].count(13))
     #end = time.time()
