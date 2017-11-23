@@ -182,10 +182,10 @@ class Main(unittest.TestCase):
 
     def test_Correct_Grammar(self):
         """
-        Cas de test que les grammaires soientt correctes c'est a dire :
+        Test qui vérifie que les grammaires soient correctes c'est a dire :
             - Pour toutes règles: Rule :: UnionRule(A, B) -> A et B != Rule
             - Pour toutes règles: Rule :: Singleton(X) -> Class(X) != AbstractRules
-        :return:
+        :return: None
         """
         for G in self.grammar_list:
             for sym, r in G.items():
@@ -198,7 +198,14 @@ class Main(unittest.TestCase):
                     self.assertTrue(not issubclass(type(r._object), AbstractRule))
 
 
-    def test_Count(self):
+    def test_List(self):
+        """
+        Test qui vérifie que la méthode List est correcte pour toute les
+        grammaires c'est a dire :
+            - Pour toutes grammaires, la taille de list(n) = Count(n)
+            - list(n) ne contient pas de doublons ?
+        :return: None
+        """
         j=0
         for i in range(len(self.grammar_list)):
             for k in range(11):
@@ -209,6 +216,13 @@ class Main(unittest.TestCase):
 
 
     def test_Unrank(self):
+        """
+        Test qui vérifie que la méthode Unrank est correcte pour toute les
+        grammaires c'est a dire :
+            - Pour toutes grammaires:
+             list(n) = list(unrank(n, i) pour i allant de 0 a Count(n))
+        :return:None
+        """
         j = 0
         for k in range(len(self.grammar_list)):
             for n in range(11):
@@ -219,6 +233,16 @@ class Main(unittest.TestCase):
 
 
     def test_Rank(self):
+        """
+        Test qui vérifie que la méthode Rank est correcte pour toute les
+        grammaires c'est a dire que l'index de l'élément "e" à la position "i"
+        dans la liste est égal a Rank(e):
+            - Pour toutes grammaires:
+             list(n).index(list(n)[i]) = Rank(n, i) pour i allant de 0 a Count(n))
+            OU
+             range( len(list(n) ) = list( Rank(n, i) pour i allant de 0 a Count(n) )
+        :return:None
+        """
         j = 0
         try:
             for k in range(len(self.grammar_list)):
