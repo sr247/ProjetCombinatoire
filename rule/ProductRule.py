@@ -183,13 +183,13 @@ class Sequence():
 
     def conv(self,gram, key = None):
         nonterm,vide,cons,unpack,isFst,size = self.prod
-        k2 = Epsilon(vide).conv(gram)
+        kv = vide.conv(gram)
         if key is None:
             key = "Seq-"+str(len(gram))
-        kp = Prod(NonTerm(key), NonTerm(nonterm), cons, unpack, size)
+        kp = Prod(NonTerm(key), nonterm, cons, unpack, size)
         kp = kp.conv(gram)
             
-        gram[key] = UnionRule(k2, kp, isFst, size)
+        gram[key] = UnionRule(kv, kp, isFst, size)
         return key
         
         

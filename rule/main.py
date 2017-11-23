@@ -4,8 +4,8 @@ from ConstanteRule import *
 from ConstructorRule import *
 from ProductRule import *
 
-from rule.Tree import *
-from rule.UnionRule import *
+from Tree import *
+from UnionRule import *
 
 
 class Bound():
@@ -90,8 +90,7 @@ if __name__ == '__main__':
     join = "".join
     
     #Sequence Simple
-    testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack2, isEmpty, size),
-         "AtomA": SingletonRule("a")}
+    testSequence = {"SeqA" : Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size)}
     convGramCond(testSequence, "SeqA")
     print(testSequence)
 
