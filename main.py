@@ -208,7 +208,54 @@ if __name__ == '__main__':
                         "Vide": EpsilonRule(""),
                         "AtomA": SingletonRule("A"),
                         "AtomB": SingletonRule("B")}
-    
+
+
+    # Au niveau des méthodes size : un singleton ne vaus plus 1 caractère.. Problématique ?
+    HTML = {"Page": ProductRule("DOCTYPE", "HTML", join),
+                    "HTML": ProductRule("O_HTML", "CONTEXT", join),
+                    "CONTEXT": ProductRule("BALISES", "C_HTML", join),
+
+                    "BALISES": ProductRule("HEAD", "BODY", join),
+
+                    "HEAD": ProductRule("O_HEAD", "HEAD_CONTEXT", join),
+                    "HEAD_CONTEXT": ProductRule("HEAD_TAG", "C_HEAD", join),
+
+                    "HEAD_TAG": UnionRule("META", "HEAD_OTHER1", join),
+                    "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2", join),
+                    "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3", join),
+                    "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT", join),
+
+                    "META": SingletonRule("<meta charset=\"utf-8\" />"),
+
+                    "TITLE": ProductRule("O_TITLE", "TITLE_TEXT", join),
+                    "TITLE_TEXT": ProductRule("LETTERS", "C_TITLE", join),
+
+                    "LINK": SingletonRule("<link src=\"file.css\" />"),
+
+                    "STYLE": SingletonRule("<link src=\"file.css\" />"),
+
+                    "BODY": ProductRule("O_BODY", "BODY_TAG", join),
+                    "BODY_TAG": ProductRule("BODY_TAG1", "C_BODY", join),
+
+                    "BODY_TAG1": UnionRule("PARAGRAPHE", "HREF"),
+
+                    "AREF": ProductRule("O_AREF", "AREF_TEXT", join),
+                    "AREF_TEXT": ProductRule("LETTERS", "C_AREF", join),
+
+                    "LETTERS": UnionRule("Vide", "Mots"),
+                    "Mots": abWordGram,
+
+                    "DOCTYPE": SingletonRule("<!DOCTYPE html>"),
+                    "O_HTML": SingletonRule("<html>"),
+                    "C_HTML": SingletonRule("</html>"),
+                    "O_HEAD": SingletonRule("<head>"),
+                    "C_HEAD": SingletonRule("</head>"),
+                    "O_TITLE": SingletonRule("<title>"),
+                    "C_TITLE": SingletonRule("</title>"),
+                    "O_AREF": SingletonRule("<a href=\"link\">"),
+                    "C_AREF": SingletonRule("</a>"),
+                    "Vide": EpsilonRule(""),}
+
     name = ["SeqA","Tree","Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
     tGram = [testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram, palABCGram, autantABGram]
