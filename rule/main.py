@@ -92,7 +92,7 @@ if __name__ == '__main__':
     #Sequence Simple
     testSequence = {"SeqA" : Sequence("AtomA", "", "".join, unpack2, isEmpty, size),
          "AtomA": SingletonRule("a")}
-    convGramCond(testSequence,"SeqA")
+    convGramCond(testSequence, "SeqA")
     print(testSequence)
 
 #'SeqA': UnionRule("Eps-2", "Prod-3")
