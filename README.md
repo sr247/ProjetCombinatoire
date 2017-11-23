@@ -16,7 +16,7 @@ reférence: [OpenClassrooms](https://openclassrooms.com/courses/apprenez-a-progr
 
 --------------------------------------------------------
 
-Pour générer les tests classique, chaque fichier du package *rules* contient
+Pour générer les tests classiques, chaque fichier du package *rule* contient plus ou moins
 des _asserts tests_ qui seront effectuées au lancement de:
 
     python3 AbstractRule.py
