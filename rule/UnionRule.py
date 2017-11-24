@@ -29,7 +29,13 @@ class UnionRule(ConstructorRule):
         return min(valGauche, valDroite)
 
     @lru_cache(maxsize=32)
-    def count(self,i):
+    def count(self, i):
+        """
+         Cette méthode compte les éléments suivant l'Union Disjointe:
+         Le nombre d'objets à gauche + le nombre d'objets à droite.
+         :param i: Le nombre d'éléments de base de l'ensemble concerné
+         :return: Le nombre d'élément qui a été compté
+         """
         countG = self._grammar[self._parameters[0]].count(i)
         countD = self._grammar[self._parameters[1]].count(i)
         return countG + countD
@@ -50,8 +56,8 @@ class UnionRule(ConstructorRule):
     @lru_cache(maxsize=32)
     def unrank(self, n, r):
         """
-
-        :param n: Nombre d'éléments de base de l'ensemble considérer
+        Cette méthode retourne l'ojet de rank r dans l'enseble considéré
+        :param n: Nombre d'éléments de base de l'ensemble considéré
         :param r: Le rang de l'élément a unrank
         :return: L'élément de rank r générer dans l'ensemble
         des éléments de tailles n

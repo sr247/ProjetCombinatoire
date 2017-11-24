@@ -45,13 +45,8 @@ class Main(unittest.TestCase):
         testSequence = {"SeqA": Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size)}
         # testSequence = {"AorBx" : Union(Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size),Sequence(Singleton("b"), Epsilon(""), "".join, unpack2, isEmpty, size))}
 
-
-
-
-
         convGramCond(testSequence, "SeqA")
-        print(testSequence)
-
+        # print(testSequence)
         # 'SeqA': UnionRule("Eps-2", "Prod-3")
         # 'Prod-3': ProductRule("SeqA", "AtomA")
         # 'Sing-1': SingletonRule("a")
@@ -172,7 +167,7 @@ class Main(unittest.TestCase):
 
         cls.name = ["SeqA", "Tree", "Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
-        cls.N = 5
+        cls.N = 13
         for g in cls.grammar_list:
             init_grammar(g)
 
@@ -264,22 +259,21 @@ class Main(unittest.TestCase):
         except Exception as e:
             print(e)
 
-    def test_Bound(self):
-
-        m = 0
-        for i in range(len(self.grammar_list)):
-            bound = Bound(self.grammar_list[i][self.name[i]], 0, 3)
-            print(len(bound._list), bound._list)
-            print(bound._count)
-            for j in range(0, 4):
-                for k in range(bound._count[j]):
-                    # print(m,k, bound._list[m+k])
-                    pass
-                m += bound._count[j]
-                # print(bound._count)
-            self.assertEqual(len(bound._list), sum(bound._count))
-            # Pas encore fini -> vérifier les bornes grace a la liste Count qui contient
-            # la taille de chaque sous ensemble de la liste
+    # A voir en détail : Bounds est fonctionnel mais il y a quelque détails à vérifier
+    # def test_Bound(self):
+    #
+    #     m = 0
+    #     for i in range(len(self.grammar_list)):
+    #         bound = Bound(self.grammar_list[i][self.name[i]], 0, 3)
+    #         for j in range(0, 4):
+    #             for k in range(bound._count[j]):
+    #                 # print(m,k, bound._list[m+k])
+    #                 pass
+    #             m += bound._count[j]
+    #             # print(bound._count)
+    #         self.assertEqual(len(bound._list), sum(bound._count))
+    #         # Pas encore fini -> vérifier les bornes grace a la liste Count qui contient
+    #         # la taille de chaque sous ensemble de la liste
 
 
 

@@ -35,7 +35,13 @@ class ProductRule(ConstructorRule):
         return valGauche+valDroite
 
     @lru_cache(maxsize=32)
-    def count(self,i):
+    def count(self, i):
+        """
+        Cette méthode compte les éléments suivant la technique
+        du produit cartésien.
+        :param i: Le nombre d'éléments de base de l'ensemble concerné
+        :return: Le nombre d'élément qui a été compté
+        """
         res = 0
         for k in range(i+1):
             l = i-k
@@ -69,13 +75,20 @@ class ProductRule(ConstructorRule):
 
     @lru_cache(maxsize=32)
     def unrank(self, n, r):
+        """
+        Cette méthode retourne l'ojet de rank r dans l'enseble considéré
+        :param n: Nombre d'éléments de base de l'ensemble considéré
+        :param r: Le rang de l'élément a unrank
+        :return: L'élément de rank r générer dans l'ensemble
+        des éléments de tailles n
+        """
         c = self.count(n)        
         if r >= c or r < 0:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d) et supérieur ou égale à zero"%(r,n,c))
         
         acc = 0
-        cG =  0
-        cD = 0
+        cG  = 0
+        cD  = 0
         for k in range(n+1):
             l = n-k
             if k >= self._grammar[self._parameters[0]].valuation():
