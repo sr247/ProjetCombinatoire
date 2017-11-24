@@ -302,6 +302,3 @@ if __name__ == '__main__':
     # Affiche les valeurs des valuations de tGram[i]
     # for key in tGram[1].keys():
     #     print(key, ":", tGram[1][key].valuation())
-    for key in fiboGram.keys():
-        for i in range(11):
-            print(i, key, fiboGram[key].count(i))
