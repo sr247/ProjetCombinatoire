@@ -10,12 +10,25 @@ class ConstanteRule(AbstractRule):
       return True
     
     def valuation(self):
+        """
+        Fonction qui retourne la valuation d'un SingletonRule ou
+        d'un EpsilonRule
+        :return: Valeur de la valuation pour une sous-classe
+         de ConstanteRule
+        """
         if(isinstance(self, self.subclass[0])):
             return 0
         else:
             return 1
 
     def random(self, n):
+        """
+        Méthode qui retourne un élément au hasard dans dans l'ensemble
+        des éléments de tailles n.
+        :param n: Nombre d'éléments de base de l'ensemble considérer
+        :return: un élément au hasard générer dans l'ensemble
+        des éléments de tailles n
+        """
         if self.count(n) == 0:
             raise Exception("Erreur sur random(%d,%s)" %(n,self))
         return self.unrank(n, 0)
@@ -47,6 +60,12 @@ class EpsilonRule(ConstanteRule):
             return 0
     
     def list(self, n):
+        """
+        Cette méthode construit la liste contenant le seul
+        élément de cette ensemble si n satisfait la condition
+        :param n: Nombre d'élément de base de l'ensemble considéré
+        :return: La liste de tous les éléments de taille i
+        """
         if n == 0:
             return [self._object]
         else:
@@ -64,12 +83,24 @@ class SingletonRule(ConstanteRule):
             return "SingletonRule(\""+str(self._object)+"\")"
 
         def count(self, n):
+            """
+            Cette méthode compte le seul élément de cette ensemble si
+            n satisfait la condition.
+            :param n: Nombre d'élément de base de l'ensemble considéré
+            :return: La liste de tous les éléments de taille i
+            """
             if n==1:
                 return 1
             else:
                 return 0
 
-        def list(self,n):
+        def list(self, n):
+            """
+            Cette méthode construit la liste contenant le seul
+            élément de cette ensemble si n satisfait la condition
+            :param n: Nombre d'élément de base de l'ensemble considéré
+            :return: La liste de tous les éléments de taille i
+            """
             if n == 1:
                 return [self._object]
             else:
@@ -151,9 +182,11 @@ class NonTerm():
 
     def conv(self, gram):
         """
-
+        Cette methode sert juste a vérifier que la clé existe dans le dictionnaire
+        Si c'est le cas alors on retourne une chaine représantant cette clé
+        sinon on lance une exception.
         :param gram: une dictionnaire contenant une grammaire condensée
-        :return:
+        :return: Chaine de caractère représentant la clé du NonTerm.
         """
         if gram[self._str] is None:
             raise Exception("NonTerm "+self._str + " n'est pas dans la grammaire")

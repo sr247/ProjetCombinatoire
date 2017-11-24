@@ -36,12 +36,26 @@ class UnionRule(ConstructorRule):
 
     @lru_cache(maxsize=32)
     def list(self, i):
+        """
+        Cette méthode construit la liste des éléments de taille i
+        en concaténant la liste des éléments de gauche avec la liste
+        des éléments à droite.
+        :param i: Nombre d'élément de base de l'ensemble considéré
+        :return: La liste de tous les éléments de taille i
+        """
         listG = self._grammar[self._parameters[0]].list(i)
         listD = self._grammar[self._parameters[1]].list(i)
         return listG + listD
 
     @lru_cache(maxsize=32)
     def unrank(self, n, r):
+        """
+
+        :param n: Nombre d'éléments de base de l'ensemble considérer
+        :param r: Le rang de l'élément a unrank
+        :return: L'élément de rank r générer dans l'ensemble
+        des éléments de tailles n
+        """
         c = self.count(n)
         if r >= c or r < 0:
             raise ValueError("Le rang r (%d) doit etre strictement inférieur au nombre d'objets de taille %d (%d) et supérieur ou égale à zero"%(r,n,c))
@@ -67,6 +81,13 @@ class UnionRule(ConstructorRule):
             return self._grammar[self._parameters[0]].count(self.size(obj)) + self._grammar[self._parameters[1]].rank(obj)  
 
     def random(self, n):
+        """
+        Méthode qui retourne un élément au hasard dans dans l'ensemble
+        des éléments de tailles n.
+        :param n: Nombre d'éléments de base de l'ensemble considérer
+        :return: L'élément au hasard générer dans l'ensemble
+        des éléments de tailles n
+        """
         if self.count(n) == 0:
             raise Exception("Erreur sur random(%d, %s)" %(n,self))
         return self.unrank(n, randint(0,self.count(n)-1))

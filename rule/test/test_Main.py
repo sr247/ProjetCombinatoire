@@ -43,12 +43,18 @@ class Main(unittest.TestCase):
 
         # Sequence Simple
         testSequence = {"SeqA": Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size)}
+        # testSequence = {"AorBx" : Union(Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size),Sequence(Singleton("b"), Epsilon(""), "".join, unpack2, isEmpty, size))}
+
+
+
+
+
         convGramCond(testSequence, "SeqA")
         print(testSequence)
 
         # 'SeqA': UnionRule("Eps-2", "Prod-3")
         # 'Prod-3': ProductRule("SeqA", "AtomA")
-        # 'AtomA': SingletonRule("a")
+        # 'Sing-1': SingletonRule("a")
         # 'Eps-2': EpsilonRule("")
 
 
@@ -161,12 +167,12 @@ class Main(unittest.TestCase):
                         "AtomA": SingletonRule("A"),
                         "AtomB": SingletonRule("B")}
 
-
         cls.grammar_list = [testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram,
                  palABCGram, autantABGram]
 
         cls.name = ["SeqA", "Tree", "Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
+        cls.N = 5
         for g in cls.grammar_list:
             init_grammar(g)
 
@@ -207,7 +213,7 @@ class Main(unittest.TestCase):
         """
         j=0
         for i in range(len(self.grammar_list)):
-            for k in range(12):
+            for k in range(self.N):
                 a = self.grammar_list[i][self.name[j]].count(k)
                 b = len(self.grammar_list[i][self.name[j]].list(k))
                 self.assertEqual(a, b)
@@ -224,7 +230,7 @@ class Main(unittest.TestCase):
         """
         j = 0
         for k in range(len(self.grammar_list)):
-            for n in range(12):
+            for n in range(self.N):
                 l1 = self.grammar_list[k][self.name[j]].list(n)
                 l2 = [self.grammar_list[k][self.name[j]].unrank(n, v) for v in range(len(l1))]
                 self.assertEqual(l1, l2, msg="")
@@ -246,7 +252,7 @@ class Main(unittest.TestCase):
         try:
             for k in range(len(self.grammar_list)):
                 # if j & k != 0 and j & k != 5:
-                for n in range(12):
+                for n in range(self.N):
                     l1 = self.grammar_list[k][self.name[j]].list(n)
                     l2 = [x for x in range(len(l1))]
                     l3 = [self.grammar_list[k][self.name[j]].rank(l1[v]) for v in range(len(l1))]
@@ -260,17 +266,20 @@ class Main(unittest.TestCase):
 
     def test_Bound(self):
 
-        j = 0
-
-        for k in range(len(self.grammar_list)):
-            bound = Bound(self.grammar_list[k][self.name[j]], 0, 12)
-            # print(bound._list)
-            # print(bound._count)
-            # print(sum(bound._count))
+        m = 0
+        for i in range(len(self.grammar_list)):
+            bound = Bound(self.grammar_list[i][self.name[i]], 0, 3)
+            print(len(bound._list), bound._list)
+            print(bound._count)
+            for j in range(0, 4):
+                for k in range(bound._count[j]):
+                    # print(m,k, bound._list[m+k])
+                    pass
+                m += bound._count[j]
+                # print(bound._count)
             self.assertEqual(len(bound._list), sum(bound._count))
             # Pas encore fini -> vérifier les bornes grace a la liste Count qui contient
             # la taille de chaque sous ensemble de la liste
-            j += 1
 
 
 

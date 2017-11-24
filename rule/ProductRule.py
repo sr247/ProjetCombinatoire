@@ -48,6 +48,13 @@ class ProductRule(ConstructorRule):
 
     @lru_cache(maxsize=32)
     def list(self, i):
+        """
+        Cette méthode construit la liste des éléments de taille i
+        en composant par la méthode du produit cartésien tous les
+        éléments à gauche avec chacun des éléments à droite
+        :param i: Nombre d'élément de base de l'ensemble considéré
+        :return: La liste de tous les éléments de taille i
+        """
         res = []
         for k in range(i+1):
             l = i-k
@@ -134,6 +141,13 @@ class ProductRule(ConstructorRule):
         return acc + rD
 
     def random(self, n):
+        """
+        Méthode qui retourne un élément au hasard dans dans l'ensemble
+        des éléments de tailles n.
+        :param n: Nombre d'éléments de base de l'ensemble considérer
+        :return: un élément au hasard générer dans l'ensemble
+        des éléments de tailles n
+        """
         if self.count(n) == 0:
             raise Exception("Erreur sur random(%d,%s)" %(n,self))
         return self.unrank(n, randint(0,self.count(n)-1))
@@ -181,7 +195,7 @@ class Sequence():
     def __str__(self):
         return "Sequence(\""+str(self.prod[0])+"\", \""+ str(self.prod[1]) +"\")"
 
-    def conv(self,gram, key = None):
+    def conv(self, gram, key = None):
         nonterm,vide,cons,unpack,isFst,size = self.prod
         
         kv = vide.conv(gram)
