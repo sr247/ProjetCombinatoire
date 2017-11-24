@@ -7,7 +7,7 @@ from ConstanteRule import *
 from ProductRule import *
 from rule.UnionRule import *
 from main import init_grammar, convGramCond, Bound
-from rule.Tree import *
+from Tree import *
 
 
 class Main(unittest.TestCase):
@@ -42,10 +42,9 @@ class Main(unittest.TestCase):
         join = "".join
 
         # Sequence Simple
-        testSequence = {"SeqA": Sequence("AtomA", "", "".join, unpack2, isEmpty, size),
-                        "AtomA": SingletonRule("a")}
+        testSequence = {"SeqA": Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size)}
         convGramCond(testSequence, "SeqA")
-        # print(testSequence)
+        print(testSequence)
 
         # 'SeqA': UnionRule("Eps-2", "Prod-3")
         # 'Prod-3': ProductRule("SeqA", "AtomA")

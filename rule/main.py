@@ -273,6 +273,9 @@ if __name__ == '__main__':
 
     tGram = [HTML, testSequence, treeGram, treeGramCond, fiboGram, abWordGram, dyckGram, ab2MaxGram, palABGram,
              palABCGram, autantABGram]
+
+    if len(name) != len(tGram):
+        raise Exception("Nombre de grammaires différent du nombre de noms")
     
     for g in tGram:
         init_grammar(g)    
@@ -295,5 +298,6 @@ if __name__ == '__main__':
     # Affiche les valeurs des valuations de tGram[i]
     # for key in tGram[1].keys():
     #     print(key, ":", tGram[1][key].valuation())
-
-
+    for key in fiboGram.keys():
+        for i in range(11):
+            print(i, key, fiboGram[key].count(i))
