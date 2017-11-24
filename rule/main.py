@@ -32,7 +32,7 @@ def init_grammar(gram):
     
     for key in gram.keys() :
         if not gram[key].check(key):
-          raise Exception("Grammaire Incorrecte : Nonterm %s inconnue ou Recursion infini sur le non-terminal "%key +key)
+           raise Exception("Grammaire Incorrecte : Nonterm %s inconnue ou Recursion infini sur le non-terminal "%key +key)
     
     # Booléen qui indique si le point fix est trouvé ou non (vrai = non trouvé, false = trouvé)
     not_found = True
@@ -77,8 +77,6 @@ if __name__ == '__main__':
     treeGramCond = {"Tree" : Union(Prod(NonTerm("Tree"), NonTerm("Tree"), pack, unpack, size), Singleton(Leaf), isFst,size)}
     convGramCond(treeGramCond,"Tree")
 
-
-
     # Ces fonctions sont utilisées dans la plus part des cas sur les grammaires fonctionnant avec des objets de type string
     size = lambda s: len(s)
     isEmpty = lambda s: s == ""
@@ -91,13 +89,19 @@ if __name__ == '__main__':
     
     #Sequence Simple
     testSequence = {"SeqA" : Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size)}
+    #testSequence = {"AorBx" : Union(Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size),Sequence(Singleton("b"), Epsilon(""), "".join, unpack2, isEmpty, size))}
+
+
+
+
+
     convGramCond(testSequence, "SeqA")
     print(testSequence)
 
-#'SeqA': UnionRule("Eps-2", "Prod-3")
-#'Prod-3': ProductRule("SeqA", "AtomA")
-#'AtomA': SingletonRule("a")
-#'Eps-2': EpsilonRule("")
+    #'SeqA': UnionRule("Eps-2", "Prod-3")
+    #'Prod-3': ProductRule("SeqA", "AtomA")
+    #'Sing-1': SingletonRule("a")
+    #'Eps-2': EpsilonRule("")
 
 
     # Exemple ici on déclare la grammaire Fibonacci

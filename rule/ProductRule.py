@@ -183,13 +183,31 @@ class Sequence():
 
     def conv(self,gram, key = None):
         nonterm,vide,cons,unpack,isFst,size = self.prod
+        
         kv = vide.conv(gram)
+        k2 = nonterm.conv(gram)        
+
+        kp = "Prod-"+str(len(gram))    
+    
         if key is None:
-            key = "Seq-"+str(len(gram))
-        kp = Prod(NonTerm(key), nonterm, cons, unpack, size)
-        kp = kp.conv(gram)
-            
+            key = "Seq-"+str(len(gram)+1)
+     
+        # On vérifie que cette règle n'est pas déjà dans la grammaire
+        for k in gram.keys():
+            if isinstance(gram[k],ProductRule):
+                if gram[k]._parameters[0] == key and gram[k]._parameters[1] == k2 and gram[k]._constructor == cons:
+                    kp = k
+
+        gram[kp] = ProductRule(key,k2,cons,unpack,size)
+
+        # On vérifie que cette règle n'est pas déjà dans la grammaire
+        for k in gram.keys():
+            if isinstance(gram[k], UnionRule):
+                if gram[k]._parameters[0] == kv and gram[k]._parameters[1] == kp:
+                    key = k
+        
         gram[key] = UnionRule(kv, kp, isFst, size)
+
         return key
         
         
