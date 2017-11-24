@@ -5,7 +5,7 @@ import unittest
 
 from ConstanteRule import *
 from ProductRule import *
-from rule.UnionRule import *
+from UnionRule import *
 from main import init_grammar, convGramCond, Bound
 from Tree import *
 

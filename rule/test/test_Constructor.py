@@ -5,7 +5,7 @@ import math
 import unittest
 
 from ProductRule import ProductRule
-from rule.UnionRule import UnionRule
+from UnionRule import UnionRule
 
 from ConstructorRule import ConstructorRule
 
