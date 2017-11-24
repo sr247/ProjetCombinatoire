@@ -109,7 +109,7 @@ class ProductRule(ConstructorRule):
         q, r = j//k, j%k
 
         mG = self._grammar[self._parameters[0]].unrank(i,q)
-        mD = self._grammar[self._parameters[1]].unrank(n-i,r)  
+        mD = self._grammar[self._parameters[1]].unrank(n-i, r)
 
         return self._constructor((mG,mD))
 
