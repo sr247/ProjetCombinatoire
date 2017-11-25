@@ -7,6 +7,11 @@ from ProductRule import *
 from Tree import *
 from UnionRule import *
 
+from UnionRule import UnionRule
+
+from ConstanteRule import *
+from ProductRule import *
+
 
 class Bound():
     def __init__(self, C, min, max):
@@ -90,13 +95,8 @@ if __name__ == '__main__':
     #Sequence Simple
     testSequence = {"SeqA" : Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size)}
     #testSequence = {"AorBx" : Union(Sequence(Singleton("a"), Epsilon(""), "".join, unpack2, isEmpty, size),Sequence(Singleton("b"), Epsilon(""), "".join, unpack2, isEmpty, size))}
-
-
-
-
-
     convGramCond(testSequence, "SeqA")
-    print(testSequence)
+    # print(testSequence)
 
     #'SeqA': UnionRule("Eps-2", "Prod-3")
     #'Prod-3': ProductRule("SeqA", "AtomA")
@@ -214,64 +214,137 @@ if __name__ == '__main__':
                         "AtomB": SingletonRule("B")}
 
 
-    # Au niveau des méthodes size : un singleton ne vaus plus 1 caractère.. Problématique ?
+    # # Au niveau des méthodes size : un singleton ne vaus plus 1 caractère.. Problématique ?
+    # HTML = {"Page": ProductRule("DOCTYPE", "HTML", join),
+    #                 "HTML": ProductRule("O_HTML", "CONTEXT", join),
+    #                 "CONTEXT": ProductRule("BALISES", "C_HTML", join),
+    #
+    #                 "BALISES": ProductRule("HEAD", "BODY", join),
+    #
+    #                 "HEAD": ProductRule("O_HEAD", "HEAD_CONTEXT", join),
+    #                 "HEAD_CONTEXT": ProductRule("HEAD_TAG", "C_HEAD", join),
+    #
+    #                 "HEAD_TAG": UnionRule("META", "HEAD_OTHER1"),
+    #                 "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2"),
+    #                 "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3"),
+    #                 "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT"),
+    #
+    #                 "META": SingletonRule("<meta charset=\"utf-8\" />"),
+    #
+    #                 "TITLE": ProductRule("O_TITLE", "TITLE_TEXT", join),
+    #                 "TITLE_TEXT": ProductRule("TEXT", "C_TITLE", join),
+    #
+    #                 "LINK": SingletonRule(" <link src=\"file.css\" />"),
+    #
+    #                 "STYLE": SingletonRule("<link src=\"file.css\" />"),
+    #
+    #                 "SCRIPT": ProductRule("O_SCRIPT", "SCRIPT_CODE", join),
+    #                 "SCRIPT_CODE" : ProductRule("CODE", "C_SCRIPT", join),
+    #
+    #                 "BODY": ProductRule("O_BODY", "BODY_TAG", join),
+    #                 "BODY_TAG": ProductRule("BODY_TAG1", "C_BODY", join),
+    #
+    #                 "BODY_TAG1": UnionRule("PARA", "AREF"),
+    #
+    #                 "AREF": ProductRule("O_AREF", "AREF_TEXT", join),
+    #                 "AREF_TEXT": ProductRule("TEXT", "C_AREF", join),
+    #
+    #                 "PARA": ProductRule("O_PARA", "PARA_TEXT", join),
+    #                 "PARA_TEXT": ProductRule("TEXT", "C_PARA", join),
+    #
+    #                 "TEXT": SingletonRule(" Text "),
+    #                 "CODE": SingletonRule("\t\t Code\n"),
+    #
+    #                 "DOCTYPE": SingletonRule("<!DOCTYPE html>\n"),
+    #                 "O_HTML": SingletonRule("<html>\n"),
+    #                 "C_HTML": SingletonRule("</html>\n"),
+    #                 "O_HEAD": SingletonRule("\t<head>\n"),
+    #                 "C_HEAD": SingletonRule("\t</head>\n"),
+    #                 "O_TITLE": SingletonRule("\t\t<title>"),
+    #                 "C_TITLE": SingletonRule("</title>\n"),
+    #                 "O_SCRIPT": SingletonRule("\t\t<script>\n"),
+    #                 "C_SCRIPT": SingletonRule("\t\t</script>\n"),
+    #
+    #                 "O_BODY": SingletonRule("\t<body>\n"),
+    #                 "C_BODY": SingletonRule("\t</body>\n"),
+    #                 "O_PARA": SingletonRule("\t\t<p>"),
+    #                 "C_PARA": SingletonRule("</p>\n"),
+    #                 "O_AREF": SingletonRule("\t\t<a href=\"link\">"),
+    #                 "C_AREF": SingletonRule("</a>\n"),
+    #                 "Vide": EpsilonRule("")}
+
+
     HTML = {"Page": ProductRule("DOCTYPE", "HTML", join),
-                    "HTML": ProductRule("O_HTML", "CONTEXT", join),
-                    "CONTEXT": ProductRule("BALISES", "C_HTML", join),
+            "HTML": ProductRule("O_HTML", "CONTEXT", join),
+            "CONTEXT": ProductRule("CORE", "C_HTML", join),
 
-                    "BALISES": ProductRule("HEAD", "BODY", join),
+            "CORE": ProductRule("HEAD", "BODY", join),
 
-                    "HEAD": ProductRule("O_HEAD", "HEAD_CONTEXT", join),
-                    "HEAD_CONTEXT": ProductRule("HEAD_TAG", "C_HEAD", join),
+            "HEAD": ProductRule("O_HEAD", "HEAD_CONTEXT", join),
+            "HEAD_CONTEXT": ProductRule("HEAD_CONTENT", "C_HEAD", join),
 
-                    "HEAD_TAG": UnionRule("META", "HEAD_OTHER1"),
-                    "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2"),
-                    "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3"),
-                    "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT"),
+            "HEAD_CONTENT": UnionRule("HEAD_TAG", "Vide"),
 
-                    "META": SingletonRule("<meta charset=\"utf-8\" />"),
+            "HEAD_TAG": UnionRule("META", "HEAD_OTHER1"),
+            "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2"),
+            "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3"),
+            "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT"),
+            # "HEAD_OTHER4": UnionRule("SCRIPT", "HEAD_OTHER_END"),
+            # "HEAD_OTHER_END": UnionRule("SCRIPT", "HEAD_OTHER_END"),
 
-                    "TITLE": ProductRule("O_TITLE", "TITLE_TEXT", join),
-                    "TITLE_TEXT": ProductRule("TEXT", "C_TITLE", join),
+            "META": SingletonRule("\t\t<meta charset=\"utf-8\" />\n"),
 
-                    "LINK": SingletonRule(" <link src=\"file.css\" />"),
+            "TITLE": ProductRule("O_TITLE", "TITLE_TEXT", join),
+            "TITLE_TEXT": ProductRule("TEXT", "C_TITLE", join),
 
-                    "STYLE": SingletonRule("<link src=\"file.css\" />"),
+            "LINK": SingletonRule("\t\t<link src=\"file.css\" />\n"),
 
-                    "SCRIPT": ProductRule("O_SCRIPT", "SCRIPT_CODE", join),
-                    "SCRIPT_CODE" : ProductRule("CODE", "C_SCRIPT", join),
+            "STYLE": ProductRule("O_STYLE", "STYLE_CODE", join),
+            "STYLE_CODE": ProductRule("CODE", "C_STYLE", join),
 
-                    "BODY": ProductRule("O_BODY", "BODY_TAG", join),
-                    "BODY_TAG": ProductRule("BODY_TAG1", "C_BODY", join),
+            "SCRIPT": ProductRule("O_SCRIPT", "SCRIPT_CODE", join),
+            "SCRIPT_CODE": ProductRule("CODE", "C_SCRIPT", join),
 
-                    "BODY_TAG1": UnionRule("PARA", "AREF"),
 
-                    "AREF": ProductRule("O_AREF", "AREF_TEXT", join),
-                    "AREF_TEXT": ProductRule("TEXT", "C_AREF", join),
+            "BODY": ProductRule("O_BODY", "BODY_CONTEXT", join),
+            "BODY_CONTEXT": ProductRule("BODY_CONTENT", "C_BODY", join),
 
-                    "PARA": ProductRule("O_PARA", "PARA_TEXT", join),
-                    "PARA_TEXT": ProductRule("TEXT", "C_PARA", join),
+            "BODY_CONTENT": UnionRule("BODY_TAG", "Vide"),
 
-                    "TEXT": SingletonRule(" Text "),
-                    "CODE": SingletonRule("\t\t Code\n"),
+            "BODY_TAG": UnionRule("PARA", "AREF"),
+            # "BODY_OTHER1": UnionRule("AREF", "BODY_TAG"),
 
-                    "DOCTYPE": SingletonRule("<!DOCTYPE html>\n"),
-                    "O_HTML": SingletonRule("<html>\n"),
-                    "C_HTML": SingletonRule("</html>\n"),
-                    "O_HEAD": SingletonRule("\t<head>\n"),
-                    "C_HEAD": SingletonRule("\t</head>\n"),
-                    "O_TITLE": SingletonRule("\t\t<title>"),
-                    "C_TITLE": SingletonRule("</title>\n"),
-                    "O_SCRIPT": SingletonRule("\t\t<script>\n"),
-                    "C_SCRIPT": SingletonRule("\t\t</script>\n"),
+            "AREF": ProductRule("O_AREF", "AREF_TEXT", join),
+            "AREF_TEXT": ProductRule("TEXT", "C_AREF", join),
 
-                    "O_BODY": SingletonRule("\t<body>\n"),
-                    "C_BODY": SingletonRule("\t</body>\n"),
-                    "O_PARA": SingletonRule("\t\t<p>"),
-                    "C_PARA": SingletonRule("</p>\n"),
-                    "O_AREF": SingletonRule("\t\t<a href=\"link\">"),
-                    "C_AREF": SingletonRule("</a>\n"),
-                    "Vide": EpsilonRule("")}
+            "PARA": ProductRule("O_PARA", "PARA_TEXT", join),
+            "PARA_TEXT": ProductRule("TEXT", "C_PARA", join),
+
+
+            "TEXT": UnionRule("Vide", "TEXT_TEXT"),
+            "TEXT_TEXT": SingletonRule("Text"),
+            "CODE": UnionRule("Vide", "TEXT_CODE"),
+            "TEXT_CODE": SingletonRule("\t\t\tCode\n"),
+
+            "DOCTYPE": SingletonRule("<!DOCTYPE html>\n"),
+            "O_HTML": SingletonRule("<html>\n"),
+            "C_HTML": SingletonRule("</html>\n"),
+            "O_HEAD": SingletonRule("\t<head>\n"),
+            "C_HEAD": SingletonRule("\t</head>\n"),
+            "O_TITLE": SingletonRule("\t\t<title>"),
+            "C_TITLE": SingletonRule("</title>\n"),
+            "O_STYLE": SingletonRule("\t\t<style>\n"),
+            "C_STYLE": SingletonRule("\t\t</style>\n"),
+            "O_SCRIPT": SingletonRule("\t\t<script>\n"),
+            "C_SCRIPT": SingletonRule("\t\t</script>\n"),
+
+            "O_BODY": SingletonRule("\t<body>\n"),
+            "C_BODY": SingletonRule("\t</body>\n"),
+            "O_PARA": SingletonRule("\t\t<p>"),
+            "C_PARA": SingletonRule("</p>\n"),
+            "O_AREF": SingletonRule("\t\t<a href=\"link\">"),
+            "C_AREF": SingletonRule("</a>\n"),
+            "Vide": EpsilonRule("")}
 
     name = ["Page", "SeqA", "Tree", "Tree", "Fib", "ABWord", "DyckWord", "AB2Max", "PalAB", "PalABC", "AutantAB"]
 
@@ -282,7 +355,8 @@ if __name__ == '__main__':
         raise Exception("Nombre de grammaires différent du nombre de noms")
     
     for g in tGram:
-        init_grammar(g)    
+        init_grammar(g)
+
     N = 3
     l = dyckGram['DyckWord'].list(N)
     for i in range(dyckGram['DyckWord'].count(N)-1):
@@ -291,9 +365,9 @@ if __name__ == '__main__':
     #for el in b._list:
     #    print(el)
 
-    n = 13
-    for i in range(HTML["Page"].count(n)):
-        print(HTML["Page"].list(n)[i])
+    for n in range(15):
+        for i in range(HTML["Page"].count(n)):
+            print("list n°%d : élément n°%d\n"%(n,i), HTML["Page"].list(n)[i])
     #start = time.time()
     #print(tGram[0]['Tree'].count(13))
     #end = time.time()
