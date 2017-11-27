@@ -285,23 +285,29 @@ if __name__ == '__main__':
 
             "HEAD_CONTENT": UnionRule("HEAD_TAG", "Vide"),
 
-            "HEAD_TAG": UnionRule("META", "HEAD_OTHER1"),
-            "HEAD_OTHER1": UnionRule("TITLE", "HEAD_OTHER2"),
-            "HEAD_OTHER2": UnionRule("LINK", "HEAD_OTHER3"),
-            "HEAD_OTHER3": UnionRule("STYLE", "SCRIPT"),
+            "HEAD_TAG": UnionRule("META_TAG", "HEAD_OTHER1"),
+            "HEAD_OTHER1": UnionRule("TITLE_TAG", "HEAD_OTHER2"),
+            "HEAD_OTHER2": UnionRule("LINK_TAG", "HEAD_OTHER3"),
+            "HEAD_OTHER3": UnionRule("STYLE_TAG", "HEAD_OTHER4"),
+            "HEAD_OTHER4": UnionRule("SCRIPT_TAG", ""),
             # "HEAD_OTHER4": UnionRule("SCRIPT", "HEAD_OTHER_END"),
             # "HEAD_OTHER_END": UnionRule("SCRIPT", "HEAD_OTHER_END"),
 
+            "META_TAG": UnionRule("META", "Vide"),
             "META": SingletonRule("\t\t<meta charset=\"utf-8\" />\n"),
 
+            "TITLE_TAG": UnionRule("TITLE", "Vide"),
             "TITLE": ProductRule("O_TITLE", "TITLE_TEXT", join),
             "TITLE_TEXT": ProductRule("TEXT", "C_TITLE", join),
 
+            "LINK_TAG": UnionRule("LINK", "Vide"),
             "LINK": SingletonRule("\t\t<link src=\"file.css\" />\n"),
 
+            "STYLE_TAG": UnionRule("STYLE", "Vide"),
             "STYLE": ProductRule("O_STYLE", "STYLE_CODE", join),
             "STYLE_CODE": ProductRule("CODE", "C_STYLE", join),
 
+            "SCRIPT_TAG": UnionRule("SCRIPT", "Vide"),
             "SCRIPT": ProductRule("O_SCRIPT", "SCRIPT_CODE", join),
             "SCRIPT_CODE": ProductRule("CODE", "C_SCRIPT", join),
 
@@ -311,12 +317,14 @@ if __name__ == '__main__':
 
             "BODY_CONTENT": UnionRule("BODY_TAG", "Vide"),
 
-            "BODY_TAG": UnionRule("PARA", "AREF"),
+            "BODY_TAG": UnionRule("PARA_TAG", "AREF_TAG"),
             # "BODY_OTHER1": UnionRule("AREF", "BODY_TAG"),
-
+            
+            "AREF_TAG": UnionRule("SCRIPT", "Vide"),
             "AREF": ProductRule("O_AREF", "AREF_TEXT", join),
             "AREF_TEXT": ProductRule("TEXT", "C_AREF", join),
 
+            "PARA_TAG": UnionRule("PARA", "Vide"),
             "PARA": ProductRule("O_PARA", "PARA_TEXT", join),
             "PARA_TEXT": ProductRule("TEXT", "C_PARA", join),
 
